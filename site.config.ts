@@ -6,6 +6,7 @@ export default defineSiteConfig({
   title: 'Kaede Rei',
   author: {
     name: 'Kaede Rei',
+    avatar: '',
   },
   description: 'Valaxy Theme Yun Preview.',
   social: [
