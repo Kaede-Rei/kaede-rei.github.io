@@ -90,13 +90,6 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
-    '/posts/': RouteRecordInfo<
-      '/posts/',
-      '/posts',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/posts/hello-valaxy': RouteRecordInfo<
       '/posts/hello-valaxy',
       '/posts/hello-valaxy',
@@ -124,7 +117,7 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export interface _RouteFileInfoMap {
-    'node_modules/.pnpm/valaxy-theme-yun@0.28.4_mag_504066cbfad75f6716cfc76600226f28/node_modules/valaxy-theme-yun/pages/index.vue': {
+    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__e04e6cbfae6fe749bc87e0239ee6324b/node_modules/valaxy-theme-sakura/pages/index.vue': {
       routes:
         | '/'
       views:
@@ -172,15 +165,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy-theme-yun@0.28.4_mag_504066cbfad75f6716cfc76600226f28/node_modules/valaxy-theme-yun/pages/page/[page].vue': {
+    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__e04e6cbfae6fe749bc87e0239ee6324b/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
-      views:
-        | never
-    }
-    'node_modules/.pnpm/valaxy-theme-yun@0.28.4_mag_504066cbfad75f6716cfc76600226f28/node_modules/valaxy-theme-yun/pages/posts/index.vue': {
-      routes:
-        | '/posts/'
       views:
         | never
     }
