@@ -2,14 +2,58 @@
 title: 关于我
 ---
 
-I am developing [Valaxy](https://github.com/YunYouJun/valaxy) - Next Generation Static Blog Framework.
+# 关于我
 
-If you like it, you can sponsor me in [GitHub](https://github.com/sponsors/YunYouJun) or [www.yunyoujun.cn/sponsors/](https://www.yunyoujun.cn/sponsors/).
+你好，我是 **Kaede Rei**。
 
----
+目前是 **华南农业大学本科生**，同时参与 **广东省农业科学院** 相关项目协作。我的主要方向集中在：
 
-我正在开发 [Valaxy](https://github.com/YunYouJun/valaxy) - 下一代静态博客框架。
+- 嵌入式系统
+- 六轴机械臂电子控制
+- ROS / MoveIt / 系统集成
+- 具身智能（IL / RL）在农业机器人上的落地
 
-如果你喜欢它，你可以在 [GitHub](https://github.com/sponsors/YunYouJun) 或 [www.yunyoujun.cn/sponsors/](https://www.yunyoujun.cn/sponsors/) 赞助我。
+## 我在做什么
 
-Check out the [Valaxy | GitHub](https://github.com/YunYouJun/valaxy) for more details.
+我长期关注农业机器人相关系统的完整技术链，尤其是：
+
+- 从底层驱动到运动控制的工程实现
+- 机械臂电控系统、运动学与轨迹规划
+- 控制、视觉、导航三部分的 ROS 集成
+- 具身智能在真实机械臂平台上的部署与验证
+
+## 技术关键词
+
+- C / C++ / Python
+- STM32 / Renesas / ESP32 / RTOS / LVGL
+- Linux / ROS1 / ROS2 / MoveIt / OpenCV / LeRobot
+- 嵌入式视觉、PCB、系统集成
+
+## 关注重点
+
+相比只做“能跑起来”，我更关心：
+
+- 可靠性
+- 实时性
+- 工程边界清晰
+- 非结构化农业场景中的长期稳定运行
+
+## 代表项目
+
+### 番茄采摘机器人
+围绕 STM32 + ROS + MoveIt 构建底层驱动、运动学求解与 ROS 控制链路。
+
+### 鸽笼自动投喂系统
+将系统从裸机架构重构到 RTOS，提升稳定性与可维护性。
+
+### 导轨转向底盘
+负责转向控制、底盘运动学与通信协议设计。
+
+### 双臂 IL + RL 系统
+基于 LeRobot + ROS2，探索模仿学习与强化学习在真实机械臂上的部署。
+
+## 现在的兴趣方向
+
+- Rust 在嵌入式系统中的安全应用
+- Qt 在农业机器人 HMI 上的工程实践
+- 具身智能策略在真实硬件中的部署与约束

@@ -4,6 +4,8 @@ export default defineSiteConfig({
   url: 'https://kaede-rei.github.io/',
   lang: 'zh-CN',
   title: 'Kaede Rei',
+  favicon: '/favicon.svg',
+
   author: {
     name: 'Kaede Rei',
     avatar: '/images/soyo.png',

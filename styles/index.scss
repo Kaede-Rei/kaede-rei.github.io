@@ -3,3 +3,159 @@
 #tsparticles canvas {
   z-index: -1 !important;
 }
+
+/* 基础 */
+html,
+body {
+  background: transparent;
+  color: #5c533e;
+}
+
+/* 首页完全不动 */
+body:has(video) main {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 非首页：铺背景图 */
+body:not(:has(video)) {
+  position: relative;
+  background-image: url('/images/bg/site-bg.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+/* 非首页：加背景遮罩，避免遮挡内容 */
+body:not(:has(video))::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 非首页：main 只负责布局，不再做白色大卡片 */
+body:not(:has(video)) main {
+  max-width: min(1720px, calc(100vw - 40px)) !important;
+  margin: 88px auto 24px !important;
+  padding: 24px 28px !important;
+
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: none !important;
+}
+
+/* 标题避让导航栏 */
+body:not(:has(video)) h1,
+body:not(:has(video)) h2,
+body:not(:has(video)) h3,
+body:not(:has(video)) h4,
+body:not(:has(video)) h5,
+body:not(:has(video)) h6 {
+  scroll-margin-top: 96px;
+  color: #2f3440;
+}
+
+/* 正文主体透明 */
+body:not(:has(video)) article,
+body:not(:has(video)) .page,
+body:not(:has(video)) .post,
+body:not(:has(video)) [class*='page'],
+body:not(:has(video)) [class*='post'] {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* 只给真正承载内容的盒子一点点透明底 */
+body:not(:has(video)) .card,
+body:not(:has(video)) [class*='card'],
+body:not(:has(video)) blockquote,
+body:not(:has(video)) table,
+body:not(:has(video)) pre,
+body:not(:has(video)) ul,
+body:not(:has(video)) ol {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  box-shadow: none !important;
+}
+
+/* 列表不要整块太厚 */
+body:not(:has(video)) ul,
+body:not(:has(video)) ol {
+  padding: 16px 20px !important;
+}
+
+/* 代码块稍微深一点，不然看不清 */
+body:not(:has(video)) pre {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 页脚透明 */
+body:not(:has(video)) footer {
+  background: transparent !important;
+}
+
+/* 最外层目录区域：透明，不要原生白色厚底 */
+body:not(:has(video)) aside:has(a[href^="#"]) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* 真正作为目录卡片的内层 */
+body:not(:has(video)) aside:has(a[href^="#"]) > div {
+  margin-left: 24px;
+  padding: 18px 20px !important;
+
+  background: rgba(255, 255, 255, 0.32) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* 标题区不要额外白底 */
+body:not(:has(video)) aside:has(a[href^="#"]) h2,
+body:not(:has(video)) aside:has(a[href^="#"]) h3 {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+  background: transparent !important;
+}
+
+/* 列表本体透明 */
+body:not(:has(video)) aside:has(a[href^="#"]) ul,
+body:not(:has(video)) aside:has(a[href^="#"]) ol {
+  margin: 0 !important;
+  padding-left: 1rem !important;
+  background: transparent !important;
+}
+
+/* 每一项之间留呼吸感 */
+body:not(:has(video)) aside:has(a[href^="#"]) li + li {
+  margin-top: 8px;
+}
+
+/* 目录项自己的“白色小底”压淡 */
+body:not(:has(video)) aside:has(a[href^="#"]) a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 当前激活项稍微突出，但不要太白 */
+body:not(:has(video)) aside:has(a[href^="#"]) a[aria-current='true'],
+body:not(:has(video)) aside:has(a[href^="#"]) .active,
+body:not(:has(video)) aside:has(a[href^="#"]) a:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+}
