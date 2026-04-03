@@ -99,7 +99,7 @@ body:not(:has(.sakura-home)) {
   background: transparent;
 }
 
-/* 背景图层：跟随页面滚动 */
+/* 背景图层：无限拼接 */
 body:not(:has(.sakura-home))::before {
   content: '';
   position: absolute;
@@ -108,10 +108,9 @@ body:not(:has(.sakura-home))::before {
   pointer-events: none;
 
   background-image: url('/images/bg/site-bg.png');
+  background-repeat: repeat-y;
   background-size: var(--bg-image-width) auto;
   background-position: center top;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
 }
 
 /* 半透明遮罩层 */
@@ -189,6 +188,38 @@ body:not(:has(.sakura-home)) ol {
 body:not(:has(.sakura-home)) ul,
 body:not(:has(.sakura-home)) ol {
   padding: 16px 20px !important;
+}
+
+/* 归档时间树不使用全局列表卡片 */
+body:not(:has(.sakura-home)) .sakura-archivers-page .post-collapse ul,
+body:not(:has(.sakura-home)) .sakura-archivers-page .post-collapse ol {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* 分类展开列表：修复长标题与图标/行间重叠 */
+body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a {
+  display: flex !important;
+  align-items: flex-start !important;
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a > div {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+
+body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 body:not(:has(.sakura-home)) pre {
