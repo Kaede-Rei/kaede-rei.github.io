@@ -11,21 +11,13 @@
   --home-content-width: 72vw;
 
   /* 非首页正文区宽度 */
-  --page-width: 80vw;
-
-  /* TOC 跟随顶部距离 */
-  --toc-top: 96px;
+  --page-width: 85vw;
 
   /* ===== 全局透明度 ===== */
   --bg-mask-opacity: 0.72;
   --panel-opacity: 0.50;
   --panel-border-opacity: 0.20;
   --code-opacity: 0.20;
-
-  --toc-card-opacity: 0.38;
-  --toc-card-border-opacity: 0.22;
-  --toc-item-opacity: 0.22;
-  --toc-item-active-opacity: 0.42;
 
   /* ===== 背景图适应控制 ===== */
   --bg-image-width: 100%;
@@ -200,7 +192,7 @@ body:not(:has(.sakura-home)) .sakura-archivers-page .post-collapse ol {
 }
 
 /* 分类展开列表：修复长标题与图标/行间重叠 */
-body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a {
+body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a {
   display: flex !important;
   align-items: flex-start !important;
   width: 100%;
@@ -209,17 +201,39 @@ body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a {
   line-height: 1.5;
 }
 
-body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a > div {
+body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a > div {
   flex: 0 0 auto;
   margin-top: 0.1rem;
 }
 
-body:not(:has(.sakura-home)) .category-list-item .sakura-sidebar-item > a > span {
+body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a > span {
   flex: 1 1 auto;
   min-width: 0;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+/* 分类容器本身允许换行，避免与右侧元素挤压重叠 */
+body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item {
+  min-width: 0;
+}
+
+/* 博客正文区域放开主题默认 800px 限制，避免内容全部挤在中间 */
+body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-page-content {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-triple-columns {
+  grid-template-columns: 0 minmax(0, 1fr) 0 !important;
+  gap: 0 !important;
+}
+
+@media (min-width: 1280px) {
+  body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-triple-columns {
+    grid-template-columns: 0 minmax(0, 1fr) 0 !important;
+  }
 }
 
 body:not(:has(.sakura-home)) pre {
@@ -228,99 +242,6 @@ body:not(:has(.sakura-home)) pre {
 
 body:not(:has(.sakura-home)) footer {
   background: transparent !important;
-}
-
-/* =========================
- * 内页 TOC：圆角卡片 + sticky 跟随滚动
- * ========================= */
-
-/* 关键：把可能压死 sticky 的祖先 overflow 放开 */
-body:not(:has(.sakura-home)) main,
-body:not(:has(.sakura-home)) article,
-body:not(:has(.sakura-home)) .page,
-body:not(:has(.sakura-home)) .post,
-body:not(:has(.sakura-home)) .prose,
-body:not(:has(.sakura-home)) .markdown-body,
-body:not(:has(.sakura-home)) [class*='layout'],
-body:not(:has(.sakura-home)) [class*='content'] {
-  overflow: visible !important;
-}
-
-/* sticky 挂在 aside 本体 */
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) {
-  position: sticky !important;
-  top: var(--toc-top) !important;
-  align-self: start !important;
-  height: fit-content !important;
-  max-height: calc(100vh - var(--toc-top) - 24px) !important;
-  z-index: 5;
-
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-/* 真正目录卡片 */
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) > div {
-  margin-left: 24px;
-  padding: 18px 20px !important;
-
-  background: rgba(255, 255, 255, var(--toc-card-opacity)) !important;
-  border: 1px solid rgba(255, 255, 255, var(--toc-card-border-opacity));
-  border-radius: 22px !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(8px);
-
-  max-height: calc(100vh - var(--toc-top) - 24px);
-  overflow: auto !important;
-}
-
-/* TOC 标题 */
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) h2,
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) h3 {
-  margin-top: 0 !important;
-  margin-bottom: 12px !important;
-  background: transparent !important;
-}
-
-/* TOC 列表 */
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ul,
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ol {
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none !important;
-  background: transparent !important;
-}
-
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li {
-  margin: 0 !important;
-}
-
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li + li {
-  margin-top: 8px !important;
-}
-
-/* TOC item */
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a {
-  display: block;
-  padding: 9px 12px;
-  border-radius: 12px;
-  line-height: 1.5;
-  text-decoration: none;
-
-  background: rgba(255, 255, 255, var(--toc-item-opacity)) !important;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a:hover,
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a[aria-current='true'],
-body:not(:has(.sakura-home)) aside:has(a[href^="#"]) .active {
-  background: rgba(255, 255, 255, var(--toc-item-active-opacity)) !important;
-  transform: translateX(2px);
 }
 
 /* =========================

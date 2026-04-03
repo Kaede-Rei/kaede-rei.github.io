@@ -10,8 +10,6 @@ top: 1
 
 <div align="center">
 
-# Renesas-DM-Arm 激光除草 (RA6M5)
-
 一个面向 **Renesas RA6M5** 的六轴机械臂嵌入式控制工程，覆盖了从**通信接入**、**运动学求解**、**电机控制**到**任务状态机编排**的完整主链路。
 
 ![MCU](https://img.shields.io/badge/MCU-RA6M5-blue)
