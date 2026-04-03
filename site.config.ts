@@ -3,7 +3,7 @@ import { defineSiteConfig } from 'valaxy'
 export default defineSiteConfig({
   url: 'https://kaede-rei.github.io/',
   lang: 'zh-CN',
-  title: 'Kaede Rei',
+  title: 'Kaede Rei の 小 窝',
   favicon: '/favicon.svg',
 
   author: {

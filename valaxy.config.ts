@@ -90,7 +90,7 @@ export default defineValaxyConfig({
     },
 
     postList: {
-        text: 'Notes',
+        text: 'Notes Lists',
         isImageReversed: true,
         defaultImage: [
             '/images/covers/ansy.png',

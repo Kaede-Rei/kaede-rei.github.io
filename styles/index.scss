@@ -11,10 +11,13 @@ body {
   color: #5c533e;
 }
 
-/* 首页完全不动 */
+/* 首页 */
 body:has(video) main {
+  width: 100% !important;
+  max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
+
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
