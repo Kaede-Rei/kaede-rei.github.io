@@ -119,20 +119,6 @@ export default defineValaxyConfig({
                 ],
             },
         },
-        home: {
-            layout: 'triple-columns',
-            sidebar: {
-                left: [
-                    'SakuraSidebarSiteInfo',
-                    'SakuraSidebarCategories',
-                    'SakuraSidebarTags',
-                    'SakuraSidebarLinks',
-                ],
-                right: [
-                    'SakuraSidebarLatestPosts',
-                ],
-            },
-        },
     },
 
     tags: {

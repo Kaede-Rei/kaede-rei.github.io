@@ -1,31 +1,84 @@
 @use 'valaxy-theme-sakura/styles/fonts.scss' as *;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* 首页正文区宽度 */
+  --home-content-width: 72vw;
+
+  /* 非首页正文区宽度 */
+  --page-width: 80vw;
+
+  /* TOC 跟随顶部距离 */
+  --toc-top: 96px;
+}
+
 #tsparticles canvas {
   z-index: -1 !important;
 }
 
-/* 基础 */
 html,
 body {
   background: transparent;
   color: #5c533e;
+  overflow-x: hidden;
 }
 
-/* 首页 */
-body:has(video) main {
+/* =========================
+ * 首页
+ * ========================= */
+body:has(.sakura-home) main {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
-
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
 }
 
-/* 非首页：铺背景图 */
-body:not(:has(video)) {
+/* 跳出主题原本列宽限制 */
+body:has(.sakura-home) .sakura-home-layout {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+/* 首页视频下方直属内容统一按百分比居中 */
+body:has(.sakura-home) .sakura-home-layout > *,
+body:has(.sakura-home) .sakura-pagination {
+  width: var(--home-content-width) !important;
+  max-width: var(--home-content-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 防止内部组件自己再缩一次 */
+body:has(.sakura-home) .sakura-home-layout > * > *,
+body:has(.sakura-home) .sakura-home-layout .card,
+body:has(.sakura-home) .sakura-home-layout [class*='card'],
+body:has(.sakura-home) .sakura-home-layout [class*='post-list'],
+body:has(.sakura-home) .sakura-home-layout [class*='notice'],
+body:has(.sakura-home) .sakura-home-layout [class*='pinned'] {
+  max-width: 100%;
+}
+
+/* =========================
+ * 非首页：背景图 + 正文版心
+ * ========================= */
+body:not(:has(.sakura-home)) {
   position: relative;
   background-image: url('/images/bg/site-bg.png');
   background-size: cover;
@@ -34,8 +87,7 @@ body:not(:has(video)) {
   background-attachment: scroll;
 }
 
-/* 非首页：加背景遮罩，避免遮挡内容 */
-body:not(:has(video))::before {
+body:not(:has(.sakura-home))::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -44,9 +96,9 @@ body:not(:has(video))::before {
   z-index: -1;
 }
 
-/* 非首页：main 只负责布局，不再做白色大卡片 */
-body:not(:has(video)) main {
-  max-width: min(1720px, calc(100vw - 40px)) !important;
+body:not(:has(.sakura-home)) main {
+  width: var(--page-width) !important;
+  max-width: var(--page-width) !important;
   margin: 88px auto 24px !important;
   padding: 24px 28px !important;
 
@@ -56,109 +108,207 @@ body:not(:has(video)) main {
   box-shadow: none !important;
 }
 
-/* 标题避让导航栏 */
-body:not(:has(video)) h1,
-body:not(:has(video)) h2,
-body:not(:has(video)) h3,
-body:not(:has(video)) h4,
-body:not(:has(video)) h5,
-body:not(:has(video)) h6 {
+/* 标题避让导航 */
+body:not(:has(.sakura-home)) h1,
+body:not(:has(.sakura-home)) h2,
+body:not(:has(.sakura-home)) h3,
+body:not(:has(.sakura-home)) h4,
+body:not(:has(.sakura-home)) h5,
+body:not(:has(.sakura-home)) h6 {
   scroll-margin-top: 96px;
   color: #2f3440;
 }
 
 /* 正文主体透明 */
-body:not(:has(video)) article,
-body:not(:has(video)) .page,
-body:not(:has(video)) .post,
-body:not(:has(video)) [class*='page'],
-body:not(:has(video)) [class*='post'] {
+body:not(:has(.sakura-home)) article,
+body:not(:has(.sakura-home)) .page,
+body:not(:has(.sakura-home)) .post,
+body:not(:has(.sakura-home)) [class*='page'],
+body:not(:has(.sakura-home)) [class*='post'] {
   background: transparent !important;
   box-shadow: none !important;
   padding: 0 !important;
 }
 
-/* 只给真正承载内容的盒子一点点透明底 */
-body:not(:has(video)) .card,
-body:not(:has(video)) [class*='card'],
-body:not(:has(video)) blockquote,
-body:not(:has(video)) table,
-body:not(:has(video)) pre,
-body:not(:has(video)) ul,
-body:not(:has(video)) ol {
+/* 内容盒子 */
+body:not(:has(.sakura-home)) .card,
+body:not(:has(.sakura-home)) [class*='card'],
+body:not(:has(.sakura-home)) blockquote,
+body:not(:has(.sakura-home)) table,
+body:not(:has(.sakura-home)) pre,
+body:not(:has(.sakura-home)) ul,
+body:not(:has(.sakura-home)) ol {
   background: rgba(255, 255, 255, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 18px;
   box-shadow: none !important;
 }
 
-/* 列表不要整块太厚 */
-body:not(:has(video)) ul,
-body:not(:has(video)) ol {
+body:not(:has(.sakura-home)) ul,
+body:not(:has(.sakura-home)) ol {
   padding: 16px 20px !important;
 }
 
-/* 代码块稍微深一点，不然看不清 */
-body:not(:has(video)) pre {
+body:not(:has(.sakura-home)) pre {
   background: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* 页脚透明 */
-body:not(:has(video)) footer {
+body:not(:has(.sakura-home)) footer {
   background: transparent !important;
 }
 
-/* 最外层目录区域：透明，不要原生白色厚底 */
-body:not(:has(video)) aside:has(a[href^="#"]) {
+/* =========================
+ * 内页 TOC：圆角卡片 + sticky 跟随滚动
+ * ========================= */
+
+/* TOC 外层：不要原生白底 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) {
+  position: sticky;
+  top: var(--toc-top);
+  align-self: start;
+
   background: transparent !important;
-  box-shadow: none !important;
   border: none !important;
+  box-shadow: none !important;
   padding: 0 !important;
 }
 
-/* 真正作为目录卡片的内层 */
-body:not(:has(video)) aside:has(a[href^="#"]) > div {
+/* 真正目录卡片 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) > div {
   margin-left: 24px;
   padding: 18px 20px !important;
 
-  background: rgba(255, 255, 255, 0.32) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.38) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 22px !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
 }
 
-/* 标题区不要额外白底 */
-body:not(:has(video)) aside:has(a[href^="#"]) h2,
-body:not(:has(video)) aside:has(a[href^="#"]) h3 {
+/* TOC 标题 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) h2,
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) h3 {
   margin-top: 0 !important;
   margin-bottom: 12px !important;
   background: transparent !important;
 }
 
-/* 列表本体透明 */
-body:not(:has(video)) aside:has(a[href^="#"]) ul,
-body:not(:has(video)) aside:has(a[href^="#"]) ol {
+/* TOC 列表本体 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ul,
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ol {
   margin: 0 !important;
-  padding-left: 1rem !important;
+  padding: 0 !important;
   background: transparent !important;
+  list-style: none !important;
 }
 
-/* 每一项之间留呼吸感 */
-body:not(:has(video)) aside:has(a[href^="#"]) li + li {
-  margin-top: 8px;
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li {
+  margin: 0 !important;
 }
 
-/* 目录项自己的“白色小底”压淡 */
-body:not(:has(video)) aside:has(a[href^="#"]) a {
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li + li {
+  margin-top: 8px !important;
+}
+
+/* TOC 链接项 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a {
   display: block;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.2) !important;
+  line-height: 1.5;
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.22) !important;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
-/* 当前激活项稍微突出，但不要太白 */
-body:not(:has(video)) aside:has(a[href^="#"]) a[aria-current='true'],
-body:not(:has(video)) aside:has(a[href^="#"]) .active,
-body:not(:has(video)) aside:has(a[href^="#"]) a:hover {
-  background: rgba(255, 255, 255, 0.32) !important;
+/* hover / 当前激活 */
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a:hover,
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a[aria-current='true'],
+body:not(:has(.sakura-home)) aside:has(a[href^="#"]) .active {
+  background: rgba(255, 255, 255, 0.42) !important;
+  transform: translateX(2px);
+}
+
+/* =========================
+ * About 页面
+ * ========================= */
+
+/* badge 容器版 */
+.about-page .about-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0 18px;
+}
+
+.about-page .about-badges img {
+  display: inline-block !important;
+  width: auto !important;
+  height: 28px !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+/* 如果你 markdown 里还是一行一个 badge，也尽量救一下 */
+.about-page p:has(> img[src*='img.shields.io']) {
+  display: inline-flex !important;
+  align-items: center;
+  margin: 0 10px 10px 0 !important;
+}
+
+.about-page p:has(> img[src*='img.shields.io']) img {
+  display: block !important;
+  width: auto !important;
+  height: 28px !important;
+  max-width: none !important;
+}
+
+.about-page .about-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.about-page .about-stats a {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.about-page .about-stats img {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  border-radius: 16px;
+}
+
+/* 第二张：常用语言单独缩一点 */
+.about-page .about-stats a:nth-child(2) img {
+  width: 82%;
+  max-width: 480px;
+}
+
+.about-page .about-graph img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+@media (max-width: 1100px) {
+  .about-page .about-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page .about-stats a:nth-child(2) img {
+    width: 100%;
+    max-width: 720px;
+  }
 }
