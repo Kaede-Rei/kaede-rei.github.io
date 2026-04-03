@@ -16,11 +16,17 @@ jobs:
         with:
           node-version: 20
 
-      - run: corepack enable
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: Enable Corepack
+        run: corepack enable
 
-      - uses: peaceiris/actions-gh-pages@v3
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Valaxy Blog
+        run: pnpm build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
