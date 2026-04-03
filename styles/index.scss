@@ -15,6 +15,20 @@
 
   /* TOC 跟随顶部距离 */
   --toc-top: 96px;
+
+  /* ===== 全局透明度 ===== */
+  --bg-mask-opacity: 0.72;
+  --panel-opacity: 0.50;
+  --panel-border-opacity: 0.20;
+  --code-opacity: 0.20;
+
+  --toc-card-opacity: 0.38;
+  --toc-card-border-opacity: 0.22;
+  --toc-item-opacity: 0.22;
+  --toc-item-active-opacity: 0.42;
+
+  /* ===== 背景图适应控制 ===== */
+  --bg-image-width: 100%;
 }
 
 #tsparticles canvas {
@@ -78,22 +92,36 @@ body:has(.sakura-home) .sakura-home-layout [class*='pinned'] {
 /* =========================
  * 非首页：背景图 + 正文版心
  * ========================= */
+
+/* 不再把 cover 直接挂在 body 上，否则长页面会被无限放大 */
 body:not(:has(.sakura-home)) {
   position: relative;
+  background: transparent;
+}
+
+/* 背景图层：跟随页面滚动 */
+body:not(:has(.sakura-home))::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+
   background-image: url('/images/bg/site-bg.png');
-  background-size: cover;
+  background-size: var(--bg-image-width) auto;
   background-position: center top;
   background-repeat: no-repeat;
   background-attachment: scroll;
 }
 
-body:not(:has(.sakura-home))::before {
+/* 半透明遮罩层 */
+body:not(:has(.sakura-home))::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(255, 255, 255, 0.85);
-  pointer-events: none;
   z-index: -1;
+  pointer-events: none;
+  background: rgba(255, 255, 255, var(--bg-mask-opacity));
 }
 
 body:not(:has(.sakura-home)) main {
@@ -103,7 +131,7 @@ body:not(:has(.sakura-home)) main {
   padding: 24px 28px !important;
 
   background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, var(--panel-border-opacity));
   border-radius: 24px;
   box-shadow: none !important;
 }
@@ -130,6 +158,20 @@ body:not(:has(.sakura-home)) [class*='post'] {
   padding: 0 !important;
 }
 
+/* 放开正文宽度，避免整个内容只缩在中间 */
+body:not(:has(.sakura-home)) article,
+body:not(:has(.sakura-home)) .page,
+body:not(:has(.sakura-home)) .post,
+body:not(:has(.sakura-home)) article .prose,
+body:not(:has(.sakura-home)) .page .prose,
+body:not(:has(.sakura-home)) .post .prose,
+body:not(:has(.sakura-home)) article .markdown-body,
+body:not(:has(.sakura-home)) .page .markdown-body,
+body:not(:has(.sakura-home)) .post .markdown-body {
+  width: 100% !important;
+  max-width: none !important;
+}
+
 /* 内容盒子 */
 body:not(:has(.sakura-home)) .card,
 body:not(:has(.sakura-home)) [class*='card'],
@@ -138,8 +180,8 @@ body:not(:has(.sakura-home)) table,
 body:not(:has(.sakura-home)) pre,
 body:not(:has(.sakura-home)) ul,
 body:not(:has(.sakura-home)) ol {
-  background: rgba(255, 255, 255, 0.5) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, var(--panel-opacity)) !important;
+  border: 1px solid rgba(255, 255, 255, var(--panel-border-opacity));
   border-radius: 18px;
   box-shadow: none !important;
 }
@@ -150,7 +192,7 @@ body:not(:has(.sakura-home)) ol {
 }
 
 body:not(:has(.sakura-home)) pre {
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, var(--code-opacity)) !important;
 }
 
 body:not(:has(.sakura-home)) footer {
@@ -161,11 +203,26 @@ body:not(:has(.sakura-home)) footer {
  * 内页 TOC：圆角卡片 + sticky 跟随滚动
  * ========================= */
 
-/* TOC 外层：不要原生白底 */
+/* 关键：把可能压死 sticky 的祖先 overflow 放开 */
+body:not(:has(.sakura-home)) main,
+body:not(:has(.sakura-home)) article,
+body:not(:has(.sakura-home)) .page,
+body:not(:has(.sakura-home)) .post,
+body:not(:has(.sakura-home)) .prose,
+body:not(:has(.sakura-home)) .markdown-body,
+body:not(:has(.sakura-home)) [class*='layout'],
+body:not(:has(.sakura-home)) [class*='content'] {
+  overflow: visible !important;
+}
+
+/* sticky 挂在 aside 本体 */
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) {
-  position: sticky;
-  top: var(--toc-top);
-  align-self: start;
+  position: sticky !important;
+  top: var(--toc-top) !important;
+  align-self: start !important;
+  height: fit-content !important;
+  max-height: calc(100vh - var(--toc-top) - 24px) !important;
+  z-index: 5;
 
   background: transparent !important;
   border: none !important;
@@ -178,11 +235,14 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) > div {
   margin-left: 24px;
   padding: 18px 20px !important;
 
-  background: rgba(255, 255, 255, 0.38) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, var(--toc-card-opacity)) !important;
+  border: 1px solid rgba(255, 255, 255, var(--toc-card-border-opacity));
   border-radius: 22px !important;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(8px);
+
+  max-height: calc(100vh - var(--toc-top) - 24px);
+  overflow: auto !important;
 }
 
 /* TOC 标题 */
@@ -193,13 +253,13 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) h3 {
   background: transparent !important;
 }
 
-/* TOC 列表本体 */
+/* TOC 列表 */
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ul,
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) ol {
   margin: 0 !important;
   padding: 0 !important;
-  background: transparent !important;
   list-style: none !important;
+  background: transparent !important;
 }
 
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li {
@@ -210,7 +270,7 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) li + li {
   margin-top: 8px !important;
 }
 
-/* TOC 链接项 */
+/* TOC item */
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a {
   display: block;
   padding: 9px 12px;
@@ -218,26 +278,23 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a {
   line-height: 1.5;
   text-decoration: none;
 
-  background: rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, var(--toc-item-opacity)) !important;
   transition:
     background 0.2s ease,
     transform 0.2s ease,
     color 0.2s ease;
 }
 
-/* hover / 当前激活 */
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a:hover,
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) a[aria-current='true'],
 body:not(:has(.sakura-home)) aside:has(a[href^="#"]) .active {
-  background: rgba(255, 255, 255, 0.42) !important;
+  background: rgba(255, 255, 255, var(--toc-item-active-opacity)) !important;
   transform: translateX(2px);
 }
 
 /* =========================
  * About 页面
  * ========================= */
-
-/* badge 容器版 */
 .about-page .about-badges {
   display: flex;
   flex-wrap: wrap;
@@ -254,7 +311,6 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) .active {
   margin: 0 !important;
 }
 
-/* 如果你 markdown 里还是一行一个 badge，也尽量救一下 */
 .about-page p:has(> img[src*='img.shields.io']) {
   display: inline-flex !important;
   align-items: center;
@@ -289,7 +345,6 @@ body:not(:has(.sakura-home)) aside:has(a[href^="#"]) .active {
   border-radius: 16px;
 }
 
-/* 第二张：常用语言单独缩一点 */
 .about-page .about-stats a:nth-child(2) img {
   width: 82%;
   max-width: 480px;

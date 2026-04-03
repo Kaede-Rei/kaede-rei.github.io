@@ -104,9 +104,9 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
-    '/posts/hello-valaxy': RouteRecordInfo<
-      '/posts/hello-valaxy',
-      '/posts/hello-valaxy',
+    '/posts/project/Renesas': RouteRecordInfo<
+      '/posts/project/Renesas',
+      '/posts/project/Renesas',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -197,9 +197,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'pages/posts/hello-valaxy.md': {
+    'pages/posts/project/Renesas.md': {
       routes:
-        | '/posts/hello-valaxy'
+        | '/posts/project/Renesas'
       views:
         | never
     }
