@@ -6,7 +6,7 @@ export default defineValaxyConfig({
 
   themeConfig: {
     ui: {
-        primary: '#ff4e6a',
+        primary: '#ffaf4ef1',
     },
 
     hero: {
@@ -15,7 +15,7 @@ export default defineValaxyConfig({
         urls: [
           '/videos/hero/ansy.mp4',
         ],
-        randomUrls: true,
+        randomUrls: false,
         style: 'dim',
         fixedImg: true,
         typewriter: true,
@@ -28,15 +28,62 @@ export default defineValaxyConfig({
         message: '<b>这里是 Kaede Rei 的技术博客与学习记录。</b>',
     },
 
-    navbar: [
-        { text: '首页', link: '/' },
-        { text: '分类', link: '/categories' },
-        { text: '归档', link: '/archives' },
-        { text: '标签', link: '/tags' },
-        { text: '学习路径', link: '/learning-path' },
-        { text: '关于', link: '/about' },
-        { text: '友情链接', link: '/links' },
+    pinnedPost: {
+        text: 'Start Here',
+        entries: [
+        {
+            title: 'About Me',
+            desc: '关于我的介绍',
+            link: '/about',
+            img: '/images/pinned/about.png',
+        },
+        {
+            title: '学习路径',
+            desc: 'AgroTech 协会培养路线',
+            link: '/learning-path',
+            img: '/images/pinned/path.jpg',
+        },
+        {
+            title: 'GitHub',
+            desc: '我的 GitHub 仓库',
+            link: 'https://github.com/Kaede-Rei',
+            img: '/images/pinned/github.png',
+        },
     ],
+    },
+
+    navbar: [
+        { text: '首页', link: '/', icon: 'i-ri-home-4-line' },
+        { text: '分类', link: '/categories', icon: 'i-ri-folder-2-line' },
+        { text: '归档', link: '/archives', icon: 'i-ri-archive-line' },
+        { text: '标签', link: '/tags', icon: 'i-ri-price-tag-3-line' },
+        {
+            text: '学习路径',
+            link: '/learning-path',
+            icon: 'i-ri-road-map-line',
+            items: [
+                { text: '电控组', link: '/learning-path/electrical-control', icon: 'i-ri-cpu-line' },
+                { text: '机械臂运控组', link: '/learning-path/arm-motion-control', icon: 'i-ri-robot-2-line' },
+            ],
+        },
+        { text: '关于', link: '/about', icon: 'i-ri-user-3-line' },
+        { text: '友情链接', link: '/links', icon: 'i-ri-links-line' },
+    ],
+
+    postList: {
+        text: 'Notes',
+        isImageReversed: true,
+        defaultImage: [
+            '/images/covers/ansy.png',
+        ],
+        responsive: {
+            '2xl': 3,
+            xl: 3,
+            lg: 2,
+            md: 2,
+            sm: 1,
+        },
+    },
 
     navbarOptions: {
         title: ['Kaede', 'Rei'],

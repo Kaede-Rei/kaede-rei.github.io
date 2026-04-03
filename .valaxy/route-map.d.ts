@@ -83,6 +83,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/learning-path/arm-motion-control/': RouteRecordInfo<
+      '/learning-path/arm-motion-control/',
+      '/learning-path/arm-motion-control',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/electrical-control/': RouteRecordInfo<
+      '/learning-path/electrical-control/',
+      '/learning-path/electrical-control',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/links/': RouteRecordInfo<
       '/links/',
       '/links',
@@ -169,6 +183,18 @@ declare module 'vue-router/auto-routes' {
     'pages/learning-path/index.md': {
       routes:
         | '/learning-path/'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/index.md': {
+      routes:
+        | '/learning-path/arm-motion-control/'
+      views:
+        | never
+    }
+    'pages/learning-path/electrical-control/index.md': {
+      routes:
+        | '/learning-path/electrical-control/'
       views:
         | never
     }
