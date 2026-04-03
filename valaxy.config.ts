@@ -31,25 +31,36 @@ export default defineValaxyConfig({
     pinnedPost: {
         text: 'Start Here',
         entries: [
-        {
-            title: 'About Me',
-            desc: '关于我的介绍',
-            link: '/about',
-            img: '/images/pinned/about.png',
+            {
+                title: 'About Me',
+                desc: '关于我的介绍',
+                link: '/about',
+                img: '/images/pinned/about.png',
+            },
+            {
+                title: '学习路径',
+                desc: 'AgroTech 协会培养路线',
+                link: '/learning-path',
+                img: '/images/pinned/path.jpg',
+            },
+            {
+                title: 'GitHub',
+                desc: '我的 GitHub 仓库',
+                link: 'https://github.com/Kaede-Rei',
+                img: '/images/pinned/github.png',
+            },
+        ],
+    },
+
+    pagination: {
+        animation: true,
+        infiniteScrollOptions: {
+            preload: true,
         },
-        {
-            title: '学习路径',
-            desc: 'AgroTech 协会培养路线',
-            link: '/learning-path',
-            img: '/images/pinned/path.jpg',
-        },
-        {
-            title: 'GitHub',
-            desc: '我的 GitHub 仓库',
-            link: 'https://github.com/Kaede-Rei',
-            img: '/images/pinned/github.png',
-        },
-    ],
+    },
+
+    postFooter: {
+        navigationMerge: true,
     },
 
     navbar: [
@@ -70,6 +81,14 @@ export default defineValaxyConfig({
         { text: '友情链接', link: '/links', icon: 'i-ri-links-line' },
     ],
 
+    navbarOptions: {
+        title: ['Kaede', 'Rei'],
+        subTitle: 'Embedded / Arm / Agri Robot',
+        invert: ['home'],
+        autoHide: ['home'],
+        showMarker: false,
+    },
+
     postList: {
         text: 'Notes',
         isImageReversed: true,
@@ -85,43 +104,35 @@ export default defineValaxyConfig({
         },
     },
 
-    navbarOptions: {
-        title: ['Kaede', 'Rei'],
-        subTitle: 'Embedded / Arm / Agri Robot',
-        invert: ['home'],
-        autoHide: ['home'],
-        showMarker: false,
-    },
-
     layout: {
-      general: {
-        layout: 'triple-columns',
-        sidebar: {
-          left: [
-            'SakuraSidebarSiteInfo',
-            'SakuraSidebarCategories',
-            'SakuraSidebarTags',
-            'SakuraSidebarLinks',
-          ],
-          right: [
-            'SakuraSidebarLatestPosts',
-          ],
+        general: {
+            layout: 'triple-columns',
+            sidebar: {
+                left: [
+                    'SakuraSidebarSiteInfo',
+                    'SakuraSidebarCategories',
+                    'SakuraSidebarTags',
+                    'SakuraSidebarLinks',
+                ],
+                right: [
+                    'SakuraSidebarLatestPosts',
+                ],
+            },
         },
-      },
-      home: {
-        layout: 'triple-columns',
-        sidebar: {
-          left: [
-            'SakuraSidebarSiteInfo',
-            'SakuraSidebarCategories',
-            'SakuraSidebarTags',
-            'SakuraSidebarLinks',
-          ],
-          right: [
-            'SakuraSidebarLatestPosts',
-          ],
+        home: {
+            layout: 'triple-columns',
+            sidebar: {
+                left: [
+                    'SakuraSidebarSiteInfo',
+                    'SakuraSidebarCategories',
+                    'SakuraSidebarTags',
+                    'SakuraSidebarLinks',
+                ],
+                right: [
+                    'SakuraSidebarLatestPosts',
+                ],
+            },
         },
-      },
     },
 
     tags: {
@@ -133,7 +144,7 @@ export default defineValaxyConfig({
     scrollLock: false,
 
     footer: {
-      since: 2026,
+        since: 2026,
     },
   },
 })

@@ -1,54 +1,5 @@
-// html,
-// body {
-//   background: #f6f6f8;
-//   min-height: 100%;
-// }
+@use 'valaxy-theme-sakura/styles/fonts.scss' as *;
 
-// /* 全站背景图：覆盖所有页面，但不使用 fixed，避免卡顿 */
-// body {
-//   background-image: url('/images/bg/site-bg.png');
-//   background-size: cover;
-//   background-position: center top;
-//   background-repeat: no-repeat;
-// }
-
-// /* 首页以外的主内容容器：半透明整块，不要拆成很多小白块 */
-// main {
-//   background: rgba(255, 255, 255, 0.72);
-//   border-radius: 20px;
-//   margin: 1rem auto 2rem;
-//   padding: 1.25rem;
-//   max-width: 1440px;
-//   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-// }
-
-// /* 普通页面里的文章/页面主体 */
-// article,
-// .page,
-// .post,
-// .categories,
-// .tags,
-// .archives {
-//   background: transparent !important;
-//   box-shadow: none !important;
-// }
-
-// /* 只给真正需要的内容块一点点白底 */
-// .card,
-// [class*='card'] {
-//   background: rgba(255, 255, 255, 0.82) !important;
-//   border-radius: 16px;
-//   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-// }
-
-// /* 页脚透明，让背景延续，不要截断 */
-// footer {
-//   background: transparent !important;
-// }
-
-// /* 分类/标签/归档页面标题区更自然一点 */
-// .page-header,
-// [class*='page-header'] {
-//   background: rgba(255, 255, 255, 0.76) !important;
-//   border-radius: 20px;
-// }
+#tsparticles canvas {
+  z-index: -1 !important;
+}
