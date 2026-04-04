@@ -57,6 +57,27 @@ body {
   overflow-x: hidden;
 }
 
+/* 性能优化：减少全局重绘与离屏元素开销 */
+.sakura-card {
+  will-change: auto !important;
+  filter: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.sakura-card:hover {
+  filter: none !important;
+}
+
+.sakura-post-list .post-list-container,
+.sakura-post-list .post-list-section {
+  transition: none !important;
+}
+
+.sakura-post-list .sakura-post-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 250px;
+}
+
 /* =========================
  * 首页
  * ========================= */
