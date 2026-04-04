@@ -17,7 +17,12 @@
   --panel-border-opacity: 0;
   --code-opacity: 0;
 
-  /* 文章页彻底透明 */
+  /* 阅读面板 */
+  --reading-panel-opacity: 0.5;
+  --reading-panel-border-opacity: 0.2;
+  --reading-code-opacity: 0.2;
+
+  /* 文章页额外变量 */
   --post-panel-opacity: 0.5;
   --post-panel-border-opacity: 0.2;
   --post-code-opacity: 0.2;

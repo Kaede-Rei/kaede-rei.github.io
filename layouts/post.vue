@@ -34,7 +34,6 @@ const article: Article = {
 
 useSchemaOrg(defineArticle(article))
 
-const routeRef = useRoute()
 const isTocOpen = ref(false)
 
 function closeToc() {
@@ -62,7 +61,7 @@ function onDrawerClick(event: MouseEvent) {
   }
 }
 
-watch(() => routeRef.fullPath, () => {
+watch(() => route.fullPath, () => {
   closeToc()
 })
 
@@ -85,39 +84,23 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <SakuraPage class="sakura-post sakura-post-drawer-layout">
-    <template #header>
-      <SakuraPostHeader :fm="frontmatter" />
-    </template>
+  <SakuraPost class="sakura-post-drawer-layout">
+    <RouterView v-slot="{ Component }">
+      <component :is="Component">
+        <template #main-content-after>
+          <SakuraSponsor v-if="showSponsor" />
+          <ValaxyCopyright
+            v-if="frontmatter.copyright || siteConfig.license.enabled"
+            :url="url"
+          />
+        </template>
 
-    <template v-if="$slots.left" #left>
-      <slot name="left" />
-    </template>
-
-    <template #content>
-      <slot name="content">
-        <RouterView v-slot="{ Component }">
-          <component :is="Component">
-            <template #main-content-after>
-              <SakuraSponsor v-if="showSponsor" />
-              <ValaxyCopyright
-                v-if="frontmatter.copyright || siteConfig.license.enabled"
-                :url="url"
-              />
-            </template>
-
-            <template #footer>
-              <SakuraPostFooter />
-            </template>
-          </component>
-        </RouterView>
-      </slot>
-    </template>
-
-    <template #right>
-      <slot name="right" />
-    </template>
-  </SakuraPage>
+        <template #footer>
+          <SakuraPostFooter />
+        </template>
+      </component>
+    </RouterView>
+  </SakuraPost>
 
   <Teleport to="body">
     <button
