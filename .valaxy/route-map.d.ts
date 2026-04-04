@@ -111,6 +111,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/learning-path/electrical-control/3-2': RouteRecordInfo<
+      '/learning-path/electrical-control/3-2',
+      '/learning-path/electrical-control/3-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/learning-path/electrical-control/3-3': RouteRecordInfo<
       '/learning-path/electrical-control/3-3',
       '/learning-path/electrical-control/3-3',
@@ -118,9 +125,23 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/learning-path/electrical-control/3-4': RouteRecordInfo<
+      '/learning-path/electrical-control/3-4',
+      '/learning-path/electrical-control/3-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/learning-path/electrical-control/3-5': RouteRecordInfo<
       '/learning-path/electrical-control/3-5',
       '/learning-path/electrical-control/3-5',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/electrical-control/4-1': RouteRecordInfo<
+      '/learning-path/electrical-control/4-1',
+      '/learning-path/electrical-control/4-1',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -135,6 +156,13 @@ declare module 'vue-router/auto-routes' {
     '/learning-path/electrical-control/4-3': RouteRecordInfo<
       '/learning-path/electrical-control/4-3',
       '/learning-path/electrical-control/4-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/electrical-control/4-4': RouteRecordInfo<
+      '/learning-path/electrical-control/4-4',
+      '/learning-path/electrical-control/4-4',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -266,15 +294,33 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'pages/learning-path/electrical-control/3-2.md': {
+      routes:
+        | '/learning-path/electrical-control/3-2'
+      views:
+        | never
+    }
     'pages/learning-path/electrical-control/3-3.md': {
       routes:
         | '/learning-path/electrical-control/3-3'
       views:
         | never
     }
+    'pages/learning-path/electrical-control/3-4.md': {
+      routes:
+        | '/learning-path/electrical-control/3-4'
+      views:
+        | never
+    }
     'pages/learning-path/electrical-control/3-5.md': {
       routes:
         | '/learning-path/electrical-control/3-5'
+      views:
+        | never
+    }
+    'pages/learning-path/electrical-control/4-1.md': {
+      routes:
+        | '/learning-path/electrical-control/4-1'
       views:
         | never
     }
@@ -287,6 +333,12 @@ declare module 'vue-router/auto-routes' {
     'pages/learning-path/electrical-control/4-3.md': {
       routes:
         | '/learning-path/electrical-control/4-3'
+      views:
+        | never
+    }
+    'pages/learning-path/electrical-control/4-4.md': {
+      routes:
+        | '/learning-path/electrical-control/4-4'
       views:
         | never
     }

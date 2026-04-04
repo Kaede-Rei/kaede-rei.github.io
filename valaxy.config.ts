@@ -16,6 +16,16 @@ export default defineValaxyConfig({
         },
       },
 
+      pinnedPost: {
+        image: {
+          overlay: true,
+          overlayColor: 'rgba(0, 0, 0, 0.72)',
+          overlayOpacityInitial: 0.12,
+          overlayOpacity: 0.46,
+          transitionDuration: '0.35s',
+        },
+      },
+
       postList: {
         responsive: {
           '2xl': 1,

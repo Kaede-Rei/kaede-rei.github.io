@@ -126,6 +126,30 @@ body {
   max-width: 100%;
 }
 
+/* Start Here 卡片：悬浮标题与描述可读性增强 */
+.has-home-layout .sakura-pinned-post .sakura-image-card::before,
+.has-home-layout .sakura-pinned-post .sakura-image-card::after {
+  pointer-events: none;
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.3)) !important;
+}
+
+.has-home-layout .sakura-pinned-post .sakura-image-card::before {
+  height: 44px;
+  top: 28px;
+}
+
+.has-home-layout .sakura-pinned-post .sakura-image-card::after {
+  height: 34px;
+  top: 72px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 /* =========================
  * 非首页主容器
  * ========================= */
@@ -433,6 +457,64 @@ pre {
 .has-post-layout .prose div[class*='language-']::before {
   background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
   border-bottom-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
+}
+
+/* 代码块展开/收起 */
+.markdown-body div[class*='language-'] > button.code-block-unfold-btn,
+.prose div[class*='language-'] > button.code-block-unfold-btn {
+  display: none !important;
+}
+
+.markdown-body div[class*='language-'].is-code-collapsible pre,
+.prose div[class*='language-'].is-code-collapsible pre {
+  transition: max-height 0.28s ease;
+}
+
+.markdown-body div[class*='language-'].is-code-collapsed pre,
+.prose div[class*='language-'].is-code-collapsed pre {
+  position: relative;
+}
+
+.markdown-body div[class*='language-'].is-code-collapsed pre::after,
+.prose div[class*='language-'].is-code-collapsed pre::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 54px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(246, 242, 235, 0.95));
+}
+
+.markdown-body div[class*='language-'] > button.code-collapse-toggle,
+.prose div[class*='language-'] > button.code-collapse-toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 7;
+  border: 1px solid rgba(120, 94, 54, 0.22);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #3f3b35;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  display: none;
+}
+
+.markdown-body div[class*='language-'].is-code-collapsible > button.code-collapse-toggle,
+.prose div[class*='language-'].is-code-collapsible > button.code-collapse-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+
+.markdown-body div[class*='language-'] > button.code-collapse-toggle:hover,
+.prose div[class*='language-'] > button.code-collapse-toggle:hover {
+  background: #fff;
+  border-color: rgba(120, 94, 54, 0.35);
 }
 
 footer {
