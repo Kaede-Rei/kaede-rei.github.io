@@ -55,7 +55,6 @@ function onDrawerClick(event: MouseEvent) {
   if (!target)
     return
 
-  // 点击目录里的锚点时，先让浏览器完成跳转，再关闭抽屉
   if (target.closest('a')) {
     requestAnimationFrame(() => {
       closeToc()
@@ -75,7 +74,7 @@ watch(isTocOpen, (open) => {
 })
 
 onMounted(() => {
-  window.addEventListener('keydown', onKeydown)
+  window.addEventListener('keydown', onKeydown, { passive: true })
 })
 
 onUnmounted(() => {
@@ -115,7 +114,6 @@ onUnmounted(() => {
       </slot>
     </template>
 
-    <!-- 不再把目录内容真正塞进右栏 -->
     <template #right>
       <slot name="right" />
     </template>
@@ -173,7 +171,6 @@ onUnmounted(() => {
     padding-block: 24px;
   }
 
-  /* 保留正文占满中间列，但不再把抽屉放进右栏 */
   :deep(.sakura-triple-columns) {
     grid-template-columns: 0 minmax(0, 1fr) 0 !important;
     gap: 0 !important;
@@ -195,10 +192,9 @@ onUnmounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
   padding: 0.5rem 0.85rem;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.92);
   color: #2f3440;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 
@@ -206,7 +202,7 @@ onUnmounted(() => {
   position: fixed;
   inset: 0;
   z-index: 1280;
-  background: rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 .toc-drawer {
@@ -216,13 +212,14 @@ onUnmounted(() => {
   z-index: 1290;
   width: min(360px, 86vw);
   height: 100dvh;
-  transform: translateX(102%);
-  transition: transform 0.28s ease;
+  transform: translate3d(102%, 0, 0);
+  transition: transform 0.22s ease;
+  will-change: transform;
   pointer-events: none;
 }
 
 .toc-drawer.open {
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
   pointer-events: auto;
 }
 
@@ -230,11 +227,10 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: rgba(255, 255, 255, 0.96);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.98);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 20px 0 0 20px;
-  box-shadow: -12px 0 30px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(12px);
+  box-shadow: -10px 0 24px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -285,7 +281,6 @@ onUnmounted(() => {
   max-height: none !important;
 }
 
-/* 目录标题“文章目录”与卡片边缘保持间距，避免贴边 */
 .toc-drawer :deep(.sakura-aside > h2) {
   margin: 0;
   padding: 10px 12px 8px;
@@ -298,7 +293,7 @@ onUnmounted(() => {
 
 .toc-overlay-fade-enter-active,
 .toc-overlay-fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.18s ease;
 }
 
 .toc-overlay-fade-enter-from,

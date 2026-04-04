@@ -7,33 +7,23 @@
 }
 
 :root {
-  /* 首页正文区宽度：控制首页主要内容容器宽度（相对视口宽度） */
   --home-content-width: 72vw;
+  --page-width: 92vw;
 
-  /* 非首页正文区宽度：用于文章页/归档页等主容器宽度 */
-  --page-width: 85vw;
-
-  /* ===== 全局透明度（0=完全透明，1=完全不透明） ===== */
-  /* 页面整体白色遮罩层透明度：值越大，背景图越淡 */
   --bg-mask-opacity: 0.92;
-  /* 非首页通用卡片背景透明度（card、table、blockquote、列表等） */
-  --panel-opacity: 0.32;
-  /* 非首页通用卡片边框透明度 */
-  --panel-border-opacity: 0.32;
-  /* 非首页代码块背景透明度（pre） */
-  --code-opacity: 0.32;
 
-  /* ===== 文章页单独透明度 ===== */
-  /* 文章详情页卡片背景透明度 */
-  --post-panel-opacity: 0.32;
-  /* 文章详情页卡片边框透明度 */
-  --post-panel-border-opacity: 0.32;
-  /* 文章详情页代码块背景透明度 */
-  --post-code-opacity: 0.32;
+  /* 全局卡片彻底透明 */
+  --panel-opacity: 0;
+  --panel-border-opacity: 0;
+  --code-opacity: 0;
 
-  /* ===== 背景图适应控制 ===== */
-  /* 非首页背景图宽度：100% 表示铺满容器宽度 */
+  /* 文章页彻底透明 */
+  --post-panel-opacity: 0.5;
+  --post-panel-border-opacity: 0.2;
+  --post-code-opacity: 0.2;
+
   --bg-image-width: 100%;
+  --bg-fallback-color: #f6f2eb;
 }
 
 #tsparticles canvas {
@@ -42,11 +32,22 @@
 
 html {
   min-height: 100%;
+  margin: -10px 0;
+  background: var(--bg-fallback-color);
 }
 
 body {
   min-height: 100vh;
-  background: transparent;
+  background-color: var(--bg-fallback-color);
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, var(--bg-mask-opacity)),
+      rgba(255, 255, 255, var(--bg-mask-opacity))
+    ),
+    url('/images/bg/ansy-bg.png');
+  background-repeat: no-repeat, repeat-y;
+  background-position: center top, center top;
+  background-size: 100% 100%, var(--bg-image-width) auto;
   color: #5c533e;
   overflow-x: hidden;
 }
@@ -54,9 +55,14 @@ body {
 /* =========================
  * 首页
  * ========================= */
+body:has(.sakura-home) {
+  background: transparent !important;
+}
+
 body:has(.sakura-home) main {
   width: 100% !important;
   max-width: none !important;
+  min-height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -65,7 +71,6 @@ body:has(.sakura-home) main {
   box-shadow: none !important;
 }
 
-/* 跳出主题原本列宽限制 */
 body:has(.sakura-home) .sakura-home-layout {
   width: 100vw !important;
   max-width: none !important;
@@ -79,7 +84,6 @@ body:has(.sakura-home) .sakura-home-layout {
   align-items: center !important;
 }
 
-/* 首页视频下方直属内容统一按百分比居中 */
 body:has(.sakura-home) .sakura-home-layout > *,
 body:has(.sakura-home) .sakura-pagination {
   width: var(--home-content-width) !important;
@@ -88,146 +92,181 @@ body:has(.sakura-home) .sakura-pagination {
   margin-right: auto !important;
 }
 
-/* 防止内部组件自己再缩一次 */
 body:has(.sakura-home) .sakura-home-layout > * > *,
 body:has(.sakura-home) .sakura-home-layout .card,
-body:has(.sakura-home) .sakura-home-layout [class*='card'],
-body:has(.sakura-home) .sakura-home-layout [class*='post-list'],
-body:has(.sakura-home) .sakura-home-layout [class*='notice'],
-body:has(.sakura-home) .sakura-home-layout [class*='pinned'] {
+body:has(.sakura-home) .sakura-home-layout .post-list,
+body:has(.sakura-home) .sakura-home-layout .notice,
+body:has(.sakura-home) .sakura-home-layout .pinned {
   max-width: 100%;
 }
 
 /* =========================
- * 非首页：背景图 + 正文版心
+ * 非首页主容器
  * ========================= */
-
-body:not(:has(.sakura-home)) {
-  position: relative;
-  min-height: 100vh;
-  background: transparent;
-}
-
-body:not(:has(.sakura-home))::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-
-  background-image: url('/images/bg/site-bg.jpg');
-  background-repeat: repeat-y;
-  background-size: var(--bg-image-width) auto;
-  background-position: center top;
-}
-
-body:not(:has(.sakura-home))::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: rgba(255, 255, 255, var(--bg-mask-opacity));
-}
-
-body:not(:has(.sakura-home)) main {
+main {
   width: var(--page-width) !important;
   max-width: var(--page-width) !important;
-  margin: 88px auto 24px !important;
-  padding: 24px 28px !important;
+  min-height: calc(100vh - 104px);
+  margin: 76px auto 20px !important;
+
+  padding: 20px 30px 24px !important;
 
   background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, var(--panel-border-opacity));
-  border-radius: 24px;
+  border: none !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
 }
 
-/* 标题避让导航 */
-body:not(:has(.sakura-home)) h1,
-body:not(:has(.sakura-home)) h2,
-body:not(:has(.sakura-home)) h3,
-body:not(:has(.sakura-home)) h4,
-body:not(:has(.sakura-home)) h5,
-body:not(:has(.sakura-home)) h6 {
+body:has(.sakura-home) main {
+  min-height: auto !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   scroll-margin-top: 96px;
   color: #2f3440;
 }
 
-/* 正文主体透明 */
-body:not(:has(.sakura-home)) article,
-body:not(:has(.sakura-home)) .page,
-body:not(:has(.sakura-home)) .post,
-body:not(:has(.sakura-home)) [class*='page'],
-body:not(:has(.sakura-home)) [class*='post'] {
+article,
+.page,
+.post {
   background: transparent !important;
   box-shadow: none !important;
   padding: 0 !important;
 }
 
-/* 放开正文宽度，避免整个内容只缩在中间 */
-body:not(:has(.sakura-home)) article,
-body:not(:has(.sakura-home)) .page,
-body:not(:has(.sakura-home)) .post,
-body:not(:has(.sakura-home)) article .prose,
-body:not(:has(.sakura-home)) .page .prose,
-body:not(:has(.sakura-home)) .post .prose,
-body:not(:has(.sakura-home)) article .markdown-body,
-body:not(:has(.sakura-home)) .page .markdown-body,
-body:not(:has(.sakura-home)) .post .markdown-body {
+article,
+.page,
+.post,
+article .prose,
+.page .prose,
+.post .prose,
+article .markdown-body,
+.page .markdown-body,
+.post .markdown-body {
   width: 100% !important;
   max-width: none !important;
 }
 
-/* Markdown 行内代码（反引号包裹）统一使用黑色，不影响代码块 */
-body:not(:has(.sakura-home)) .prose :not(pre) > code,
-body:not(:has(.sakura-home)) .markdown-body :not(pre) > code,
-body:not(:has(.sakura-home)) .prose a code,
-body:not(:has(.sakura-home)) .markdown-body a code {
-  color: #111 !important;
+/* =========================
+ * 阅读页：文章页 / 普通内容页 / 学习路径页
+ * 给一个轻量阅读面板，提高文字辨识度
+ * ========================= */
+.page .markdown-body,
+.page .prose,
+.post .markdown-body,
+.post .prose,
+article .markdown-body,
+article .prose {
+  padding: 22px 28px !important;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, var(--reading-panel-opacity)) !important;
+  border: 1px solid rgba(255, 255, 255, var(--reading-panel-border-opacity));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* 内容盒子 */
-body:not(:has(.sakura-home)) .card,
-body:not(:has(.sakura-home)) [class*='card'],
-body:not(:has(.sakura-home)) blockquote,
-body:not(:has(.sakura-home)) table,
-body:not(:has(.sakura-home)) pre,
-body:not(:has(.sakura-home)) ul,
-body:not(:has(.sakura-home)) ol {
-  background: rgba(255, 255, 255, var(--panel-opacity)) !important;
-  border: 1px solid rgba(255, 255, 255, var(--panel-border-opacity));
-  border-radius: 18px;
+/* 分类 / 归档 / 标签：不要阅读面板 */
+.has-categories-layout .sakura-page-content,
+.sakura-archivers-page,
+.sakura-archivers-page .post-collapse,
+.tags-page-wrap,
+.tags-page-wrap * {
+  background: transparent !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
-/* 仅文章页：卡片背景与边框完全透明 */
-body:not(:has(.sakura-home)) .has-post-layout .card,
-body:not(:has(.sakura-home)) .has-post-layout [class*='card'],
-body:not(:has(.sakura-home)) .has-post-layout blockquote,
-body:not(:has(.sakura-home)) .has-post-layout table,
-body:not(:has(.sakura-home)) .has-post-layout pre,
-body:not(:has(.sakura-home)) .has-post-layout ul,
-body:not(:has(.sakura-home)) .has-post-layout ol {
-  background: rgba(255, 255, 255, var(--post-panel-opacity)) !important;
-  border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
+/* 分类页条目也别变卡片 */
+.has-categories-layout .sakura-sidebar-item,
+.has-categories-layout .sakura-sidebar-item > a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-body:not(:has(.sakura-home)) ul,
-body:not(:has(.sakura-home)) ol {
-  padding: 16px 20px !important;
+body:has(.sakura-home) article,
+body:has(.sakura-home) .page,
+body:has(.sakura-home) .post {
+  padding: initial;
 }
 
-/* 归档时间树不使用全局列表卡片 */
-body:not(:has(.sakura-home)) .sakura-archivers-page .post-collapse ul,
-body:not(:has(.sakura-home)) .sakura-archivers-page .post-collapse ol {
+.prose :not(pre) > code,
+.markdown-body :not(pre) > code,
+.prose a code,
+.markdown-body a code {
+  color: #111 !important;
+}
+
+.card,
+blockquote,
+table,
+pre,
+.markdown-body ul,
+.markdown-body ol,
+.prose ul,
+.prose ol,
+.has-post-layout .card,
+.has-post-layout blockquote,
+.has-post-layout table,
+.has-post-layout pre,
+.has-post-layout .markdown-body ul,
+.has-post-layout .markdown-body ol,
+.has-post-layout .prose ul,
+.has-post-layout .prose ol {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 恢复正文列表正常缩进，不再套玻璃卡片 */
+.markdown-body ul,
+.markdown-body ol,
+.prose ul,
+.prose ol {
+  padding: 0 0 0 1.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+.sakura-archivers-page .post-collapse ul,
+.sakura-archivers-page .post-collapse ol {
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  box-shadow: none !important;
 }
 
-/* 分类展开列表：修复长标题与图标/行间重叠 */
-body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a {
+/* 分类 / 归档 / 标签页面：不要任何白卡片 */
+.sakura-categories,
+.sakura-categories *,
+.sakura-archivers-page .post-collapse,
+.sakura-archivers-page .post-collapse *,
+.sakura-tags-page,
+.sakura-tags-page *,
+.sakura-page-content,
+.sakura-page-content > div {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 分类页条目不要白底 */
+.has-categories-layout .sakura-sidebar-item,
+.has-categories-layout .sakura-sidebar-item > a {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.has-categories-layout .sakura-sidebar-item {
+  min-width: 0;
+}
+
+.has-categories-layout .sakura-sidebar-item > a {
   display: flex !important;
   align-items: flex-start !important;
   width: 100%;
@@ -236,12 +275,12 @@ body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a {
   line-height: 1.5;
 }
 
-body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a > div {
+.has-categories-layout .sakura-sidebar-item > a > div {
   flex: 0 0 auto;
   margin-top: 0.1rem;
 }
 
-body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a > span {
+.has-categories-layout .sakura-sidebar-item > a > span {
   flex: 1 1 auto;
   min-width: 0;
   white-space: normal;
@@ -249,51 +288,66 @@ body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item > a > s
   word-break: break-word;
 }
 
-/* 分类容器本身允许换行，避免与右侧元素挤压重叠 */
-body:not(:has(.sakura-home)) .has-categories-layout .sakura-sidebar-item {
-  min-width: 0;
-}
-
-/* 博客正文区域放开主题默认 800px 限制，避免内容全部挤在中间 */
-body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-page-content {
+.has-post-layout .sakura-post .sakura-page-content {
   width: 100% !important;
   max-width: none !important;
 }
 
-// body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-triple-columns {
-//   grid-template-columns: 0 minmax(0, 1fr) 0 !important;
-//   gap: 0 !important;
-// }
-
-// @media (min-width: 1280px) {
-//   body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-triple-columns {
-//     grid-template-columns: 0 minmax(0, 1fr) 0 !important;
-//   }
-// }
-
-body:not(:has(.sakura-home)) pre {
-  background: rgba(255, 255, 255, var(--code-opacity)) !important;
+.page .markdown-body,
+.page .prose,
+.post .markdown-body,
+.post .prose,
+article .markdown-body,
+article .prose {
+  color: #3f3b35;
 }
 
-/* 仅文章页：代码块也完全透明 */
-body:not(:has(.sakura-home)) .has-post-layout pre {
-  background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
+.page .markdown-body h1,
+.page .markdown-body h2,
+.page .markdown-body h3,
+.page .prose h1,
+.page .prose h2,
+.page .prose h3,
+.post .markdown-body h1,
+.post .markdown-body h2,
+.post .markdown-body h3,
+.post .prose h1,
+.post .prose h2,
+.post .prose h3,
+article .markdown-body h1,
+article .markdown-body h2,
+article .markdown-body h3,
+article .prose h1,
+article .prose h2,
+article .prose h3 {
+  color: #2f3440 !important;
 }
 
-/* 仅文章页：代码块外层容器与顶部栏也透明 */
-body:not(:has(.sakura-home)) .has-post-layout .markdown-body div[class*='language-'],
-body:not(:has(.sakura-home)) .has-post-layout .prose div[class*='language-'] {
+pre {
+  background: rgba(255, 255, 255, var(--reading-code-opacity)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.32) !important;
+  border-radius: 18px;
+}
+
+.has-post-layout pre {
+  background: rgba(255, 255, 255, var(--reading-code-opacity)) !important;
+}
+
+.has-post-layout .markdown-body .shiki,
+.has-post-layout .prose .shiki,
+.has-post-layout .markdown-body div[class*='language-'],
+.has-post-layout .prose div[class*='language-'] {
   background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
   border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
 }
 
-body:not(:has(.sakura-home)) .has-post-layout .markdown-body div[class*='language-']::before,
-body:not(:has(.sakura-home)) .has-post-layout .prose div[class*='language-']::before {
+.has-post-layout .markdown-body div[class*='language-']::before,
+.has-post-layout .prose div[class*='language-']::before {
   background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
   border-bottom-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
 }
 
-body:not(:has(.sakura-home)) footer {
+footer {
   background: transparent !important;
 }
 
@@ -363,6 +417,16 @@ body:not(:has(.sakura-home)) footer {
 }
 
 @media (max-width: 1100px) {
+  :root {
+    --home-content-width: 88vw;
+    --page-width: 92vw;
+  }
+
+  main {
+    min-height: calc(100vh - 104px);
+    padding: 20px 18px !important;
+  }
+
   .about-page .about-stats {
     grid-template-columns: 1fr;
   }
@@ -370,5 +434,34 @@ body:not(:has(.sakura-home)) footer {
   .about-page .about-stats a:nth-child(2) img {
     width: 100%;
     max-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --home-content-width: 92vw;
+    --page-width: 95vw;
+  }
+
+  main {
+    min-height: calc(100vh - 92px);
+    margin: 70px auto 16px !important;
+    padding: 8px 14px 16px !important;
+    border-radius: 0 !important;
+  }
+
+  .page .markdown-body,
+  .page .prose,
+  .post .markdown-body,
+  .post .prose,
+  article .markdown-body,
+  article .prose {
+    padding: 16px 16px !important;
+    border-radius: 18px;
+  }
+
+  body:has(.sakura-home) main {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
