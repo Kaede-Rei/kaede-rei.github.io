@@ -490,14 +490,16 @@ pre {
 .markdown-body div[class*='language-'] > button.code-collapse-toggle,
 .prose div[class*='language-'] > button.code-collapse-toggle {
   position: absolute;
-  right: 12px;
-  bottom: 10px;
+  top: 8px;
+  right: 56px;
+  bottom: auto;
   z-index: 7;
   border: 1px solid rgba(120, 94, 54, 0.22);
   border-radius: 999px;
-  padding: 2px 10px;
-  font-size: 12px;
-  line-height: 1.6;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  line-height: 24px;
   color: #3f3b35;
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);

@@ -50,6 +50,7 @@ const tocItems = ref<TocItem[]>([])
 const activeHeadingId = ref('')
 let activeHeadingRafId: number | null = null
 let resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null
+let tocTrackingAttached = false
 
 function closeToc() {
   isTocOpen.value = false
@@ -158,6 +159,34 @@ function onResize() {
     refreshTocOffsets()
     scheduleActiveHeadingUpdate()
   }, 120)
+}
+
+function attachTocTracking() {
+  if (tocTrackingAttached)
+    return
+
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onResize, { passive: true })
+  tocTrackingAttached = true
+}
+
+function detachTocTracking() {
+  if (!tocTrackingAttached)
+    return
+
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onResize)
+  tocTrackingAttached = false
+
+  if (activeHeadingRafId !== null) {
+    cancelAnimationFrame(activeHeadingRafId)
+    activeHeadingRafId = null
+  }
+
+  if (resizeDebounceTimer) {
+    clearTimeout(resizeDebounceTimer)
+    resizeDebounceTimer = null
+  }
 }
 
 async function buildToc() {
@@ -295,8 +324,12 @@ watch(isTocOpen, async (open) => {
   if (typeof document !== 'undefined')
     document.body.classList.toggle('toc-drawer-open', open)
 
-  if (!open)
+  if (!open) {
+    detachTocTracking()
     return
+  }
+
+  attachTocTracking()
 
   if (tocItems.value.length === 0)
     await buildToc()
@@ -308,8 +341,6 @@ watch(isTocOpen, async (open) => {
 
 onMounted(async () => {
   window.addEventListener('keydown', onKeydown)
-  window.addEventListener('scroll', onScroll, { passive: true })
-  window.addEventListener('resize', onResize, { passive: true })
 
   await nextTick()
 
@@ -320,8 +351,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
-  window.removeEventListener('scroll', onScroll)
-  window.removeEventListener('resize', onResize)
+  detachTocTracking()
 
   if (activeHeadingRafId !== null)
     cancelAnimationFrame(activeHeadingRafId)
@@ -351,7 +381,11 @@ onUnmounted(() => {
         </template>
 
         <template #footer>
-          <SakuraPostFooter />
+          <SakuraPostFooter>
+            <template #nav>
+              <LearningPathPostNav />
+            </template>
+          </SakuraPostFooter>
         </template>
       </component>
     </RouterView>

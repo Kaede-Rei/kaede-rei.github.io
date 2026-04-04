@@ -5,7 +5,7 @@ const CODE_BLOCK_SELECTOR = '.markdown-body div[class*="language-"], .prose div[
 
 function applyCodeCollapseState(block: HTMLElement, pre: HTMLElement, button: HTMLButtonElement, collapsed: boolean) {
   block.classList.toggle('is-code-collapsed', collapsed)
-  button.textContent = collapsed ? 'Expand' : 'Collapse'
+  button.textContent = collapsed ? '展开' : '收起'
   button.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
 
   if (collapsed) {
@@ -39,7 +39,7 @@ function setupCodeBlock(block: HTMLElement) {
     pre.style.maxHeight = ''
     pre.style.overflowY = ''
     button.setAttribute('aria-expanded', 'true')
-    button.textContent = 'Collapse'
+    button.textContent = '收起'
     return
   }
 
