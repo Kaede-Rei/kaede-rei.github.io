@@ -9,6 +9,7 @@ interface TocItem {
   id: string
   text: string
   level: number
+  top: number
 }
 
 const siteConfig = useSiteConfig()
@@ -47,6 +48,8 @@ useSchemaOrg(defineArticle(article))
 const isTocOpen = ref(false)
 const tocItems = ref<TocItem[]>([])
 const activeHeadingId = ref('')
+let activeHeadingRafId: number | null = null
+let resizeDebounceTimer: ReturnType<typeof setTimeout> | null = null
 
 function closeToc() {
   isTocOpen.value = false
@@ -92,6 +95,71 @@ function getArticleRoot(): HTMLElement | null {
   return null
 }
 
+function getElementTop(el: HTMLElement) {
+  return el.getBoundingClientRect().top + window.scrollY
+}
+
+function optimizeArticleImages(root: HTMLElement) {
+  const images = Array.from(root.querySelectorAll('img')) as HTMLImageElement[]
+
+  images.forEach((img, index) => {
+    if (!img.getAttribute('loading'))
+      img.loading = index === 0 ? 'eager' : 'lazy'
+
+    img.decoding = 'async'
+
+    if (!img.getAttribute('fetchpriority'))
+      (img as any).fetchPriority = index === 0 ? 'high' : 'low'
+  })
+}
+
+function refreshTocOffsets() {
+  if (typeof document === 'undefined' || tocItems.value.length === 0)
+    return
+
+  tocItems.value = tocItems.value.map((item) => {
+    const el = document.getElementById(item.id)
+
+    if (!el)
+      return item
+
+    return {
+      ...item,
+      top: getElementTop(el),
+    }
+  })
+}
+
+function scheduleActiveHeadingUpdate() {
+  if (activeHeadingRafId !== null)
+    return
+
+  activeHeadingRafId = requestAnimationFrame(() => {
+    activeHeadingRafId = null
+    updateActiveHeading()
+  })
+}
+
+function onScroll() {
+  if (!isTocOpen.value)
+    return
+
+  scheduleActiveHeadingUpdate()
+}
+
+function onResize() {
+  if (!isTocOpen.value)
+    return
+
+  if (resizeDebounceTimer)
+    clearTimeout(resizeDebounceTimer)
+
+  resizeDebounceTimer = setTimeout(() => {
+    refreshTocOffsets()
+    scheduleActiveHeadingUpdate()
+  }, 120)
+}
+
 async function buildToc() {
   if (typeof document === 'undefined')
     return
@@ -111,6 +179,8 @@ async function buildToc() {
     activeHeadingId.value = ''
     return
   }
+
+  optimizeArticleImages(root)
 
   const headings = Array.from(root.querySelectorAll('h2, h3, h4')) as HTMLElement[]
   const usedIds = new Map<string, number>()
@@ -147,12 +217,19 @@ async function buildToc() {
         id,
         text,
         level: Number(heading.tagName.slice(1)),
+        top: getElementTop(heading),
       }
     })
     .filter((item): item is TocItem => item !== null)
 
   tocItems.value = items
-  updateActiveHeading()
+  scheduleActiveHeadingUpdate()
+
+  // Late image decode may shift heading offsets, refresh once after mount.
+  setTimeout(() => {
+    refreshTocOffsets()
+    scheduleActiveHeadingUpdate()
+  }, 220)
 }
 
 function updateActiveHeading() {
@@ -162,19 +239,31 @@ function updateActiveHeading() {
   }
 
   const offset = 120
-  let currentId = tocItems.value[0]?.id || ''
+  const items = tocItems.value
+  const currentY = window.scrollY + offset
 
-  for (const item of tocItems.value) {
-    const el = document.getElementById(item.id)
-    if (!el)
-      continue
-
-    const top = el.getBoundingClientRect().top
-    if (top - offset <= 0)
-      currentId = item.id
-    else
-      break
+  if (currentY < items[0].top) {
+    activeHeadingId.value = items[0].id
+    return
   }
+
+  let left = 0
+  let right = items.length - 1
+  let answer = 0
+
+  while (left <= right) {
+    const mid = (left + right) >> 1
+
+    if (items[mid].top <= currentY) {
+      answer = mid
+      left = mid + 1
+    }
+    else {
+      right = mid - 1
+    }
+  }
+
+  const currentId = items[answer]?.id || items[0]?.id || ''
 
   activeHeadingId.value = currentId
 }
@@ -196,31 +285,49 @@ function scrollToHeading(id: string) {
   closeToc()
 }
 
-watch(() => route.fullPath, async () => {
+watch(() => route.fullPath, () => {
   closeToc()
-  await buildToc()
+  tocItems.value = []
+  activeHeadingId.value = ''
 })
 
 watch(isTocOpen, async (open) => {
   if (typeof document !== 'undefined')
     document.body.classList.toggle('toc-drawer-open', open)
 
-  if (open)
+  if (!open)
+    return
+
+  if (tocItems.value.length === 0)
     await buildToc()
+  else {
+    refreshTocOffsets()
+    scheduleActiveHeadingUpdate()
+  }
 })
 
 onMounted(async () => {
-  window.addEventListener('keydown', onKeydown, { passive: true })
-  window.addEventListener('scroll', updateActiveHeading, { passive: true })
-  window.addEventListener('resize', updateActiveHeading, { passive: true })
+  window.addEventListener('keydown', onKeydown)
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onResize, { passive: true })
 
-  await buildToc()
+  await nextTick()
+
+  const root = getArticleRoot()
+  if (root)
+    optimizeArticleImages(root)
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
-  window.removeEventListener('scroll', updateActiveHeading)
-  window.removeEventListener('resize', updateActiveHeading)
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onResize)
+
+  if (activeHeadingRafId !== null)
+    cancelAnimationFrame(activeHeadingRafId)
+
+  if (resizeDebounceTimer)
+    clearTimeout(resizeDebounceTimer)
 
   if (typeof document !== 'undefined')
     document.body.classList.remove('toc-drawer-open')

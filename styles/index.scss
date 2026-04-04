@@ -417,6 +417,16 @@ pre {
 .has-post-layout .prose div[class*='language-'] {
   background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
   border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
+  content-visibility: auto;
+  contain-intrinsic-size: 320px;
+}
+
+.has-post-layout .markdown-body table,
+.has-post-layout .prose table,
+.has-post-layout .markdown-body pre,
+.has-post-layout .prose pre {
+  content-visibility: auto;
+  contain-intrinsic-size: 280px;
 }
 
 .has-post-layout .markdown-body div[class*='language-']::before,
