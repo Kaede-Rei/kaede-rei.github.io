@@ -2,8 +2,14 @@
 import type { Article } from '@unhead/schema-org'
 import { defineArticle, useSchemaOrg } from '@unhead/schema-org/vue'
 import { formatDate, useFrontmatter, useFullUrl, useSiteConfig } from 'valaxy'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+
+interface TocItem {
+  id: string
+  text: string
+  level: number
+}
 
 const siteConfig = useSiteConfig()
 const frontmatter = useFrontmatter()
@@ -11,30 +17,36 @@ const url = useFullUrl()
 const route = useRoute()
 
 const showSponsor = computed(() => {
-  if (typeof frontmatter.value.sponsor === 'boolean')
+  if (typeof frontmatter.value?.sponsor === 'boolean')
     return frontmatter.value.sponsor
 
-  return siteConfig.value.sponsor.enable
+  return !!siteConfig.value?.sponsor?.enable
+})
+
+const showCopyright = computed(() => {
+  return !!frontmatter.value?.copyright || !!siteConfig.value?.license?.enabled
 })
 
 const article: Article = {
   '@type': 'BlogPosting',
-  headline: frontmatter.value.title,
-  description: frontmatter.value.description,
+  headline: frontmatter.value?.title,
+  description: frontmatter.value?.description,
   author: [
     {
-      name: siteConfig.value.author.name,
-      url: siteConfig.value.author.link,
+      name: siteConfig.value?.author?.name,
+      url: siteConfig.value?.author?.link,
     },
   ],
-  datePublished: formatDate(frontmatter.value.date || 0),
-  dateModified: formatDate(frontmatter.value.updated || 0),
-  image: frontmatter.value.image || frontmatter.value.cover,
+  datePublished: formatDate(frontmatter.value?.date || 0),
+  dateModified: formatDate(frontmatter.value?.updated || 0),
+  image: frontmatter.value?.image || frontmatter.value?.cover,
 }
 
 useSchemaOrg(defineArticle(article))
 
 const isTocOpen = ref(false)
+const tocItems = ref<TocItem[]>([])
+const activeHeadingId = ref('')
 
 function closeToc() {
   isTocOpen.value = false
@@ -49,48 +61,184 @@ function onKeydown(event: KeyboardEvent) {
     closeToc()
 }
 
-function onDrawerClick(event: MouseEvent) {
-  const target = event.target as HTMLElement | null
-  if (!target)
-    return
-
-  if (target.closest('a')) {
-    requestAnimationFrame(() => {
-      closeToc()
-    })
-  }
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\u4e00-\u9fa5\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
-watch(() => route.fullPath, () => {
-  closeToc()
-})
+function getArticleRoot(): HTMLElement | null {
+  const selectors = [
+    '.post .markdown-body',
+    '.post .prose',
+    'article .markdown-body',
+    'article .prose',
+    '.page .markdown-body',
+    '.page .prose',
+    '.markdown-body',
+    '.prose',
+  ]
 
-watch(isTocOpen, (open) => {
+  for (const selector of selectors) {
+    const el = document.querySelector(selector)
+    if (el instanceof HTMLElement)
+      return el
+  }
+
+  return null
+}
+
+async function buildToc() {
   if (typeof document === 'undefined')
     return
 
-  document.body.classList.toggle('toc-drawer-open', open)
+  await nextTick()
+
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve())
+    })
+  })
+
+  const root = getArticleRoot()
+
+  if (!root) {
+    tocItems.value = []
+    activeHeadingId.value = ''
+    return
+  }
+
+  const headings = Array.from(root.querySelectorAll('h2, h3, h4')) as HTMLElement[]
+  const usedIds = new Map<string, number>()
+
+  const items: TocItem[] = headings
+    .map((heading, index) => {
+      const text = (heading.textContent || '')
+        .replace(/#/g, '')
+        .replace(/¶/g, '')
+        .trim()
+
+      if (!text)
+        return null
+
+      let id = heading.id?.trim()
+
+      if (!id) {
+        const base = slugify(text) || `section-${index + 1}`
+        const count = usedIds.get(base) || 0
+        usedIds.set(base, count + 1)
+        id = count > 0 ? `${base}-${count + 1}` : base
+        heading.id = id
+      }
+      else {
+        const count = usedIds.get(id) || 0
+        usedIds.set(id, count + 1)
+        if (count > 0) {
+          id = `${id}-${count + 1}`
+          heading.id = id
+        }
+      }
+
+      return {
+        id,
+        text,
+        level: Number(heading.tagName.slice(1)),
+      }
+    })
+    .filter((item): item is TocItem => item !== null)
+
+  tocItems.value = items
+  updateActiveHeading()
+}
+
+function updateActiveHeading() {
+  if (typeof document === 'undefined' || tocItems.value.length === 0) {
+    activeHeadingId.value = ''
+    return
+  }
+
+  const offset = 120
+  let currentId = tocItems.value[0]?.id || ''
+
+  for (const item of tocItems.value) {
+    const el = document.getElementById(item.id)
+    if (!el)
+      continue
+
+    const top = el.getBoundingClientRect().top
+    if (top - offset <= 0)
+      currentId = item.id
+    else
+      break
+  }
+
+  activeHeadingId.value = currentId
+}
+
+function scrollToHeading(id: string) {
+  if (typeof document === 'undefined')
+    return
+
+  const el = document.getElementById(id)
+  if (!el)
+    return
+
+  const top = el.getBoundingClientRect().top + window.scrollY - 96
+  window.scrollTo({
+    top,
+    behavior: 'smooth',
+  })
+
+  closeToc()
+}
+
+watch(() => route.fullPath, async () => {
+  closeToc()
+  await buildToc()
 })
 
-onMounted(() => {
+watch(isTocOpen, async (open) => {
+  if (typeof document !== 'undefined')
+    document.body.classList.toggle('toc-drawer-open', open)
+
+  if (open)
+    await buildToc()
+})
+
+onMounted(async () => {
   window.addEventListener('keydown', onKeydown, { passive: true })
+  window.addEventListener('scroll', updateActiveHeading, { passive: true })
+  window.addEventListener('resize', updateActiveHeading, { passive: true })
+
+  await buildToc()
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('scroll', updateActiveHeading)
+  window.removeEventListener('resize', updateActiveHeading)
+
   if (typeof document !== 'undefined')
     document.body.classList.remove('toc-drawer-open')
 })
 </script>
 
 <template>
-  <SakuraPost class="sakura-post-drawer-layout">
+  <SakuraPage class="sakura-post-drawer-layout">
+    <template #header>
+      <SakuraPostHeader :fm="frontmatter" />
+    </template>
+
     <RouterView v-slot="{ Component }">
       <component :is="Component">
         <template #main-content-after>
           <SakuraSponsor v-if="showSponsor" />
           <ValaxyCopyright
-            v-if="frontmatter.copyright || siteConfig.license.enabled"
+            v-if="showCopyright"
             :url="url"
           />
         </template>
@@ -100,50 +248,80 @@ onUnmounted(() => {
         </template>
       </component>
     </RouterView>
-  </SakuraPost>
+  </SakuraPage>
 
-  <Teleport to="body">
-    <button
-      class="toc-toggle-btn"
-      type="button"
-      aria-label="切换目录"
-      :aria-expanded="isTocOpen"
-      @click="toggleToc"
-    >
-      <span i-ri-menu-2-line />
-      <span>目录</span>
-    </button>
+  <ClientOnly>
+    <Teleport to="body">
+      <button
+        class="toc-toggle-btn"
+        type="button"
+        aria-label="切换目录"
+        :aria-expanded="isTocOpen"
+        @click="toggleToc"
+      >
+        <span i-ri-menu-2-line />
+        <span>目录</span>
+      </button>
 
-    <Transition name="toc-overlay-fade">
-      <div v-if="isTocOpen" class="toc-overlay" @click="closeToc" />
-    </Transition>
+      <Transition name="toc-overlay-fade">
+        <div
+          v-if="isTocOpen"
+          class="toc-overlay"
+          @click="closeToc"
+        />
+      </Transition>
 
-    <aside
-      class="toc-drawer"
-      :class="{ open: isTocOpen }"
-      :aria-hidden="!isTocOpen"
-    >
-      <div class="toc-drawer-inner">
-        <div class="toc-drawer-header">
-          <span>目录</span>
-          <button
-            class="toc-close-btn"
-            type="button"
-            aria-label="关闭目录"
-            @click="closeToc"
-          >
-            <span i-ri-close-line />
-          </button>
+      <aside
+        class="toc-drawer"
+        :class="{ open: isTocOpen }"
+        :aria-hidden="!isTocOpen"
+      >
+        <div class="toc-drawer-inner">
+          <div class="toc-drawer-header">
+            <span>目录</span>
+            <button
+              class="toc-close-btn"
+              type="button"
+              aria-label="关闭目录"
+              @click="closeToc"
+            >
+              <span i-ri-close-line />
+            </button>
+          </div>
+
+          <div class="toc-drawer-body">
+            <div class="toc-title">
+              文章目录
+            </div>
+
+            <nav
+              v-if="tocItems.length > 0"
+              class="toc-nav"
+              aria-label="文章目录"
+            >
+              <button
+                v-for="item in tocItems"
+                :key="item.id"
+                type="button"
+                class="toc-link"
+                :class="[
+                  `level-${item.level}`,
+                  { active: activeHeadingId === item.id },
+                ]"
+                @click="scrollToHeading(item.id)"
+              >
+                {{ item.text }}
+              </button>
+            </nav>
+
+            <div v-else class="toc-empty">
+              暂无目录
+            </div>
+          </div>
         </div>
-
-        <div class="toc-drawer-body" @click="onDrawerClick">
-          <SakuraAside class="toc-aside">
-            <SakuraToc :view-scroll="true" />
-          </SakuraAside>
-        </div>
-      </div>
-    </aside>
-  </Teleport>
+      </aside>
+    </Teleport>
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
@@ -152,11 +330,6 @@ onUnmounted(() => {
     width: 100% !important;
     max-width: none !important;
     padding-block: 24px;
-  }
-
-  :deep(.sakura-triple-columns) {
-    grid-template-columns: 0 minmax(0, 1fr) 0 !important;
-    gap: 0 !important;
   }
 }
 
@@ -225,15 +398,16 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.05rem;
 }
 
 .toc-close-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
   border: none;
   background: rgba(0, 0, 0, 0.06);
@@ -245,38 +419,70 @@ onUnmounted(() => {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding: 18px 16px 24px;
 }
 
-.toc-aside {
-  padding: 12px 12px 24px;
+.toc-title {
+  margin-bottom: 14px;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #28303f;
 }
 
-.toc-drawer :deep(.sakura-aside) {
-  position: static !important;
-  top: auto !important;
-  max-height: none !important;
-  height: auto !important;
-  background: transparent !important;
+.toc-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.toc-drawer :deep(.toc),
-.toc-drawer :deep(.sakura-toc) {
-  max-height: none !important;
+.toc-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #3b4352;
+  cursor: pointer;
+  line-height: 1.5;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
-.toc-drawer :deep(.sakura-aside > h2) {
-  margin: 0;
-  padding: 10px 12px 8px;
-  line-height: 1.4;
+.toc-link:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.toc-drawer :deep(.sakura-aside > .custom-container) {
-  padding: 0 12px 12px;
+.toc-link.active {
+  background: rgba(255, 165, 0, 0.12);
+  color: #c97900;
+  font-weight: 700;
+}
+
+.toc-link.level-2 {
+  padding-left: 10px;
+  font-size: 1rem;
+}
+
+.toc-link.level-3 {
+  padding-left: 24px;
+  font-size: 0.96rem;
+}
+
+.toc-link.level-4 {
+  padding-left: 38px;
+  font-size: 0.92rem;
+  opacity: 0.92;
+}
+
+.toc-empty {
+  padding: 8px 2px;
+  color: #7d8592;
+  font-size: 0.95rem;
 }
 
 .toc-overlay-fade-enter-active,
 .toc-overlay-fade-leave-active {
-  transition: opacity 0.18s ease;
+  transition: opacity 0.2s ease;
 }
 
 .toc-overlay-fade-enter-from,
@@ -288,11 +494,14 @@ onUnmounted(() => {
   .toc-toggle-btn {
     right: 14px;
     top: calc(var(--sakura-navbar-height) + 14px);
-    padding: 0.48rem 0.78rem;
   }
 
   .toc-drawer {
-    width: min(340px, 90vw);
+    width: min(340px, 92vw);
+  }
+
+  .toc-title {
+    font-size: 1.45rem;
   }
 }
 </style>

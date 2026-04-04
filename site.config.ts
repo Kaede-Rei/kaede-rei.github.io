@@ -8,6 +8,7 @@ export default defineSiteConfig({
 
   author: {
     name: 'Kaede Rei',
+    link: 'https://github.com/Kaede-Rei',
     avatar: '/images/soyo.png',
     intro: '智能农业机器人 / 机械臂 / ROS / 嵌入式',
   },

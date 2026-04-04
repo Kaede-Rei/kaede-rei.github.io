@@ -92,6 +92,7 @@ export default defineValaxyConfig({
       text: 'Notes Lists',
       isImageReversed: true,
       defaultImage: [
+        '/images/covers/anon.png',
         '/images/covers/ansy.png',
       ],
       responsive: {

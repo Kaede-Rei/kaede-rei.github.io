@@ -104,8 +104,15 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
-    '/posts/project/Renesas/': RouteRecordInfo<
-      '/posts/project/Renesas/',
+    '/posts/project/PiPER': RouteRecordInfo<
+      '/posts/project/PiPER',
+      '/posts/project/PiPER',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/posts/project/Renesas': RouteRecordInfo<
+      '/posts/project/Renesas',
       '/posts/project/Renesas',
       Record<never, never>,
       Record<never, never>,
@@ -197,9 +204,15 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'pages/posts/project/Renesas/index.md': {
+    'pages/posts/project/PiPER.md': {
       routes:
-        | '/posts/project/Renesas/'
+        | '/posts/project/PiPER'
+      views:
+        | never
+    }
+    'pages/posts/project/Renesas.md': {
+      routes:
+        | '/posts/project/Renesas'
       views:
         | never
     }
