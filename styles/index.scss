@@ -55,11 +55,11 @@ body {
 /* =========================
  * 首页
  * ========================= */
-body:has(.sakura-home) {
+.has-home-layout {
   background: transparent !important;
 }
 
-body:has(.sakura-home) main {
+.has-home-layout main {
   width: 100% !important;
   max-width: none !important;
   min-height: auto !important;
@@ -71,7 +71,7 @@ body:has(.sakura-home) main {
   box-shadow: none !important;
 }
 
-body:has(.sakura-home) .sakura-home-layout {
+.has-home-layout .sakura-home-layout {
   width: 100vw !important;
   max-width: none !important;
   margin-left: calc(50% - 50vw) !important;
@@ -84,19 +84,19 @@ body:has(.sakura-home) .sakura-home-layout {
   align-items: center !important;
 }
 
-body:has(.sakura-home) .sakura-home-layout > *,
-body:has(.sakura-home) .sakura-pagination {
+.has-home-layout .sakura-home-layout > *,
+.has-home-layout .sakura-pagination {
   width: var(--home-content-width) !important;
   max-width: var(--home-content-width) !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
 
-body:has(.sakura-home) .sakura-home-layout > * > *,
-body:has(.sakura-home) .sakura-home-layout .card,
-body:has(.sakura-home) .sakura-home-layout .post-list,
-body:has(.sakura-home) .sakura-home-layout .notice,
-body:has(.sakura-home) .sakura-home-layout .pinned {
+.has-home-layout .sakura-home-layout > * > *,
+.has-home-layout .sakura-home-layout .card,
+.has-home-layout .sakura-home-layout .post-list,
+.has-home-layout .sakura-home-layout .notice,
+.has-home-layout .sakura-home-layout .pinned {
   max-width: 100%;
 }
 
@@ -117,7 +117,7 @@ main {
   box-shadow: none !important;
 }
 
-body:has(.sakura-home) main {
+.has-home-layout main {
   min-height: auto !important;
 }
 
@@ -188,9 +188,9 @@ article .prose {
   box-shadow: none !important;
 }
 
-body:has(.sakura-home) article,
-body:has(.sakura-home) .page,
-body:has(.sakura-home) .post {
+.has-home-layout article,
+.has-home-layout .page,
+.has-home-layout .post {
   padding: initial;
 }
 
@@ -460,7 +460,7 @@ footer {
     border-radius: 18px;
   }
 
-  body:has(.sakura-home) main {
+  .has-home-layout main {
     margin: 0 !important;
     padding: 0 !important;
   }
