@@ -132,6 +132,70 @@ h6 {
   color: #2f3440;
 }
 
+/* 封面标题可读性 */
+.sakura-page-header.has-cover {
+  isolation: isolate;
+}
+
+.sakura-page-header.has-cover .sakura-header-container {
+  position: relative;
+  z-index: 1;
+  color: #f8f6f2 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.52);
+}
+
+.sakura-page-header.has-cover .sakura-post-header-meta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.24);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.62);
+}
+
+.sakura-page-header.has-cover .sakura-post-header-meta,
+.sakura-page-header.has-cover .sakura-post-header-meta * {
+  color: #fff !important;
+}
+
+.sakura-page-header.has-cover .sakura-post-header-meta .post-time,
+.sakura-page-header.has-cover .sakura-post-header-meta .word-count,
+.sakura-page-header.has-cover .sakura-post-header-meta .reading-time {
+  font-weight: 600;
+}
+
+/* 首页 Notes 列表：桌面端固定为横向长卡，避免首次渲染成竖向大卡 */
+@media (min-width: 768px) {
+  .has-home-layout .sakura-post-list .sakura-post-card {
+    flex-direction: row !important;
+    min-height: var(--sakura-post-card-height);
+    height: var(--sakura-post-card-height);
+  }
+
+  .has-home-layout .sakura-post-list .sakura-post-card.left {
+    flex-direction: row-reverse !important;
+  }
+
+  .has-home-layout .sakura-post-list .sakura-post-card.right {
+    text-align: right;
+  }
+
+  .has-home-layout .sakura-post-list .sakura-post-card .sakura-image-card {
+    width: var(--sakura-post-card-img-width);
+    max-width: var(--sakura-post-card-img-width);
+    flex: 0 0 var(--sakura-post-card-img-width);
+  }
+
+  .has-home-layout .sakura-post-list .sakura-post-card .post-card-content {
+    padding: 20px 39px;
+  }
+
+  .has-home-layout .sakura-post-list .sakura-post-card .post-card-content.has-cover {
+    width: calc(100% - var(--sakura-post-card-img-width));
+  }
+}
+
 article,
 .page,
 .post {

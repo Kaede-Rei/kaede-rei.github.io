@@ -6,6 +6,25 @@ export default defineValaxyConfig({
   themeConfig: {
     ui: {
       primary: '#ffaf4ef1',
+
+      pageHeader: {
+        image: {
+          overlay: true,
+          overlayColor: 'rgba(0, 0, 0, 0.8)',
+          overlayOpacityInitial: 0.45,
+          overlayOpacity: 0.58,
+        },
+      },
+
+      postList: {
+        responsive: {
+          '2xl': 1,
+          xl: 1,
+          lg: 1,
+          md: 1,
+          sm: 1,
+        },
+      },
     },
 
     hero: {
@@ -94,13 +113,6 @@ export default defineValaxyConfig({
       defaultImage: [
         '/images/covers/anon.png',
       ],
-      responsive: {
-        '2xl': 3,
-        xl: 3,
-        lg: 2,
-        md: 2,
-        sm: 1,
-      },
     },
 
     layout: {
