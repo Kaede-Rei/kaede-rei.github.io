@@ -93,7 +93,6 @@ export default defineValaxyConfig({
       isImageReversed: true,
       defaultImage: [
         '/images/covers/anon.png',
-        '/images/covers/ansy.png',
       ],
       responsive: {
         '2xl': 3,

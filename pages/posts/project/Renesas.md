@@ -6,6 +6,7 @@ categories: 开源项目
 tags:
   - 开源项目
 top: 1
+cover: /images/covers/anon.png
 ---
 
 <div align="center">
