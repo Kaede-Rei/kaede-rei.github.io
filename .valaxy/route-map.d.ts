@@ -104,37 +104,44 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/learning-path/electrical-control/3.1': RouteRecordInfo<
-      '/learning-path/electrical-control/3.1',
-      '/learning-path/electrical-control/3/1',
+    '/learning-path/electrical-control/3-1': RouteRecordInfo<
+      '/learning-path/electrical-control/3-1',
+      '/learning-path/electrical-control/3-1',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/learning-path/electrical-control/3.3': RouteRecordInfo<
-      '/learning-path/electrical-control/3.3',
-      '/learning-path/electrical-control/3/3',
+    '/learning-path/electrical-control/3-3': RouteRecordInfo<
+      '/learning-path/electrical-control/3-3',
+      '/learning-path/electrical-control/3-3',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/learning-path/electrical-control/3.5': RouteRecordInfo<
-      '/learning-path/electrical-control/3.5',
-      '/learning-path/electrical-control/3/5',
+    '/learning-path/electrical-control/3-5': RouteRecordInfo<
+      '/learning-path/electrical-control/3-5',
+      '/learning-path/electrical-control/3-5',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/learning-path/electrical-control/4.2': RouteRecordInfo<
-      '/learning-path/electrical-control/4.2',
-      '/learning-path/electrical-control/4/2',
+    '/learning-path/electrical-control/4-2': RouteRecordInfo<
+      '/learning-path/electrical-control/4-2',
+      '/learning-path/electrical-control/4-2',
       Record<never, never>,
       Record<never, never>,
       | never
     >,
-    '/learning-path/electrical-control/4.3': RouteRecordInfo<
-      '/learning-path/electrical-control/4.3',
-      '/learning-path/electrical-control/4/3',
+    '/learning-path/electrical-control/4-3': RouteRecordInfo<
+      '/learning-path/electrical-control/4-3',
+      '/learning-path/electrical-control/4-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/electrical-control/5': RouteRecordInfo<
+      '/learning-path/electrical-control/5',
+      '/learning-path/electrical-control/5',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -253,33 +260,39 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'pages/learning-path/electrical-control/3.1.md': {
+    'pages/learning-path/electrical-control/3-1.md': {
       routes:
-        | '/learning-path/electrical-control/3.1'
+        | '/learning-path/electrical-control/3-1'
       views:
         | never
     }
-    'pages/learning-path/electrical-control/3.3.md': {
+    'pages/learning-path/electrical-control/3-3.md': {
       routes:
-        | '/learning-path/electrical-control/3.3'
+        | '/learning-path/electrical-control/3-3'
       views:
         | never
     }
-    'pages/learning-path/electrical-control/3.5.md': {
+    'pages/learning-path/electrical-control/3-5.md': {
       routes:
-        | '/learning-path/electrical-control/3.5'
+        | '/learning-path/electrical-control/3-5'
       views:
         | never
     }
-    'pages/learning-path/electrical-control/4.2.md': {
+    'pages/learning-path/electrical-control/4-2.md': {
       routes:
-        | '/learning-path/electrical-control/4.2'
+        | '/learning-path/electrical-control/4-2'
       views:
         | never
     }
-    'pages/learning-path/electrical-control/4.3.md': {
+    'pages/learning-path/electrical-control/4-3.md': {
       routes:
-        | '/learning-path/electrical-control/4.3'
+        | '/learning-path/electrical-control/4-3'
+      views:
+        | never
+    }
+    'pages/learning-path/electrical-control/5.md': {
+      routes:
+        | '/learning-path/electrical-control/5'
       views:
         | never
     }
