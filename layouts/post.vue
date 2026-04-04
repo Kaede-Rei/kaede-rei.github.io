@@ -34,11 +34,8 @@ const article: Article = {
 
 useSchemaOrg(defineArticle(article))
 
+const routeRef = useRoute()
 const isTocOpen = ref(false)
-
-watch(() => route.fullPath, () => {
-  isTocOpen.value = false
-})
 
 function closeToc() {
   isTocOpen.value = false
@@ -50,8 +47,32 @@ function toggleToc() {
 
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape')
-    isTocOpen.value = false
+    closeToc()
 }
+
+function onDrawerClick(event: MouseEvent) {
+  const target = event.target as HTMLElement | null
+  if (!target)
+    return
+
+  // 点击目录里的锚点时，先让浏览器完成跳转，再关闭抽屉
+  if (target.closest('a')) {
+    requestAnimationFrame(() => {
+      closeToc()
+    })
+  }
+}
+
+watch(() => routeRef.fullPath, () => {
+  closeToc()
+})
+
+watch(isTocOpen, (open) => {
+  if (typeof document === 'undefined')
+    return
+
+  document.body.classList.toggle('toc-drawer-open', open)
+})
 
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
@@ -59,6 +80,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
+  if (typeof document !== 'undefined')
+    document.body.classList.remove('toc-drawer-open')
 })
 </script>
 
@@ -78,7 +101,10 @@ onUnmounted(() => {
           <component :is="Component">
             <template #main-content-after>
               <SakuraSponsor v-if="showSponsor" />
-              <ValaxyCopyright v-if="frontmatter.copyright || siteConfig.license.enabled" :url="url" />
+              <ValaxyCopyright
+                v-if="frontmatter.copyright || siteConfig.license.enabled"
+                :url="url"
+              />
             </template>
 
             <template #footer>
@@ -89,39 +115,54 @@ onUnmounted(() => {
       </slot>
     </template>
 
+    <!-- 不再把目录内容真正塞进右栏 -->
     <template #right>
-      <slot name="right">
-        <button
-          class="toc-toggle-btn"
-          type="button"
-          aria-label="切换目录"
-          :aria-expanded="isTocOpen"
-          @click="toggleToc"
-        >
-          <span i-ri-menu-2-line />
-          <span>目录</span>
-        </button>
-
-        <Transition name="toc-overlay-fade">
-          <div v-if="isTocOpen" class="toc-overlay" @click="closeToc" />
-        </Transition>
-
-        <aside class="toc-drawer" :class="{ open: isTocOpen }" @click.capture="closeToc">
-          <div class="toc-drawer-inner" @click.stop>
-            <div class="toc-drawer-header">
-              <span>目录</span>
-              <button class="toc-close-btn" type="button" aria-label="关闭目录" @click="closeToc">
-                <span i-ri-close-line />
-              </button>
-            </div>
-            <SakuraAside>
-              <SakuraToc :view-scroll="true" />
-            </SakuraAside>
-          </div>
-        </aside>
-      </slot>
+      <slot name="right" />
     </template>
   </SakuraPage>
+
+  <Teleport to="body">
+    <button
+      class="toc-toggle-btn"
+      type="button"
+      aria-label="切换目录"
+      :aria-expanded="isTocOpen"
+      @click="toggleToc"
+    >
+      <span i-ri-menu-2-line />
+      <span>目录</span>
+    </button>
+
+    <Transition name="toc-overlay-fade">
+      <div v-if="isTocOpen" class="toc-overlay" @click="closeToc" />
+    </Transition>
+
+    <aside
+      class="toc-drawer"
+      :class="{ open: isTocOpen }"
+      :aria-hidden="!isTocOpen"
+    >
+      <div class="toc-drawer-inner">
+        <div class="toc-drawer-header">
+          <span>目录</span>
+          <button
+            class="toc-close-btn"
+            type="button"
+            aria-label="关闭目录"
+            @click="closeToc"
+          >
+            <span i-ri-close-line />
+          </button>
+        </div>
+
+        <div class="toc-drawer-body" @click="onDrawerClick">
+          <SakuraAside class="toc-aside">
+            <SakuraToc :view-scroll="true" />
+          </SakuraAside>
+        </div>
+      </div>
+    </aside>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -132,48 +173,49 @@ onUnmounted(() => {
     padding-block: 24px;
   }
 
+  /* 保留正文占满中间列，但不再把抽屉放进右栏 */
   :deep(.sakura-triple-columns) {
     grid-template-columns: 0 minmax(0, 1fr) 0 !important;
     gap: 0 !important;
   }
 }
 
+:global(body.toc-drawer-open) {
+  overflow: hidden;
+}
+
 .toc-toggle-btn {
   position: fixed;
   right: 18px;
   top: calc(var(--sakura-navbar-height) + 18px);
-  z-index: 120;
+  z-index: 1200;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
-  padding: 0.45rem 0.8rem;
+  padding: 0.5rem 0.85rem;
   background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   color: #2f3440;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 .toc-overlay {
   position: fixed;
   inset: 0;
-  z-index: 128;
-  background: rgba(0, 0, 0, 0.2);
+  z-index: 1280;
+  background: rgba(0, 0, 0, 0.22);
 }
 
 .toc-drawer {
-  position: fixed !important;
-  top: 0 !important;
-  right: 0 !important;
-  z-index: 129;
-  width: min(360px, 84vw);
-  height: 100vh !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1290;
+  width: min(360px, 86vw);
+  height: 100dvh;
   transform: translateX(102%);
   transition: transform 0.28s ease;
   pointer-events: none;
@@ -192,15 +234,12 @@ onUnmounted(() => {
   border-left: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px 0 0 20px;
   box-shadow: -12px 0 30px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   overflow: hidden;
 }
 
-.toc-drawer > .toc-drawer-inner {
-  margin-left: 0 !important;
-}
-
 .toc-drawer-header {
+  flex: 0 0 auto;
   height: calc(var(--sakura-navbar-height) + 10px);
   padding: 0 14px;
   display: flex;
@@ -219,16 +258,31 @@ onUnmounted(() => {
   border-radius: 999px;
   border: none;
   background: rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+
+.toc-drawer-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.toc-aside {
+  padding: 12px 12px 24px;
 }
 
 .toc-drawer :deep(.sakura-aside) {
   position: static !important;
   top: auto !important;
   max-height: none !important;
-  height: calc(100vh - var(--sakura-navbar-height) - 10px);
-  overflow-y: auto !important;
+  height: auto !important;
   background: transparent !important;
-  padding: 12px 12px 24px;
+}
+
+.toc-drawer :deep(.toc),
+.toc-drawer :deep(.sakura-toc) {
+  max-height: none !important;
 }
 
 .toc-overlay-fade-enter-active,
@@ -239,5 +293,17 @@ onUnmounted(() => {
 .toc-overlay-fade-enter-from,
 .toc-overlay-fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .toc-toggle-btn {
+    right: 14px;
+    top: calc(var(--sakura-navbar-height) + 14px);
+    padding: 0.48rem 0.78rem;
+  }
+
+  .toc-drawer {
+    width: min(340px, 90vw);
+  }
 }
 </style>
