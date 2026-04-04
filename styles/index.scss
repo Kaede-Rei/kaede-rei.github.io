@@ -117,10 +117,6 @@ main {
   box-shadow: none !important;
 }
 
-.has-home-layout main {
-  min-height: auto !important;
-}
-
 h1,
 h2,
 h3,
@@ -175,14 +171,6 @@ article .prose {
 .sakura-archivers-page .post-collapse,
 .tags-page-wrap,
 .tags-page-wrap * {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* 分类页条目也别变卡片 */
-.has-categories-layout .sakura-sidebar-item,
-.has-categories-layout .sakura-sidebar-item > a {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -370,13 +358,13 @@ footer {
   margin: 0 !important;
 }
 
-.about-page p:has(> img[src*='img.shields.io']) {
+.about-page .about-badges > p {
   display: inline-flex !important;
   align-items: center;
-  margin: 0 10px 10px 0 !important;
+  margin: 0 !important;
 }
 
-.about-page p:has(> img[src*='img.shields.io']) img {
+.about-page .about-badges > p > img[src*='img.shields.io'] {
   display: block !important;
   width: auto !important;
   height: 28px !important;
