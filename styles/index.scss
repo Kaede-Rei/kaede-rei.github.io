@@ -7,19 +7,32 @@
 }
 
 :root {
-  /* 首页正文区宽度 */
+  /* 首页正文区宽度：控制首页主要内容容器宽度（相对视口宽度） */
   --home-content-width: 72vw;
 
-  /* 非首页正文区宽度 */
+  /* 非首页正文区宽度：用于文章页/归档页等主容器宽度 */
   --page-width: 85vw;
 
-  /* ===== 全局透明度 ===== */
-  --bg-mask-opacity: 0.72;
-  --panel-opacity: 0.50;
-  --panel-border-opacity: 0.20;
-  --code-opacity: 0.20;
+  /* ===== 全局透明度（0=完全透明，1=完全不透明） ===== */
+  /* 页面整体白色遮罩层透明度：值越大，背景图越淡 */
+  --bg-mask-opacity: 0.92;
+  /* 非首页通用卡片背景透明度（card、table、blockquote、列表等） */
+  --panel-opacity: 0.32;
+  /* 非首页通用卡片边框透明度 */
+  --panel-border-opacity: 0.32;
+  /* 非首页代码块背景透明度（pre） */
+  --code-opacity: 0.32;
+
+  /* ===== 文章页单独透明度 ===== */
+  /* 文章详情页卡片背景透明度 */
+  --post-panel-opacity: 0.32;
+  /* 文章详情页卡片边框透明度 */
+  --post-panel-border-opacity: 0.32;
+  /* 文章详情页代码块背景透明度 */
+  --post-code-opacity: 0.32;
 
   /* ===== 背景图适应控制 ===== */
+  /* 非首页背景图宽度：100% 表示铺满容器宽度 */
   --bg-image-width: 100%;
 }
 
@@ -27,8 +40,12 @@
   z-index: -1 !important;
 }
 
-html,
+html {
+  min-height: 100%;
+}
+
 body {
+  min-height: 100vh;
   background: transparent;
   color: #5c533e;
   overflow-x: hidden;
@@ -85,27 +102,25 @@ body:has(.sakura-home) .sakura-home-layout [class*='pinned'] {
  * 非首页：背景图 + 正文版心
  * ========================= */
 
-/* 不再把 cover 直接挂在 body 上，否则长页面会被无限放大 */
 body:not(:has(.sakura-home)) {
   position: relative;
+  min-height: 100vh;
   background: transparent;
 }
 
-/* 背景图层：无限拼接 */
 body:not(:has(.sakura-home))::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -2;
   pointer-events: none;
 
-  background-image: url('/images/bg/site-bg.png');
+  background-image: url('/images/bg/site-bg.jpg');
   background-repeat: repeat-y;
   background-size: var(--bg-image-width) auto;
   background-position: center top;
 }
 
-/* 半透明遮罩层 */
 body:not(:has(.sakura-home))::after {
   content: '';
   position: fixed;
@@ -163,6 +178,14 @@ body:not(:has(.sakura-home)) .post .markdown-body {
   max-width: none !important;
 }
 
+/* Markdown 行内代码（反引号包裹）统一使用黑色，不影响代码块 */
+body:not(:has(.sakura-home)) .prose :not(pre) > code,
+body:not(:has(.sakura-home)) .markdown-body :not(pre) > code,
+body:not(:has(.sakura-home)) .prose a code,
+body:not(:has(.sakura-home)) .markdown-body a code {
+  color: #111 !important;
+}
+
 /* 内容盒子 */
 body:not(:has(.sakura-home)) .card,
 body:not(:has(.sakura-home)) [class*='card'],
@@ -175,6 +198,18 @@ body:not(:has(.sakura-home)) ol {
   border: 1px solid rgba(255, 255, 255, var(--panel-border-opacity));
   border-radius: 18px;
   box-shadow: none !important;
+}
+
+/* 仅文章页：卡片背景与边框完全透明 */
+body:not(:has(.sakura-home)) .has-post-layout .card,
+body:not(:has(.sakura-home)) .has-post-layout [class*='card'],
+body:not(:has(.sakura-home)) .has-post-layout blockquote,
+body:not(:has(.sakura-home)) .has-post-layout table,
+body:not(:has(.sakura-home)) .has-post-layout pre,
+body:not(:has(.sakura-home)) .has-post-layout ul,
+body:not(:has(.sakura-home)) .has-post-layout ol {
+  background: rgba(255, 255, 255, var(--post-panel-opacity)) !important;
+  border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
 }
 
 body:not(:has(.sakura-home)) ul,
@@ -238,6 +273,24 @@ body:not(:has(.sakura-home)) .has-post-layout .sakura-post .sakura-page-content 
 
 body:not(:has(.sakura-home)) pre {
   background: rgba(255, 255, 255, var(--code-opacity)) !important;
+}
+
+/* 仅文章页：代码块也完全透明 */
+body:not(:has(.sakura-home)) .has-post-layout pre {
+  background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
+}
+
+/* 仅文章页：代码块外层容器与顶部栏也透明 */
+body:not(:has(.sakura-home)) .has-post-layout .markdown-body div[class*='language-'],
+body:not(:has(.sakura-home)) .has-post-layout .prose div[class*='language-'] {
+  background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
+  border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
+}
+
+body:not(:has(.sakura-home)) .has-post-layout .markdown-body div[class*='language-']::before,
+body:not(:has(.sakura-home)) .has-post-layout .prose div[class*='language-']::before {
+  background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
+  border-bottom-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
 }
 
 body:not(:has(.sakura-home)) footer {

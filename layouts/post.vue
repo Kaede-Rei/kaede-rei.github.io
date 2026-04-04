@@ -285,6 +285,17 @@ onUnmounted(() => {
   max-height: none !important;
 }
 
+/* 目录标题“文章目录”与卡片边缘保持间距，避免贴边 */
+.toc-drawer :deep(.sakura-aside > h2) {
+  margin: 0;
+  padding: 10px 12px 8px;
+  line-height: 1.4;
+}
+
+.toc-drawer :deep(.sakura-aside > .custom-container) {
+  padding: 0 12px 12px;
+}
+
 .toc-overlay-fade-enter-active,
 .toc-overlay-fade-leave-active {
   transition: opacity 0.2s ease;
