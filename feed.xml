@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Kaede Rei の 小 窝</title>
+        <link>https://kaede-rei.github.io/</link>
+        <description>Kaede Rei 的技术博客与学习路径</description>
+        <lastBuildDate>Sun, 05 Apr 2026 08:10:53 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <image>
+            <title>Kaede Rei の 小 窝</title>
+            <url>https://kaede-rei.github.io/images/soyo.png</url>
+            <link>https://kaede-rei.github.io/</link>
+        </image>
+        <copyright>CC BY-NC-SA 4.0 2026 © Kaede Rei</copyright>
+        <atom:link href="https://kaede-rei.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[PiPER 机械臂 ROS 控制系统]]></title>
+            <link>https://kaede-rei.github.io/posts/project/PiPER</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/project/PiPER</guid>
+            <pubDate>Sat, 04 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<div align="center">
+<h1>PiPER-ROS: Piper 机械臂 ROS 控制系统</h1>
+<p>一个基于 ROS Noetic + MoveIt 的 PiPER 机械臂控制框架，覆盖硬</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/project/PiPER" target="_blank">https://kaede-rei.github.io/posts/project/PiPER</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[Renesas-DM-Arm 激光除草 (RA6M5)]]></title>
+            <link>https://kaede-rei.github.io/posts/project/Renesas</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/project/Renesas</guid>
+            <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<div align="center">
+<p>一个面向 <strong>Renesas RA6M5</strong> 的六轴机械臂嵌入式控制工程，覆盖了从<strong>通信接入</strong>、<strong>运动学求解</strong>、<strong>电机控制</strong>到**任务状态机编</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/project/Renesas" target="_blank">https://kaede-rei.github.io/posts/project/Renesas</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+    </channel>
+</rss>

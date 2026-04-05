@@ -1,0 +1,38 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Kaede Rei の 小 窝",
+    "home_page_url": "https://kaede-rei.github.io/",
+    "feed_url": "https://kaede-rei.github.io/feed.json",
+    "description": "Kaede Rei 的技术博客与学习路径",
+    "icon": "https://kaede-rei.github.io/images/soyo.png",
+    "author": {
+        "name": "Kaede Rei",
+        "url": "https://github.com/Kaede-Rei"
+    },
+    "items": [
+        {
+            "id": "https://kaede-rei.github.io/posts/project/PiPER",
+            "content_html": "<div align=\"center\">\n<h1>PiPER-ROS: Piper 机械臂 ROS 控制系统</h1>\n<p>一个基于 ROS Noetic + MoveIt 的 PiPER 机械臂控制框架，覆盖硬</p>\n<br/><p>访问 <a href=\"https://kaede-rei.github.io/posts/project/PiPER\" target=\"_blank\">https://kaede-rei.github.io/posts/project/PiPER</a> 阅读全文。</p>",
+            "url": "https://kaede-rei.github.io/posts/project/PiPER",
+            "title": "PiPER 机械臂 ROS 控制系统",
+            "date_modified": "2026-04-04T00:00:00.000Z",
+            "date_published": "2026-04-04T00:00:00.000Z",
+            "author": {
+                "name": "Kaede Rei",
+                "url": "https://github.com/Kaede-Rei"
+            }
+        },
+        {
+            "id": "https://kaede-rei.github.io/posts/project/Renesas",
+            "content_html": "<div align=\"center\">\n<p>一个面向 <strong>Renesas RA6M5</strong> 的六轴机械臂嵌入式控制工程，覆盖了从<strong>通信接入</strong>、<strong>运动学求解</strong>、<strong>电机控制</strong>到**任务状态机编</p>\n<br/><p>访问 <a href=\"https://kaede-rei.github.io/posts/project/Renesas\" target=\"_blank\">https://kaede-rei.github.io/posts/project/Renesas</a> 阅读全文。</p>",
+            "url": "https://kaede-rei.github.io/posts/project/Renesas",
+            "title": "Renesas-DM-Arm 激光除草 (RA6M5)",
+            "date_modified": "2026-04-03T00:00:00.000Z",
+            "date_published": "2026-04-03T00:00:00.000Z",
+            "author": {
+                "name": "Kaede Rei",
+                "url": "https://github.com/Kaede-Rei"
+            }
+        }
+    ]
+}

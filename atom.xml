@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://kaede-rei.github.io/</id>
+    <title>Kaede Rei の 小 窝</title>
+    <updated>2026-04-05T08:10:53.520Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>Kaede Rei</name>
+        <email>i@valaxy.site</email>
+        <uri>https://github.com/Kaede-Rei</uri>
+    </author>
+    <link rel="alternate" href="https://kaede-rei.github.io/"/>
+    <link rel="self" href="https://kaede-rei.github.io/atom.xml"/>
+    <subtitle>Kaede Rei 的技术博客与学习路径</subtitle>
+    <logo>https://kaede-rei.github.io/images/soyo.png</logo>
+    <icon>https://kaede-rei.github.io/favicon.svg</icon>
+    <rights>CC BY-NC-SA 4.0 2026 © Kaede Rei</rights>
+    <entry>
+        <title type="html"><![CDATA[PiPER 机械臂 ROS 控制系统]]></title>
+        <id>https://kaede-rei.github.io/posts/project/PiPER</id>
+        <link href="https://kaede-rei.github.io/posts/project/PiPER"/>
+        <updated>2026-04-04T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<div align="center">
+<h1>PiPER-ROS: Piper 机械臂 ROS 控制系统</h1>
+<p>一个基于 ROS Noetic + MoveIt 的 PiPER 机械臂控制框架，覆盖硬</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/project/PiPER" target="_blank">https://kaede-rei.github.io/posts/project/PiPER</a> 阅读全文。</p>]]></content>
+        <author>
+            <name>Kaede Rei</name>
+            <email>i@valaxy.site</email>
+            <uri>https://github.com/Kaede-Rei</uri>
+        </author>
+        <published>2026-04-04T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Renesas-DM-Arm 激光除草 (RA6M5)]]></title>
+        <id>https://kaede-rei.github.io/posts/project/Renesas</id>
+        <link href="https://kaede-rei.github.io/posts/project/Renesas"/>
+        <updated>2026-04-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<div align="center">
+<p>一个面向 <strong>Renesas RA6M5</strong> 的六轴机械臂嵌入式控制工程，覆盖了从<strong>通信接入</strong>、<strong>运动学求解</strong>、<strong>电机控制</strong>到**任务状态机编</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/project/Renesas" target="_blank">https://kaede-rei.github.io/posts/project/Renesas</a> 阅读全文。</p>]]></content>
+        <author>
+            <name>Kaede Rei</name>
+            <email>i@valaxy.site</email>
+            <uri>https://github.com/Kaede-Rei</uri>
+        </author>
+        <published>2026-04-03T00:00:00.000Z</published>
+    </entry>
+</feed>
