@@ -2,6 +2,38 @@ import { defineAppSetup } from 'valaxy'
 
 const CODE_COLLAPSE_HEIGHT = 280
 const CODE_PRE_SELECTOR = '.markdown-body pre, .prose pre'
+const CODE_CONTAINER_SELECTOR = '.markdown-body, .prose'
+const ARTICLE_ROUTE_PREFIXES = ['/posts/', '/learning-path/']
+
+function isArticleRoute(path: string) {
+  return ARTICLE_ROUTE_PREFIXES.some(prefix => path.startsWith(prefix))
+}
+
+function nodeContainsCodePre(node: Node) {
+  if (!(node instanceof HTMLElement))
+    return false
+
+  return node.matches(CODE_PRE_SELECTOR) || Boolean(node.querySelector(CODE_PRE_SELECTOR))
+}
+
+function shouldRefreshFromMutations(records: MutationRecord[]) {
+  for (const record of records) {
+    if (record.type !== 'childList')
+      continue
+
+    for (const node of record.addedNodes) {
+      if (nodeContainsCodePre(node))
+        return true
+    }
+
+    for (const node of record.removedNodes) {
+      if (nodeContainsCodePre(node))
+        return true
+    }
+  }
+
+  return false
+}
 
 function getCodeContainer(pre: HTMLElement) {
   const parent = pre.parentElement
@@ -128,55 +160,104 @@ export default defineAppSetup(({ isClient, router }) => {
 
   let mutationObserver: MutationObserver | null = null
   let mutationRefreshTimer: number | null = null
+  let resizeRefreshTimer: number | null = null
+  let isCodeCollapseEnabled = false
 
   const refreshCodeBlocks = () => {
+    if (!isCodeCollapseEnabled)
+      return
+
     requestAnimationFrame(() => {
       setupAllCodeBlocks()
     })
 
     // Route/component hydration can finish slightly later than the first frame.
-    window.setTimeout(setupAllCodeBlocks, 140)
-    window.setTimeout(setupAllCodeBlocks, 420)
+    window.setTimeout(setupAllCodeBlocks, 180)
+  }
+
+  const cleanupMutationTimer = () => {
+    if (!mutationRefreshTimer)
+      return
+
+    clearTimeout(mutationRefreshTimer)
+    mutationRefreshTimer = null
+  }
+
+  const stopCodeObserver = () => {
+    mutationObserver?.disconnect()
+    mutationObserver = null
+    cleanupMutationTimer()
   }
 
   const ensureCodeObserver = () => {
     if (mutationObserver)
       return
 
-    mutationObserver = new MutationObserver(() => {
-      if (mutationRefreshTimer)
-        clearTimeout(mutationRefreshTimer)
+    mutationObserver = new MutationObserver((records) => {
+      if (!isCodeCollapseEnabled || !shouldRefreshFromMutations(records))
+        return
+
+      cleanupMutationTimer()
 
       mutationRefreshTimer = window.setTimeout(() => {
         setupAllCodeBlocks()
-      }, 90)
+      }, 120)
     })
 
-    mutationObserver.observe(document.body, {
+    const observeTarget = document.querySelector(CODE_CONTAINER_SELECTOR) ?? document.body
+    mutationObserver.observe(observeTarget, {
       childList: true,
       subtree: true,
     })
   }
 
-  router.isReady().then(() => {
+  const updateCodeCollapseMode = (path: string) => {
+    const nextEnabled = isArticleRoute(path)
+    if (nextEnabled === isCodeCollapseEnabled)
+      return
+
+    isCodeCollapseEnabled = nextEnabled
+
+    if (!isCodeCollapseEnabled) {
+      stopCodeObserver()
+      return
+    }
+
     refreshCodeBlocks()
     ensureCodeObserver()
+  }
+
+  const onResize = () => {
+    if (!isCodeCollapseEnabled)
+      return
+
+    if (resizeRefreshTimer)
+      clearTimeout(resizeRefreshTimer)
+
+    resizeRefreshTimer = window.setTimeout(() => {
+      refreshCodeBlocks()
+    }, 160)
+  }
+
+  router.isReady().then(() => {
+    updateCodeCollapseMode(router.currentRoute.value.path)
+    refreshCodeBlocks()
   })
 
-  router.afterEach(() => {
+  router.afterEach((to) => {
+    updateCodeCollapseMode(to.path)
     refreshCodeBlocks()
   })
 
   window.addEventListener('load', refreshCodeBlocks, { once: true })
-  window.addEventListener('resize', refreshCodeBlocks, { passive: true })
+  window.addEventListener('resize', onResize, { passive: true })
 
   window.addEventListener('beforeunload', () => {
-    mutationObserver?.disconnect()
-    mutationObserver = null
+    stopCodeObserver()
 
-    if (mutationRefreshTimer) {
-      clearTimeout(mutationRefreshTimer)
-      mutationRefreshTimer = null
+    if (resizeRefreshTimer) {
+      clearTimeout(resizeRefreshTimer)
+      resizeRefreshTimer = null
     }
   }, { once: true })
 })

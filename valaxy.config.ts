@@ -3,6 +3,16 @@ import { defineValaxyConfig } from 'valaxy'
 export default defineValaxyConfig({
   theme: 'sakura',
 
+  vite: {
+    build: {
+      rolldownOptions: {
+        checks: {
+          pluginTimings: false,
+        },
+      },
+    },
+  },
+
   themeConfig: {
     ui: {
       primary: '#ffaf4ef1',

@@ -6,4 +6,4 @@ links: https://friends.yunyoujun.cn/links.json
 random: true
 ---
 
-<YunLinks :links="frontmatter.links" :random="frontmatter.random" />
+<SakuraLinks :links="frontmatter.links" :random="frontmatter.random" />
