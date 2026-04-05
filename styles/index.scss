@@ -526,9 +526,11 @@ pre {
 
 .markdown-body .code-collapse-container > button.code-collapse-toggle,
 .prose .code-collapse-container > button.code-collapse-toggle {
+  min-width: 64px;
+  justify-content: center;
   position: absolute;
-  top: 8px;
-  right: 56px;
+  top: 16px;
+  right: 8px;
   bottom: auto;
   z-index: 7;
   border: 1px solid rgba(120, 94, 54, 0.22);
@@ -558,6 +560,24 @@ pre {
 
 footer {
   background: transparent !important;
+}
+
+/* 折叠代码块时：给右上角展开按钮让位 */
+.markdown-body .code-collapse-container.is-code-collapsible .copy,
+.prose .code-collapse-container.is-code-collapsible .copy,
+.markdown-body .code-collapse-container.is-code-collapsible .copy-button,
+.prose .code-collapse-container.is-code-collapsible .copy-button,
+.markdown-body .code-collapse-container.is-code-collapsible [class*='copy'],
+.prose .code-collapse-container.is-code-collapsible [class*='copy'] {
+  right: 76px !important;
+}
+
+/* 如果复制成功提示是伪元素/内部文字，也一起留出空间 */
+.markdown-body .code-collapse-container.is-code-collapsible .copy::after,
+.prose .code-collapse-container.is-code-collapsible .copy::after,
+.markdown-body .code-collapse-container.is-code-collapsible .copy-button::after,
+.prose .code-collapse-container.is-code-collapsible .copy-button::after {
+  margin-right: 0 !important;
 }
 
 /* =========================
