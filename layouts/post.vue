@@ -211,7 +211,11 @@ async function buildToc() {
 
   optimizeArticleImages(root)
 
-  const headings = Array.from(root.querySelectorAll('h2, h3, h4')) as HTMLElement[]
+  let headings = Array.from(root.querySelectorAll('h2, h3, h4')) as HTMLElement[]
+
+  if (headings.length === 0)
+    headings = Array.from(root.querySelectorAll('h1, h2, h3, h4')) as HTMLElement[]
+
   const usedIds = new Map<string, number>()
 
   const items: TocItem[] = headings
@@ -367,11 +371,11 @@ onUnmounted(() => {
 <template>
   <SakuraPage class="sakura-post-drawer-layout">
     <template #header>
-      <SakuraPostHeader :fm="frontmatter" />
+      <SakuraPostHeader :key="route.fullPath" :fm="frontmatter" />
     </template>
 
     <RouterView v-slot="{ Component }">
-      <component :is="Component">
+      <component :is="Component" :key="route.fullPath">
         <template #main-content-after>
           <SakuraSponsor v-if="showSponsor" />
           <ValaxyCopyright
@@ -471,6 +475,18 @@ onUnmounted(() => {
     width: 100% !important;
     max-width: none !important;
     padding-block: 24px;
+  }
+
+  /* Prevent SakuraPage default side columns (150/250px each) from squeezing post content. */
+  :deep(.sakura-triple-columns) {
+    grid-template-columns: 0 minmax(0, 1fr) 0 !important;
+    gap: 0 !important;
+  }
+
+  :deep(.sakura-triple-columns > aside) {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 }
 

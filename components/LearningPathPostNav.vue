@@ -14,6 +14,11 @@ const route = useRoute()
 const router = useRouter()
 const themeConfig = useThemeConfig()
 const [blogPrev, blogNext] = usePrevNext()
+const LEARNING_PATH_PREFIX = '/learning-path'
+const TRACK_ORDER = new Map<string, number>([
+  ['electrical-control', 0],
+  ['arm-motion-control', 1],
+])
 
 const navigationMerge = computed(() => themeConfig.value.postFooter?.navigationMerge || false)
 
@@ -24,21 +29,30 @@ function normalizePath(path: string) {
   return path
 }
 
-function parseLearningPathArticle(path: string) {
+function parseLearningPathRoute(path: string) {
   const normalizedPath = normalizePath(path)
-  const match = normalizedPath.match(/^\/learning-path\/([^/]+)\/([^/]+)$/)
-  if (!match)
+  if (!normalizedPath.startsWith(`${LEARNING_PATH_PREFIX}/`))
     return null
 
-  const [, track, slug] = match
-  if (!slug || slug === 'index')
+  const relative = normalizedPath.slice(`${LEARNING_PATH_PREFIX}/`.length)
+  const segments = relative.split('/').filter(Boolean)
+  if (segments.length === 0)
     return null
 
   return {
-    track,
-    slug,
-    base: `/learning-path/${track}`,
+    normalizedPath,
+    relative,
+    segments,
+    track: segments[0],
   }
+}
+
+function parseLearningPathArticle(path: string) {
+  const parsed = parseLearningPathRoute(path)
+  if (!parsed)
+    return null
+
+  return parsed
 }
 
 function isStepSlug(slug: string) {
@@ -80,27 +94,86 @@ function compareLearningSlug(a: string, b: string) {
   return a.localeCompare(b, 'zh-CN')
 }
 
+function compareLearningSegment(a: string, b: string) {
+  if (a === b)
+    return 0
+
+  const aPhase = a.match(/^phase-(\d+)$/i)
+  const bPhase = b.match(/^phase-(\d+)$/i)
+  if (aPhase && bPhase)
+    return Number.parseInt(aPhase[1], 10) - Number.parseInt(bPhase[1], 10)
+
+  if (aPhase)
+    return -1
+
+  if (bPhase)
+    return 1
+
+  return compareLearningSlug(a, b)
+}
+
+function compareLearningPathItem(a: NavItem, b: NavItem) {
+  const pa = parseLearningPathRoute(a.path)
+  const pb = parseLearningPathRoute(b.path)
+  if (!pa || !pb)
+    return a.path.localeCompare(b.path, 'zh-CN')
+
+  const ar = TRACK_ORDER.get(pa.track)
+  const br = TRACK_ORDER.get(pb.track)
+  if (ar !== undefined || br !== undefined) {
+    if (ar === undefined)
+      return 1
+    if (br === undefined)
+      return -1
+    if (ar !== br)
+      return ar - br
+  }
+  else if (pa.track !== pb.track) {
+    return pa.track.localeCompare(pb.track, 'zh-CN')
+  }
+
+  const aRest = pa.segments.slice(1)
+  const bRest = pb.segments.slice(1)
+  const maxLen = Math.max(aRest.length, bRest.length)
+
+  for (let i = 0; i < maxLen; i++) {
+    const av = aRest[i]
+    const bv = bRest[i]
+
+    if (av == null)
+      return -1
+
+    if (bv == null)
+      return 1
+
+    const compared = compareLearningSegment(av, bv)
+    if (compared !== 0)
+      return compared
+  }
+
+  return pa.normalizedPath.localeCompare(pb.normalizedPath, 'zh-CN')
+}
+
 const learningPathNav = computed(() => {
   const matched = parseLearningPathArticle(route.path)
   if (!matched)
     return null
-
-  const sectionPrefix = `${matched.base}/`
   const currentPath = normalizePath(route.path)
   const itemMap = new Map<string, NavItem>()
 
   router
     .getRoutes()
     .filter(record => !record.aliasOf)
-    .filter(record => normalizePath(record.path).startsWith(sectionPrefix))
-    .filter((record) => {
-      const path = normalizePath(record.path)
-      return path !== matched.base && path !== `${matched.base}/`
-    })
-    .filter(record => /^\/learning-path\/[^/]+\/[^/]+$/.test(normalizePath(record.path)))
+    .filter(record => !record.path.includes(':'))
+    .filter(record => normalizePath(record.path).startsWith(`${LEARNING_PATH_PREFIX}/`))
+    .filter(record => normalizePath(record.path) !== LEARNING_PATH_PREFIX)
     .map((record) => {
       const path = normalizePath(record.path)
-      const slug = path.slice(sectionPrefix.length)
+      const parsed = parseLearningPathRoute(path)
+      if (!parsed)
+        return null
+
+      const slug = parsed.relative
       const frontmatter = (record.meta?.frontmatter || {}) as Record<string, unknown>
       const title = typeof frontmatter.title === 'string' && frontmatter.title.trim().length > 0
         ? frontmatter.title.trim()
@@ -116,7 +189,7 @@ const learningPathNav = computed(() => {
         cover,
       } satisfies NavItem
     })
-    .filter(item => item.slug !== 'index')
+    .filter((item): item is NavItem => item !== null)
     .filter(item => !/\.html?$/i.test(item.slug))
     .forEach((item) => {
       const existed = itemMap.get(item.path)
@@ -133,7 +206,7 @@ const learningPathNav = computed(() => {
     })
 
   const items = Array.from(itemMap.values())
-    .sort((a, b) => compareLearningSlug(a.slug, b.slug))
+    .sort(compareLearningPathItem)
 
   const currentIndex = items.findIndex(item => item.path === currentPath)
   if (currentIndex < 0)
@@ -145,8 +218,8 @@ const learningPathNav = computed(() => {
   }
 })
 
-const prev = computed(() => learningPathNav.value?.prev ?? blogPrev.value)
-const next = computed(() => learningPathNav.value?.next ?? blogNext.value)
+const prev = computed(() => learningPathNav.value ? learningPathNav.value.prev : blogPrev.value)
+const next = computed(() => learningPathNav.value ? learningPathNav.value.next : blogNext.value)
 
 const prevLabel = computed(() => learningPathNav.value ? '上一节' : 'Previous Post')
 const nextLabel = computed(() => learningPathNav.value ? '下一节' : 'Next Post')

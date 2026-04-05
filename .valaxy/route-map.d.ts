@@ -83,6 +83,167 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/learning-path/arm-motion-control/phase-1/': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-1/',
+      '/learning-path/arm-motion-control/phase-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-1/1-1': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-1/1-1',
+      '/learning-path/arm-motion-control/phase-1/1-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-1/1-2': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-1/1-2',
+      '/learning-path/arm-motion-control/phase-1/1-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-1/1-3': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-1/1-3',
+      '/learning-path/arm-motion-control/phase-1/1-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-1/1-4': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-1/1-4',
+      '/learning-path/arm-motion-control/phase-1/1-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/',
+      '/learning-path/arm-motion-control/phase-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-1': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-1',
+      '/learning-path/arm-motion-control/phase-2/2-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-10': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-10',
+      '/learning-path/arm-motion-control/phase-2/2-10',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-11': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-11',
+      '/learning-path/arm-motion-control/phase-2/2-11',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-12': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-12',
+      '/learning-path/arm-motion-control/phase-2/2-12',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-13': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-13',
+      '/learning-path/arm-motion-control/phase-2/2-13',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-2': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-2',
+      '/learning-path/arm-motion-control/phase-2/2-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-3': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-3',
+      '/learning-path/arm-motion-control/phase-2/2-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-4': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-4',
+      '/learning-path/arm-motion-control/phase-2/2-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-5': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-5',
+      '/learning-path/arm-motion-control/phase-2/2-5',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-6': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-6',
+      '/learning-path/arm-motion-control/phase-2/2-6',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-7': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-7',
+      '/learning-path/arm-motion-control/phase-2/2-7',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-8': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-8',
+      '/learning-path/arm-motion-control/phase-2/2-8',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-2/2-9': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-2/2-9',
+      '/learning-path/arm-motion-control/phase-2/2-9',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-3/': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-3/',
+      '/learning-path/arm-motion-control/phase-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-3/3-1': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-3/3-1',
+      '/learning-path/arm-motion-control/phase-3/3-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-3/3-2': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-3/3-2',
+      '/learning-path/arm-motion-control/phase-3/3-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/arm-motion-control/phase-3/3-3': RouteRecordInfo<
+      '/learning-path/arm-motion-control/phase-3/3-3',
+      '/learning-path/arm-motion-control/phase-3/3-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/learning-path/electrical-control/': RouteRecordInfo<
       '/learning-path/electrical-control/',
       '/learning-path/electrical-control',
@@ -267,6 +428,144 @@ declare module 'vue-router/auto-routes' {
     'pages/learning-path/arm-motion-control/index.md': {
       routes:
         | '/learning-path/arm-motion-control/'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-1/index.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-1/'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-1/1-1.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-1/1-1'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-1/1-2.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-1/1-2'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-1/1-3.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-1/1-3'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-1/1-4.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-1/1-4'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/index.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-1.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-1'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-10.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-10'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-11.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-11'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-12.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-12'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-13.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-13'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-2.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-2'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-3.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-3'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-4.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-4'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-5.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-5'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-6.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-6'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-7.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-7'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-8.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-8'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-2/2-9.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-2/2-9'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-3/index.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-3/'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-3/3-1.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-3/3-1'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-3/3-2.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-3/3-2'
+      views:
+        | never
+    }
+    'pages/learning-path/arm-motion-control/phase-3/3-3.md': {
+      routes:
+        | '/learning-path/arm-motion-control/phase-3/3-3'
       views:
         | never
     }

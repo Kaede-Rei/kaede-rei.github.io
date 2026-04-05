@@ -441,14 +441,10 @@ pre {
 .has-post-layout .prose div[class*='language-'] {
   background: rgba(255, 255, 255, var(--post-code-opacity)) !important;
   border-color: rgba(255, 255, 255, var(--post-panel-border-opacity)) !important;
-  content-visibility: auto;
-  contain-intrinsic-size: 320px;
 }
 
 .has-post-layout .markdown-body table,
-.has-post-layout .prose table,
-.has-post-layout .markdown-body pre,
-.has-post-layout .prose pre {
+.has-post-layout .prose table {
   content-visibility: auto;
   contain-intrinsic-size: 280px;
 }
@@ -460,24 +456,25 @@ pre {
 }
 
 /* 代码块展开/收起 */
-.markdown-body div[class*='language-'] > button.code-block-unfold-btn,
-.prose div[class*='language-'] > button.code-block-unfold-btn {
+.markdown-body button.code-block-unfold-btn,
+.prose button.code-block-unfold-btn {
   display: none !important;
 }
 
-.markdown-body div[class*='language-'].is-code-collapsible pre,
-.prose div[class*='language-'].is-code-collapsible pre {
-  transition: max-height 0.28s ease;
-}
-
-.markdown-body div[class*='language-'].is-code-collapsed pre,
-.prose div[class*='language-'].is-code-collapsed pre {
+.markdown-body .code-collapse-container,
+.prose .code-collapse-container {
   position: relative;
 }
 
-.markdown-body div[class*='language-'].is-code-collapsed pre::after,
-.prose div[class*='language-'].is-code-collapsed pre::after {
-  content: '';
+.markdown-body .code-collapse-container.is-code-collapsible pre,
+.prose .code-collapse-container.is-code-collapsible pre,
+.markdown-body pre.code-collapse-container.is-code-collapsible,
+.prose pre.code-collapse-container.is-code-collapsible {
+  transition: max-height 0.28s ease;
+}
+
+.markdown-body .code-collapse-container > .code-collapse-fade,
+.prose .code-collapse-container > .code-collapse-fade {
   position: absolute;
   left: 0;
   right: 0;
@@ -485,10 +482,17 @@ pre {
   height: 54px;
   pointer-events: none;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(246, 242, 235, 0.95));
+  z-index: 6;
+  display: none;
 }
 
-.markdown-body div[class*='language-'] > button.code-collapse-toggle,
-.prose div[class*='language-'] > button.code-collapse-toggle {
+.markdown-body .code-collapse-container.is-code-collapsed > .code-collapse-fade,
+.prose .code-collapse-container.is-code-collapsed > .code-collapse-fade {
+  display: block;
+}
+
+.markdown-body .code-collapse-container > button.code-collapse-toggle,
+.prose .code-collapse-container > button.code-collapse-toggle {
   position: absolute;
   top: 8px;
   right: 56px;
@@ -507,14 +511,14 @@ pre {
   display: none;
 }
 
-.markdown-body div[class*='language-'].is-code-collapsible > button.code-collapse-toggle,
-.prose div[class*='language-'].is-code-collapsible > button.code-collapse-toggle {
+.markdown-body .code-collapse-container.is-code-collapsible > button.code-collapse-toggle,
+.prose .code-collapse-container.is-code-collapsible > button.code-collapse-toggle {
   display: inline-flex;
   align-items: center;
 }
 
-.markdown-body div[class*='language-'] > button.code-collapse-toggle:hover,
-.prose div[class*='language-'] > button.code-collapse-toggle:hover {
+.markdown-body .code-collapse-container > button.code-collapse-toggle:hover,
+.prose .code-collapse-container > button.code-collapse-toggle:hover {
   background: #fff;
   border-color: rgba(120, 94, 54, 0.35);
 }
