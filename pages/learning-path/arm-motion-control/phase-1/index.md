@@ -10,7 +10,7 @@ title: 第一阶段 - 理论与编程基础
 
 ## 目录
 
-### [1.1 机器人空间几何与运动学](/learning-path/arm-motion-control/phase-1/1-1.md)
-### [1.2 动力学与控制理论](/learning-path/arm-motion-control/phase-1/1-2.md)
-### [1.3 工程实现：C++ / Python](/learning-path/arm-motion-control/phase-1/1-3.md)
-### [1.4 数学建模验证：MATLAB](/learning-path/arm-motion-control/phase-1/1-4.md)
+### [1.1 机器人空间几何与运动学](/learning-path/arm-motion-control/phase-1/1-1)
+### [1.2 动力学与控制理论](/learning-path/arm-motion-control/phase-1/1-2)
+### [1.3 工程实现：C++ / Python](/learning-path/arm-motion-control/phase-1/1-3)
+### [1.4 数学建模验证：MATLAB](/learning-path/arm-motion-control/phase-1/1-4)

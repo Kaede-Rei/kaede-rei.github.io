@@ -13,10 +13,12 @@ cover: /images/covers/anon.png
 
 一个面向 **Renesas RA6M5** 的六轴机械臂嵌入式控制工程，覆盖了从**通信接入**、**运动学求解**、**电机控制**到**任务状态机编排**的完整主链路。
 
-![MCU](https://img.shields.io/badge/MCU-RA6M5-blue)
-![Toolchain](https://img.shields.io/badge/Build-CMake%20%2B%20Ninja-orange)
-![Framework](https://img.shields.io/badge/FSP-Renesas-green)
-![Language](https://img.shields.io/badge/Language-C%20%2F%20Python%20%2F%20MATLAB-lightgrey)
+<p>
+  <img src="https://img.shields.io/badge/MCU-RA6M5-blue" alt="MCU" style="display:inline-block; margin:0 .25rem .25rem 0;" />
+  <img src="https://img.shields.io/badge/Build-CMake%20%2B%20Ninja-orange" alt="Toolchain" style="display:inline-block; margin:0 .25rem .25rem 0;" />
+  <img src="https://img.shields.io/badge/FSP-Renesas-green" alt="Framework" style="display:inline-block; margin:0 .25rem .25rem 0;" />
+  <img src="https://img.shields.io/badge/Language-C%20%2F%20Python%20%2F%20MATLAB-lightgrey" alt="Language" style="display:inline-block; margin:0 .25rem .25rem 0;" />
+</p>
 
 </div>
 

@@ -10,6 +10,6 @@ title: 第三阶段 - 具身智能
 
 ## 目录
 
-### [3.1 数据驱动的机器人模仿学习（LeRobot）](/learning-path/arm-motion-control/phase-3/3-1.md)
-### [3.2 仿真环境的大规模强化学习（Isaac Sim）](/learning-path/arm-motion-control/phase-3/3-2.md)
-### [3.3 训练与推理部署](/learning-path/arm-motion-control/phase-3/3-3.md)
+### [3.1 数据驱动的机器人模仿学习（LeRobot）](/learning-path/arm-motion-control/phase-3/3-1)
+### [3.2 仿真环境的大规模强化学习（Isaac Sim）](/learning-path/arm-motion-control/phase-3/3-2)
+### [3.3 训练与推理部署](/learning-path/arm-motion-control/phase-3/3-3)

@@ -8,8 +8,8 @@ title: 学习路径
 
 ## 培养方向
 
-- [电控组学习路径](/learning-path/electrical-control/)
-- [机械臂运控组学习路径](/learning-path/arm-motion-control/)
+- [电控组学习路径](/learning-path/electrical-control)
+- [机械臂运控组学习路径](/learning-path/arm-motion-control)
 
 ## 说明
 

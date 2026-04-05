@@ -15,10 +15,12 @@ cover: /images/covers/ansy.png
 
 一个基于 ROS Noetic + MoveIt 的 PiPER 机械臂控制框架，覆盖硬件接入、运动规划、Action/Service 控制接口与 EEF 挂载能力。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![ROS: Noetic](https://img.shields.io/badge/ROS-Noetic-blue.svg)](http://wiki.ros.org/noetic)
-[![Framework: MoveIt!](https://img.shields.io/badge/Framework-MoveIt!-green.svg)](https://moveit.ros.org/)
-[![Hardware: PiPER](https://img.shields.io/badge/Hardware-PiPER-red.svg)](https://www.agilex.ai/)
+<p>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" style="display:inline-block; margin:0 .25rem .25rem 0;" /></a>
+  <a href="http://wiki.ros.org/noetic"><img src="https://img.shields.io/badge/ROS-Noetic-blue.svg" alt="ROS: Noetic" style="display:inline-block; margin:0 .25rem .25rem 0;" /></a>
+  <a href="https://moveit.ros.org/"><img src="https://img.shields.io/badge/Framework-MoveIt!-green.svg" alt="Framework: MoveIt!" style="display:inline-block; margin:0 .25rem .25rem 0;" /></a>
+  <a href="https://www.agilex.ai/"><img src="https://img.shields.io/badge/Hardware-PiPER-red.svg" alt="Hardware: PiPER" style="display:inline-block; margin:0 .25rem .25rem 0;" /></a>
+</p>
 
 </div>
 
