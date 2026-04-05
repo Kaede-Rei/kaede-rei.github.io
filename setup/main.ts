@@ -9,6 +9,10 @@ function isArticleRoute(path: string) {
   return ARTICLE_ROUTE_PREFIXES.some(prefix => path.startsWith(prefix))
 }
 
+function syncBodyPerformanceMode(path: string) {
+  document.body.classList.toggle('post-performance-mode', isArticleRoute(path))
+}
+
 function nodeContainsCodePre(node: Node) {
   if (!(node instanceof HTMLElement))
     return false
@@ -212,6 +216,7 @@ export default defineAppSetup(({ isClient, router }) => {
   }
 
   const updateCodeCollapseMode = (path: string) => {
+    syncBodyPerformanceMode(path)
     const nextEnabled = isArticleRoute(path)
     if (nextEnabled === isCodeCollapseEnabled)
       return
@@ -254,6 +259,7 @@ export default defineAppSetup(({ isClient, router }) => {
 
   window.addEventListener('beforeunload', () => {
     stopCodeObserver()
+    document.body.classList.remove('post-performance-mode')
 
     if (resizeRefreshTimer) {
       clearTimeout(resizeRefreshTimer)

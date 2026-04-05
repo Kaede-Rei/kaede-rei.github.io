@@ -57,6 +57,19 @@ body {
   overflow-x: hidden;
 }
 
+body.post-performance-mode {
+  background-color: var(--bg-fallback-color) !important;
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.82),
+      rgba(255, 255, 255, 0.82)
+    ),
+    url('/images/bg/ansy-bg.png') !important;
+  background-repeat: no-repeat, repeat-y !important;
+  background-position: center top, center top !important;
+  background-size: 100% 100%, var(--bg-image-width) auto !important;
+}
+
 /* 性能优化：减少全局重绘与离屏元素开销 */
 .sakura-card {
   will-change: auto !important;
@@ -423,6 +436,26 @@ article .prose h1,
 article .prose h2,
 article .prose h3 {
   color: #2f3440 !important;
+}
+
+body.post-performance-mode .post .markdown-body,
+body.post-performance-mode .post .prose,
+body.post-performance-mode article .markdown-body,
+body.post-performance-mode article .prose {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.post-performance-mode .post .markdown-body pre,
+body.post-performance-mode .post .prose pre,
+body.post-performance-mode article .markdown-body pre,
+body.post-performance-mode article .prose pre,
+body.post-performance-mode .sakura-post-footer,
+body.post-performance-mode .sakura-comment,
+body.post-performance-mode .sakura-post-nav .sakura-image-card {
+  box-shadow: none !important;
+  filter: none !important;
 }
 
 pre {

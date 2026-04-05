@@ -369,31 +369,35 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <SakuraPage class="sakura-post-drawer-layout">
-    <template #header>
+  <div class="sakura-post-drawer-layout sakura-post-shell">
+    <header class="sakura-post-shell-header">
       <SakuraPostHeader :key="route.fullPath" :fm="frontmatter" />
-    </template>
+    </header>
 
-    <RouterView v-slot="{ Component }">
-      <component :is="Component" :key="route.fullPath">
-        <template #main-content-after>
-          <SakuraSponsor v-if="showSponsor" />
-          <ValaxyCopyright
-            v-if="showCopyright"
-            :url="url"
-          />
-        </template>
-
-        <template #footer>
-          <SakuraPostFooter>
-            <template #nav>
-              <LearningPathPostNav />
+    <main class="sakura-post-shell-main">
+      <div class="sakura-post-shell-content">
+        <RouterView v-slot="{ Component }">
+          <component :is="Component" :key="route.fullPath">
+            <template #main-content-after>
+              <SakuraSponsor v-if="showSponsor" />
+              <ValaxyCopyright
+                v-if="showCopyright"
+                :url="url"
+              />
             </template>
-          </SakuraPostFooter>
-        </template>
-      </component>
-    </RouterView>
-  </SakuraPage>
+
+            <template #footer>
+              <SakuraPostFooter>
+                <template #nav>
+                  <LearningPathPostNav />
+                </template>
+              </SakuraPostFooter>
+            </template>
+          </component>
+        </RouterView>
+      </div>
+    </main>
+  </div>
 
   <ClientOnly>
     <Teleport to="body">
@@ -470,23 +474,34 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.sakura-post-shell {
+  width: 100%;
+}
+
+.sakura-post-shell-header {
+  width: 100%;
+}
+
+.sakura-post-shell-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sakura-post-shell-content {
+  width: min(92vw, 1320px);
+  margin: 0 auto;
+  padding-block: 24px;
+  contain: layout;
+}
+
 .sakura-post-drawer-layout {
-  :deep(.sakura-page-content) {
-    width: 100% !important;
-    max-width: none !important;
-    padding-block: 24px;
-  }
-
-  /* Prevent SakuraPage default side columns (150/250px each) from squeezing post content. */
-  :deep(.sakura-triple-columns) {
-    grid-template-columns: 0 minmax(0, 1fr) 0 !important;
-    gap: 0 !important;
-  }
-
-  :deep(.sakura-triple-columns > aside) {
-    width: 0 !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
+  :deep(.sakura-post-footer),
+  :deep(.sakura-comment),
+  :deep(.sakura-post-nav) {
+    content-visibility: auto;
+    contain-intrinsic-size: 220px;
   }
 }
 
