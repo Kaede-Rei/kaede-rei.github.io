@@ -494,8 +494,8 @@ onUnmounted(() => {
 }
 
 .sakura-post-shell-content {
-  width: 100%;
-  max-width: 100%;
+  width: 90%;
+  max-width: 90%;
   margin-inline: auto;
   padding-block: 24px;
   contain: layout;

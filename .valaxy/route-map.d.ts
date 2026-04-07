@@ -349,6 +349,13 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
+    '/posts/notes/X-Macro + 单例模式': RouteRecordInfo<
+      '/posts/notes/X-Macro + 单例模式',
+      '/posts/notes/X-Macro%20+%20%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/project/PiPER': RouteRecordInfo<
       '/posts/project/PiPER',
       '/posts/project/PiPER',
@@ -656,6 +663,12 @@ declare module 'vue-router/auto-routes' {
     'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__e04e6cbfae6fe749bc87e0239ee6324b/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
+      views:
+        | never
+    }
+    'pages/posts/notes/X-Macro + 单例模式.md': {
+      routes:
+        | '/posts/notes/X-Macro + 单例模式'
       views:
         | never
     }
