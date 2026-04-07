@@ -39,6 +39,7 @@ html {
   min-height: 100%;
   margin: -10px 0;
   background: var(--bg-fallback-color);
+  scrollbar-gutter: stable;
 }
 
 body {

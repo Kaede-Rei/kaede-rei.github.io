@@ -374,7 +374,7 @@ onUnmounted(() => {
       <SakuraPostHeader :key="route.fullPath" :fm="frontmatter" />
     </header>
 
-    <main class="sakura-post-shell-main">
+    <section class="sakura-post-shell-main">
       <div class="sakura-post-shell-content">
         <RouterView v-slot="{ Component }">
           <component :is="Component" :key="route.fullPath">
@@ -396,7 +396,7 @@ onUnmounted(() => {
           </component>
         </RouterView>
       </div>
-    </main>
+    </section>
   </div>
 
   <ClientOnly>
@@ -480,6 +480,10 @@ onUnmounted(() => {
 
 .sakura-post-shell-header {
   width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-block: 24px;
+  contain: layout;
 }
 
 .sakura-post-shell-main {
@@ -490,8 +494,9 @@ onUnmounted(() => {
 }
 
 .sakura-post-shell-content {
-  width: min(92vw, 1320px);
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
   padding-block: 24px;
   contain: layout;
 }
