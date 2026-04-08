@@ -11,9 +11,12 @@ importers:
       valaxy:
         specifier: 0.28.4
         version: 0.28.4(@babel/parser@7.29.2)(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@nuxt/kit@3.21.2(magicast@0.5.2))(@types/markdown-it@14.1.2)(@types/node@25.5.0)(@vue/compiler-dom@3.5.31)(@vue/compiler-sfc@3.5.31)(axios@1.14.0)(eslint@10.1.0(jiti@2.6.1))(postcss@8.5.8)(terser@5.46.1)(typescript@5.9.3)(yaml@2.8.3)
+      valaxy-addon-vercount:
+        specifier: ^0.0.7
+        version: 0.0.7
       valaxy-theme-sakura:
         specifier: ^0.10.2
-        version: 0.10.2(@nuxt/kit@3.21.2(magicast@0.5.2))(valaxy-addon-hitokoto@0.0.1)(valaxy-addon-vercount@0.0.6)(vue@3.5.22(typescript@5.9.3))
+        version: 0.10.2(@nuxt/kit@3.21.2(magicast@0.5.2))(valaxy-addon-hitokoto@0.0.1)(valaxy-addon-vercount@0.0.7)(vue@3.5.22(typescript@5.9.3))
       valaxy-theme-yun:
         specifier: 0.28.4
         version: 0.28.4(magicast@0.5.2)(vue@3.5.22(typescript@5.9.3))
@@ -3520,8 +3523,8 @@ packages:
   valaxy-addon-hitokoto@0.0.1:
     resolution: {integrity: sha512-N+1dl3gwxeoTraT+r7gvNfTUHIjapBNHXj/urILdKQFfji++s7ELqeCNoyyOLUpvLJJOPSfObkJ9MKDsfCm8FA==}
 
-  valaxy-addon-vercount@0.0.6:
-    resolution: {integrity: sha512-FqxULU81LofkpSvAzxXmdF4utV3tnKzEKAGYSGyV+i8cYJcf1s+4mbM3PtgYEeP5anLzXBAA/e4+pc0Z0h+Gbw==}
+  valaxy-addon-vercount@0.0.7:
+    resolution: {integrity: sha512-hWJLvMM4xrbWlXaIF/MMDsQznTCFauSC2H7NmCiWhssQ6bEVuLcLIKGQ2YOd7DmswmhwZKmHSSylkVgq+6dLqQ==}
 
   valaxy-theme-sakura@0.10.2:
     resolution: {integrity: sha512-lZyC5TGRcjwiQDvls1r40UwKHHdxjK51D5/CV9JMZsx8NO1uiWLOLD+XDxAXGVvLDas/aDUiAbIm7Pr+3X/yXQ==}
@@ -7600,12 +7603,12 @@ snapshots:
 
   valaxy-addon-hitokoto@0.0.1: {}
 
-  valaxy-addon-vercount@0.0.6:
+  valaxy-addon-vercount@0.0.7:
     dependencies:
       peerjs: 1.5.5
       uuid: 10.0.0
 
-  valaxy-theme-sakura@0.10.2(@nuxt/kit@3.21.2(magicast@0.5.2))(valaxy-addon-hitokoto@0.0.1)(valaxy-addon-vercount@0.0.6)(vue@3.5.22(typescript@5.9.3)):
+  valaxy-theme-sakura@0.10.2(@nuxt/kit@3.21.2(magicast@0.5.2))(valaxy-addon-hitokoto@0.0.1)(valaxy-addon-vercount@0.0.7)(vue@3.5.22(typescript@5.9.3)):
     dependencies:
       '@ctrl/tinycolor': 4.2.0
       '@iconify-json/fa6-solid': 1.2.4
@@ -7614,7 +7617,7 @@ snapshots:
       lenis: 1.3.21(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3))
       typeit: 8.8.7
       valaxy-addon-hitokoto: 0.0.1
-      valaxy-addon-vercount: 0.0.6
+      valaxy-addon-vercount: 0.0.7
       vue-progressive-image: 5.0.6(vue@3.5.22(typescript@5.9.3))
     transitivePeerDependencies:
       - '@nuxt/kit'

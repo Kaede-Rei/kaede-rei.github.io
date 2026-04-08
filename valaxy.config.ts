@@ -1,7 +1,15 @@
 import { defineValaxyConfig } from 'valaxy'
+import { addonVercount } from 'valaxy-addon-vercount'
 
 export default defineValaxyConfig({
   theme: 'sakura',
+
+  addons: [
+    addonVercount({
+      api: 'cn',
+      placeholder: '-',
+    }),
+  ],
 
   vite: {
     build: {

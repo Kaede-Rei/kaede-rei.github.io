@@ -349,23 +349,23 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
+    '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）': RouteRecordInfo<
+      '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）',
+      '/posts/notes/%E6%97%A7%E6%A0%87%E5%87%86%20c++%20%E4%B8%8B%E7%9A%84%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88TL%20%E5%BA%93%EF%BC%89',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/posts/notes/micromamba 构建移动环境': RouteRecordInfo<
+      '/posts/notes/micromamba 构建移动环境',
+      '/posts/notes/micromamba%20%E6%9E%84%E5%BB%BA%E7%A7%BB%E5%8A%A8%E7%8E%AF%E5%A2%83',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/notes/X-Macro + 单例模式': RouteRecordInfo<
       '/posts/notes/X-Macro + 单例模式',
       '/posts/notes/X-Macro%20+%20%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/posts/project/PiPER': RouteRecordInfo<
-      '/posts/project/PiPER',
-      '/posts/project/PiPER',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/posts/project/Renesas': RouteRecordInfo<
-      '/posts/project/Renesas',
-      '/posts/project/Renesas',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -390,7 +390,7 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export interface _RouteFileInfoMap {
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__e04e6cbfae6fe749bc87e0239ee6324b/node_modules/valaxy-theme-sakura/pages/index.vue': {
+    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/index.vue': {
       routes:
         | '/'
       views:
@@ -660,27 +660,27 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__e04e6cbfae6fe749bc87e0239ee6324b/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
+    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
+      views:
+        | never
+    }
+    'pages/posts/notes/旧标准 c++ 下的函数式编程（TL 库）.md': {
+      routes:
+        | '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）'
+      views:
+        | never
+    }
+    'pages/posts/notes/micromamba 构建移动环境.md': {
+      routes:
+        | '/posts/notes/micromamba 构建移动环境'
       views:
         | never
     }
     'pages/posts/notes/X-Macro + 单例模式.md': {
       routes:
         | '/posts/notes/X-Macro + 单例模式'
-      views:
-        | never
-    }
-    'pages/posts/project/PiPER.md': {
-      routes:
-        | '/posts/project/PiPER'
-      views:
-        | never
-    }
-    'pages/posts/project/Renesas.md': {
-      routes:
-        | '/posts/project/Renesas'
       views:
         | never
     }
