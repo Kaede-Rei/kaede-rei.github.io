@@ -6,7 +6,7 @@ categories: 笔记
 tags:
   - 环境配置
 top: 2
-cover: /images/covers/anon.jpg
+cover: /images/covers/anon.png
 ---
 
 ## 1. 引言
