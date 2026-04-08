@@ -1,5 +1,5 @@
 ---
-title: TL 库 + 单子
+title: 旧标准 c++ 下的函数式编程（TL 库）
 date: 2026-04-08
 updated: 2026-04-08
 categories: 笔记
@@ -24,6 +24,15 @@ cover: /images/covers/ansy.jpg
 虽然 C++ 自 C++17 起逐步引入了 std::optional 和 std::expected 来尝试标准化这一范式，但直到 C++23 才有完整的链式操作（如 and_then, transform）支持；这使得在旧标准或跨平台项目中难以享受到现代函数式的便利
 
 而 TL 库（TartanLlama Libraries）填补了这一空白，该库作为一个兼容 C++11/14/17 的现代库，它提供了 tl::optional 和 tl::expected 等完整实现；通过支持 and_then、map/transform、or_else 等操作符，TL 库可以在旧生产环境中即可构建出语义清晰、错误可追踪且高度组合化的链式代码
+
+仓库地址：
+
+- [tl::optional](https://github.com/TartanLlama/optional)
+- [tl::expected](https://github.com/TartanLlama/expected)
+
+官方文档：
+
+- [tl libraries](https://tl.tartanllama.xyz/en/latest/)
 
 ## 2. `tl::optional` 简介
 
