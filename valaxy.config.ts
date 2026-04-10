@@ -87,7 +87,7 @@ export default defineValaxyConfig({
           title: '学习路径',
           desc: 'AgroTech 协会培养路线',
           link: '/learning-path',
-          img: '/images/pinned/path.jpg',
+          img: '/images/pinned/path.png',
         },
         {
           title: 'GitHub',
