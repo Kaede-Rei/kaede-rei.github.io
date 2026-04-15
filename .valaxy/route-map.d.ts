@@ -349,6 +349,13 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
+    '/posts/notes/层级状态机': RouteRecordInfo<
+      '/posts/notes/层级状态机',
+      '/posts/notes/%E5%B1%82%E7%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）': RouteRecordInfo<
       '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）',
       '/posts/notes/%E6%97%A7%E6%A0%87%E5%87%86%20c++%20%E4%B8%8B%E7%9A%84%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88TL%20%E5%BA%93%EF%BC%89',
@@ -663,6 +670,12 @@ declare module 'vue-router/auto-routes' {
     'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
+      views:
+        | never
+    }
+    'pages/posts/notes/层级状态机.md': {
+      routes:
+        | '/posts/notes/层级状态机'
       views:
         | never
     }
