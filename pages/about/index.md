@@ -26,6 +26,7 @@ toc: true
   <img src="https://img.shields.io/badge/-C-000000?style=flat-square&logo=c&logoColor=white" alt="C" />
   <img src="https://img.shields.io/badge/-C++-5C3EE8?style=flat-square&logo=cplusplus&logoColor=white" alt="C++" />
   <img src="https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/-Rust-000000?style=flat-square&logo=rust" alt="Rust" />
 </div>
 
 ### 🔹 嵌入式系统
@@ -33,6 +34,7 @@ toc: true
   <img src="https://img.shields.io/badge/-STM32-03234B?style=flat-square" alt="STM32" />
   <img src="https://img.shields.io/badge/-Renesas-CC0000?style=flat-square" alt="Renesas" />
   <img src="https://img.shields.io/badge/-ESP32-E7352C?style=flat-square" alt="ESP32" />
+  <img src="https://img.shields.io/badge/-Arduino-00979D?style=flat-square&logo=arduino&logoColor=white" alt="Arduino" />
   <img src="https://img.shields.io/badge/-CAN%20Bus-00599C?style=flat-square" alt="CAN Bus" />
   <img src="https://img.shields.io/badge/-RTOS-5C3EE8?style=flat-square" alt="RTOS" />
   <img src="https://img.shields.io/badge/-LVGL-FF6F00?style=flat-square" alt="LVGL" />
@@ -44,10 +46,13 @@ toc: true
 <div class="about-badges">
   <img src="https://img.shields.io/badge/-Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux" />
   <img src="https://img.shields.io/badge/-CMake-064F8C?style=flat-square&logo=cmake&logoColor=white" alt="CMake" />
+  <img src="https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white" alt="Git" />
   <img src="https://img.shields.io/badge/-ROS1%2F2-22314E?style=flat-square&logo=ros" alt="ROS1/2" />
   <img src="https://img.shields.io/badge/-MATLAB-0076A8?style=flat-square" alt="MATLAB" />
   <img src="https://img.shields.io/badge/-MoveIt1%2F2-FF6F00?style=flat-square" alt="MoveIt1/2" />
   <img src="https://img.shields.io/badge/-Pinocchio-EE7C21?style=flat-square" alt="Pinocchio" />
+  <img src="https://img.shields.io/badge/-Gazebo-5C3EE8?style=flat-square&logo=gazebo&logoColor=white" alt="Gazebo" />
+  <img src="https://img.shields.io/badge/-RViz-5C3EE8?style=flat-square&logo=ros" alt="RViz" />
   <img src="https://img.shields.io/badge/-OpenCV-5C3EE8?style=flat-square&logo=opencv" alt="OpenCV" />
   <img src="https://img.shields.io/badge/-🤗%20LeRobot-E7352C?style=flat-square" alt="LeRobot" />
 </div>
@@ -56,7 +61,6 @@ toc: true
 <div class="about-badges">
   <img src="https://img.shields.io/badge/-NVIDIA%20Isaac-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="Isaac" />
   <img src="https://img.shields.io/badge/-Qt-41CD52?style=flat-square&logo=qt&logoColor=white" alt="Qt" />
-  <img src="https://img.shields.io/badge/-Rust-000000?style=flat-square&logo=rust" alt="Rust" />
 </div>
 
 ## 🛠 核心能力与关注点
