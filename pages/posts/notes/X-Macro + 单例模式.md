@@ -251,7 +251,7 @@ static const std::array<Entry, static_cast<std::size_t>(ArmCmdType::MAX)> kTable
 /**
  * @brief 电机单例，用户自定义名称
  */
-#define motor motor_instance
+#define motor (*motor_instance)
 
 /**
  * @brief 电机实例
@@ -378,7 +378,10 @@ extern const struct MotorInterface {
      * @return MotorStatus 枚举类型，表示操作结果
      */
     MotorStatus(*update)(MotorFeedback* feedback);
-} motor_instance;
+}* motor_instance;
+
+extern const struct MotorInterface dm_motor_instance;
+extern const struct MotorInterface sim_motor_instance;
 
 void set_motor_instance(const struct MotorInterface* instance);
 
@@ -394,7 +397,7 @@ void set_motor_instance(const struct MotorInterface* instance);
 
 void init_system() {
     // 根据配置或运行时条件选择电机实现
-    set_motor_instance(&d_dm_motor_instance);
+    set_motor_instance(&dm_motor_instance);
 }
 
 void switch_motor() {
