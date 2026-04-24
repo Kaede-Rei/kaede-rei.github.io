@@ -9,7 +9,7 @@ tags:
   - 接口设计
   - 代码组织
 top: 2
-cover: /images/covers/ansy2.png
+cover: /images/covers/ansy1.png
 ---
 
 ## 1. 引言
