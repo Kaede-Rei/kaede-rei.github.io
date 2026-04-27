@@ -7,7 +7,7 @@ tags:
   - C
   - 代码组织
   - 接口设计
-top: 1
+top: 2
 cover: /images/covers/ansy2.png
 ---
 
