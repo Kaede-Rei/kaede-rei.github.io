@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Kaede Rei の 小 窝</title>
+        <link>https://kaede-rei.github.io/</link>
+        <description>Kaede Rei 的技术博客与学习路径</description>
+        <lastBuildDate>Mon, 27 Apr 2026 14:47:32 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <image>
+            <title>Kaede Rei の 小 窝</title>
+            <url>https://kaede-rei.github.io/images/soyo.png</url>
+            <link>https://kaede-rei.github.io/</link>
+        </image>
+        <copyright>CC BY-NC-SA 4.0 2026 © Kaede Rei</copyright>
+        <atom:link href="https://kaede-rei.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[关于 C 语言模拟 OOP 的设计边界]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/关于 C 语言模拟 OOP 的设计边界</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/关于 C 语言模拟 OOP 的设计边界</guid>
+            <pubDate>Mon, 27 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在使用 C 语言开发控制系统、嵌入式驱动或机器人底层模块时，几乎总会遇到一个问题：</p>
+<blockquote>
+<p>C 语言没有类、继承、虚函数和访问控制，但工程规模一旦变大，又不可避免地需要“模块化”“</p>
+</blockquote>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/关于 C 语言模拟 OOP 的设计边界" target="_blank">https://kaede-rei.github.io/posts/notes/关于 C 语言模拟 OOP 的设计边界</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[Pinocchio 动力学前馈]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/机械臂动力学</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/机械臂动力学</guid>
+            <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在机械臂控制链路的调试过程中，一个很常见的问题是：</p>
+<ul>
+<li>机械臂能够跟随目标，但静态保持偏软；</li>
+<li>为了托住大关节，不得不持续提高 $k_p$；</li>
+<li>$k_p$ 提高之后，系统虽</li>
+</ul>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/机械臂动力学" target="_blank">https://kaede-rei.github.io/posts/notes/机械臂动力学</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[嵌入式任务编排 - 层级有限状态机(HFSM)]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/层级状态机</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/层级状态机</guid>
+            <pubDate>Fri, 10 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在嵌入式业务中，只要流程足够长，状态机最终都会出现；典型过程通常并不复杂：初始化、等待指令、准备目标、执行动作、等待反馈、处理异常、结束复位；真正让代码逐渐失控的，不是单个阶段本</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/层级状态机" target="_blank">https://kaede-rei.github.io/posts/notes/层级状态机</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[基于 micromamba 构建移动环境]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/micromamba 构建移动环境</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/micromamba 构建移动环境</guid>
+            <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在机器人项目开发中，环境的一致性与物理媒介的限制往往是影响工程效率的关键因素；在实际开发过程中，主要会有两个跨环境需求：</p>
+<ul>
+<li>宿主环境与生产环境的代差：生产环境（工控机）运行于</li>
+</ul>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/micromamba 构建移动环境" target="_blank">https://kaede-rei.github.io/posts/notes/micromamba 构建移动环境</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[旧标准 c++ 下的函数式编程（TL 库）]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/旧标准 c++ 下的函数式编程（TL 库）</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/旧标准 c++ 下的函数式编程（TL 库）</guid>
+            <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在各类复杂业务场景中，经常需要处理“输入如何表达、失败如何传递、多个步骤如何拼接”的问题；若沿用传统的“bool 返回值 + 输出参数 + 日志”组合，代码往往会陷入以下困境：</p>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/旧标准 c++ 下的函数式编程（TL 库）" target="_blank">https://kaede-rei.github.io/posts/notes/旧标准 c++ 下的函数式编程（TL 库）</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+        <item>
+            <title><![CDATA[X-Macro + 单例模式]]></title>
+            <link>https://kaede-rei.github.io/posts/notes/X-Macro + 单例模式</link>
+            <guid isPermaLink="false">https://kaede-rei.github.io/posts/notes/X-Macro + 单例模式</guid>
+            <pubDate>Tue, 07 Apr 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h2>1. 引言</h2>
+<p>在项目推进过程中，接口数量、命令种类、状态枚举和映射关系会快速膨胀。一个命令常常同时出现在以下多个位置：</p>
+<ul>
+<li>枚举定义</li>
+<li>字符串名称映射</li>
+<li>描述文本</li>
+<li>处理函数声明</li>
+<li></li>
+</ul>
+<br/><p>访问 <a href="https://kaede-rei.github.io/posts/notes/X-Macro + 单例模式" target="_blank">https://kaede-rei.github.io/posts/notes/X-Macro + 单例模式</a> 阅读全文。</p>]]></content:encoded>
+            <author>i@valaxy.site (Kaede Rei)</author>
+        </item>
+    </channel>
+</rss>
