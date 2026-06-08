@@ -505,8 +505,10 @@ onUnmounted(() => {
   :deep(.sakura-post-footer),
   :deep(.sakura-comment),
   :deep(.sakura-post-nav) {
-    content-visibility: auto;
-    contain-intrinsic-size: 220px;
+    /* Keep footer/nav covers paint-ready; deferred visibility can make
+       image-card backgrounds miss their first render until hover. */
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
   }
 }
 

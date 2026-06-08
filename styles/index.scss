@@ -88,8 +88,10 @@ body.post-performance-mode {
 }
 
 .sakura-post-list .sakura-post-card {
-  content-visibility: auto;
-  contain-intrinsic-size: 250px;
+  /* Cover cards use background-image rendering; content-visibility can defer
+     paint until a later hover/reflow on some browsers, leaving the cover blank. */
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
 }
 
 /* =========================

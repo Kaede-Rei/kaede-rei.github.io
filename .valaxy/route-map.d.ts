@@ -349,6 +349,13 @@ declare module 'vue-router/auto-routes' {
       { page: ParamValue<false> },
       | never
     >,
+    '/posts/notes/关于 C 语言模拟 OOP 的设计边界': RouteRecordInfo<
+      '/posts/notes/关于 C 语言模拟 OOP 的设计边界',
+      '/posts/notes/%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E6%A8%A1%E6%8B%9F%20OOP%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%BE%B9%E7%95%8C',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/notes/层级状态机': RouteRecordInfo<
       '/posts/notes/层级状态机',
       '/posts/notes/%E5%B1%82%E7%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA',
@@ -359,6 +366,13 @@ declare module 'vue-router/auto-routes' {
     '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）': RouteRecordInfo<
       '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）',
       '/posts/notes/%E6%97%A7%E6%A0%87%E5%87%86%20c++%20%E4%B8%8B%E7%9A%84%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88TL%20%E5%BA%93%EF%BC%89',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/posts/notes/机械臂动力学': RouteRecordInfo<
+      '/posts/notes/机械臂动力学',
+      '/posts/notes/%E6%9C%BA%E6%A2%B0%E8%87%82%E5%8A%A8%E5%8A%9B%E5%AD%A6',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -673,6 +687,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'pages/posts/notes/关于 C 语言模拟 OOP 的设计边界.md': {
+      routes:
+        | '/posts/notes/关于 C 语言模拟 OOP 的设计边界'
+      views:
+        | never
+    }
     'pages/posts/notes/层级状态机.md': {
       routes:
         | '/posts/notes/层级状态机'
@@ -682,6 +702,12 @@ declare module 'vue-router/auto-routes' {
     'pages/posts/notes/旧标准 c++ 下的函数式编程（TL 库）.md': {
       routes:
         | '/posts/notes/旧标准 c++ 下的函数式编程（TL 库）'
+      views:
+        | never
+    }
+    'pages/posts/notes/机械臂动力学.md': {
+      routes:
+        | '/posts/notes/机械臂动力学'
       views:
         | never
     }
