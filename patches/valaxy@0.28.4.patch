@@ -1,0 +1,36 @@
+diff --git a/dist/shared/valaxy.D7jbNEHe.mjs b/dist/shared/valaxy.D7jbNEHe.mjs
+index 03106c5931de2cd05719fe6f0f778910661f0539..574ce79bb9b7e8a0337411d92d2b76c7b42f30de 100644
+--- a/dist/shared/valaxy.D7jbNEHe.mjs
++++ b/dist/shared/valaxy.D7jbNEHe.mjs	
+@@ -4804,24 +4804,24 @@ async function renderPage(opts) {
+   const stateScript = serializeState(result.initialState);
+   let html = template;
+   if (headPayload.htmlAttrs)
+-    html = html.replace(/<html[^>]*>/, `<html ${headPayload.htmlAttrs}>`);
++    html = html.replace(/<html[^>]*>/, () => `<html ${headPayload.htmlAttrs}>`);
+   if (headPayload.bodyAttrs)
+-    html = html.replace(/<body[^>]*>/, `<body ${headPayload.bodyAttrs}>`);
+-  html = html.replace("</head>", `${preloadLinks}${headPayload.headTags}
++    html = html.replace(/<body[^>]*>/, () => `<body ${headPayload.bodyAttrs}>`);
++  html = html.replace("</head>", () => `${preloadLinks}${headPayload.headTags}
+ </head>`).replace(
+     '<div id="app"></div>',
+-    `${headPayload.bodyTagsOpen || ""}<div id="app">${result.html}</div>${stateScript}${headPayload.bodyTags || ""}`
++    () => `${headPayload.bodyTagsOpen || ""}<div id="app">${result.html}</div>${stateScript}${headPayload.bodyTags || ""}`
+   );
+   if (result.teleports) {
+     for (const [target, content] of Object.entries(result.teleports)) {
+       if (target === "head") {
+-        html = html.replace("</head>", `${content}
++        html = html.replace("</head>", () => `${content}
+ </head>`);
+       } else if (target === "body") {
+-        html = html.replace("</body>", `${content}
++        html = html.replace("</body>", () => `${content}
+ </body>`);
+       } else {
+-        html = html.replace("</body>", `${content}
++        html = html.replace("</body>", () => `${content}
+ </body>`);
+       }
+     }

@@ -1,12 +1,14 @@
 ---
-title: 基于 micromamba 构建移动环境 
+title: 基于 micromamba 整理便携式开发环境
 date: 2026-04-08
 updated: 2026-04-08
 categories: 笔记
 tags:
   - 环境配置
-top: 2
+summary: 围绕机器人项目的系统版本与多设备协作需求，记录移动硬盘上的环境、缓存和激活脚本组织方式，以及 ROS 与学习环境的配置经验
 cover: /images/covers/anon.png
+coverRole: decorative
+featured: false
 ---
 
 ## 1. 引言

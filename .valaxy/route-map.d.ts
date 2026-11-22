@@ -55,6 +55,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/agrotech/': RouteRecordInfo<
+      '/agrotech/',
+      '/agrotech',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/archives/': RouteRecordInfo<
       '/archives/',
       '/archives',
@@ -72,174 +79,6 @@ declare module 'vue-router/auto-routes' {
     '/learning-path/': RouteRecordInfo<
       '/learning-path/',
       '/learning-path',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/': RouteRecordInfo<
-      '/learning-path/arm-motion-control/',
-      '/learning-path/arm-motion-control',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-1/': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-1/',
-      '/learning-path/arm-motion-control/phase-1',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-1/1-1': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-1/1-1',
-      '/learning-path/arm-motion-control/phase-1/1-1',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-1/1-2': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-1/1-2',
-      '/learning-path/arm-motion-control/phase-1/1-2',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-1/1-3': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-1/1-3',
-      '/learning-path/arm-motion-control/phase-1/1-3',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-1/1-4': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-1/1-4',
-      '/learning-path/arm-motion-control/phase-1/1-4',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/',
-      '/learning-path/arm-motion-control/phase-2',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-1': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-1',
-      '/learning-path/arm-motion-control/phase-2/2-1',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-10': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-10',
-      '/learning-path/arm-motion-control/phase-2/2-10',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-11': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-11',
-      '/learning-path/arm-motion-control/phase-2/2-11',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-12': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-12',
-      '/learning-path/arm-motion-control/phase-2/2-12',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-13': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-13',
-      '/learning-path/arm-motion-control/phase-2/2-13',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-2': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-2',
-      '/learning-path/arm-motion-control/phase-2/2-2',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-3': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-3',
-      '/learning-path/arm-motion-control/phase-2/2-3',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-4': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-4',
-      '/learning-path/arm-motion-control/phase-2/2-4',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-5': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-5',
-      '/learning-path/arm-motion-control/phase-2/2-5',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-6': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-6',
-      '/learning-path/arm-motion-control/phase-2/2-6',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-7': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-7',
-      '/learning-path/arm-motion-control/phase-2/2-7',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-8': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-8',
-      '/learning-path/arm-motion-control/phase-2/2-8',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-2/2-9': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-2/2-9',
-      '/learning-path/arm-motion-control/phase-2/2-9',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-3/': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-3/',
-      '/learning-path/arm-motion-control/phase-3',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-3/3-1': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-3/3-1',
-      '/learning-path/arm-motion-control/phase-3/3-1',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-3/3-2': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-3/3-2',
-      '/learning-path/arm-motion-control/phase-3/3-2',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/learning-path/arm-motion-control/phase-3/3-3': RouteRecordInfo<
-      '/learning-path/arm-motion-control/phase-3/3-3',
-      '/learning-path/arm-motion-control/phase-3/3-3',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -335,6 +174,251 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/learning-path/robot-arm-development/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/',
+      '/learning-path/robot-arm-development',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/',
+      '/learning-path/robot-arm-development/phase-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/1-1': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/1-1',
+      '/learning-path/robot-arm-development/phase-1/1-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/1-2': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/1-2',
+      '/learning-path/robot-arm-development/phase-1/1-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/1-3': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/1-3',
+      '/learning-path/robot-arm-development/phase-1/1-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/1-4': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/1-4',
+      '/learning-path/robot-arm-development/phase-1/1-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-1/1-5': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-1/1-5',
+      '/learning-path/robot-arm-development/phase-1/1-5',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/',
+      '/learning-path/robot-arm-development/phase-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-1': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-1',
+      '/learning-path/robot-arm-development/phase-2/2-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-10': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-10',
+      '/learning-path/robot-arm-development/phase-2/2-10',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-11': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-11',
+      '/learning-path/robot-arm-development/phase-2/2-11',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-12': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-12',
+      '/learning-path/robot-arm-development/phase-2/2-12',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-13': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-13',
+      '/learning-path/robot-arm-development/phase-2/2-13',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-14': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-14',
+      '/learning-path/robot-arm-development/phase-2/2-14',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-15': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-15',
+      '/learning-path/robot-arm-development/phase-2/2-15',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-2': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-2',
+      '/learning-path/robot-arm-development/phase-2/2-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-3': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-3',
+      '/learning-path/robot-arm-development/phase-2/2-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-4': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-4',
+      '/learning-path/robot-arm-development/phase-2/2-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-5': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-5',
+      '/learning-path/robot-arm-development/phase-2/2-5',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-6': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-6',
+      '/learning-path/robot-arm-development/phase-2/2-6',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-7': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-7',
+      '/learning-path/robot-arm-development/phase-2/2-7',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-8': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-8',
+      '/learning-path/robot-arm-development/phase-2/2-8',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-2/2-9': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-2/2-9',
+      '/learning-path/robot-arm-development/phase-2/2-9',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/',
+      '/learning-path/robot-arm-development/phase-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-1': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-1',
+      '/learning-path/robot-arm-development/phase-3/3-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-2': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-2',
+      '/learning-path/robot-arm-development/phase-3/3-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-3': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-3',
+      '/learning-path/robot-arm-development/phase-3/3-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-4': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-4',
+      '/learning-path/robot-arm-development/phase-3/3-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-5': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-5',
+      '/learning-path/robot-arm-development/phase-3/3-5',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-3/3-6': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-3/3-6',
+      '/learning-path/robot-arm-development/phase-3/3-6',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-4/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-4/',
+      '/learning-path/robot-arm-development/phase-4',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-4/4-1': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-4/4-1',
+      '/learning-path/robot-arm-development/phase-4/4-1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-4/4-2': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-4/4-2',
+      '/learning-path/robot-arm-development/phase-4/4-2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-4/4-3': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-4/4-3',
+      '/learning-path/robot-arm-development/phase-4/4-3',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/learning-path/robot-arm-development/phase-4/references/': RouteRecordInfo<
+      '/learning-path/robot-arm-development/phase-4/references/',
+      '/learning-path/robot-arm-development/phase-4/references',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/links/': RouteRecordInfo<
       '/links/',
       '/links',
@@ -411,13 +495,13 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export interface _RouteFileInfoMap {
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/index.vue': {
+    'theme/pages/index.vue': {
       routes:
         | '/'
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy@0.28.4_@babel+parser_6046c482f2cae9a8ea4fdf503856ded0/node_modules/valaxy/client/pages/[...path].vue': {
+    'node_modules/.pnpm/valaxy@0.28.4_patch_hash=d3_52f10721fd03dc777776e39d9b762309/node_modules/valaxy/client/pages/[...path].vue': {
       routes:
         | '/[...path]'
       views:
@@ -432,6 +516,12 @@ declare module 'vue-router/auto-routes' {
     'pages/about/index.md': {
       routes:
         | '/about/'
+      views:
+        | never
+    }
+    'pages/agrotech/index.md': {
+      routes:
+        | '/agrotech/'
       views:
         | never
     }
@@ -450,150 +540,6 @@ declare module 'vue-router/auto-routes' {
     'pages/learning-path/index.md': {
       routes:
         | '/learning-path/'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/index.md': {
-      routes:
-        | '/learning-path/arm-motion-control/'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-1/index.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-1/'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-1/1-1.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-1/1-1'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-1/1-2.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-1/1-2'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-1/1-3.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-1/1-3'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-1/1-4.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-1/1-4'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/index.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-1.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-1'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-10.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-10'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-11.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-11'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-12.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-12'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-13.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-13'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-2.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-2'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-3.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-3'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-4.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-4'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-5.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-5'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-6.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-6'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-7.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-7'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-8.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-8'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-2/2-9.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-2/2-9'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-3/index.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-3/'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-3/3-1.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-3/3-1'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-3/3-2.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-3/3-2'
-      views:
-        | never
-    }
-    'pages/learning-path/arm-motion-control/phase-3/3-3.md': {
-      routes:
-        | '/learning-path/arm-motion-control/phase-3/3-3'
       views:
         | never
     }
@@ -675,13 +621,223 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'pages/learning-path/robot-arm-development/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/1-1.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/1-1'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/1-2.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/1-2'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/1-3.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/1-3'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/1-4.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/1-4'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-1/1-5.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-1/1-5'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-1.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-1'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-10.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-10'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-11.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-11'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-12.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-12'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-13.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-13'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-14.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-14'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-15.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-15'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-2.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-2'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-3.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-3'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-4.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-4'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-5.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-5'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-6.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-6'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-7.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-7'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-8.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-8'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-2/2-9.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-2/2-9'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-1.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-1'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-2.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-2'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-3.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-3'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-4.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-4'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-5.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-5'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-3/3-6.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-3/3-6'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-4/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-4/'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-4/4-1.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-4/4-1'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-4/4-2.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-4/4-2'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-4/4-3.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-4/4-3'
+      views:
+        | never
+    }
+    'pages/learning-path/robot-arm-development/phase-4/references/index.md': {
+      routes:
+        | '/learning-path/robot-arm-development/phase-4/references/'
+      views:
+        | never
+    }
     'pages/links/index.md': {
       routes:
         | '/links/'
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
+    'theme/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
       views:

@@ -1,5 +1,5 @@
 ---
-title: 关于 C 语言模拟 OOP 的设计边界
+title: C 语言模拟 OOP：对象、接口与生命周期的边界
 date: 2026-04-27
 updated: 2026-04-27
 categories: 笔记
@@ -7,8 +7,10 @@ tags:
   - C
   - 代码组织
   - 接口设计
-top: 2
+summary: 从设备多实例、统一接口与生命周期出发，讨论 C 中模拟 OOP 的几种组织方式，并说明哪些抽象有助于维护、哪些会增加不必要的复杂度
 cover: /images/covers/ansy2.png
+coverRole: decorative
+featured: false
 ---
 
 ## 1. 引言

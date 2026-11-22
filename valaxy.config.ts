@@ -1,171 +1,44 @@
+import { rename } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { defineValaxyConfig } from 'valaxy'
-import { addonVercount } from 'valaxy-addon-vercount'
+import { addCodeControls } from './theme/utils/code-blocks'
+import { learningContentHooks } from './theme/utils/learning-content'
+
+const encodedPages = new Map<string, string>()
 
 export default defineValaxyConfig({
-  theme: 'sakura',
-
-  addons: [
-    addonVercount({
-      api: 'cn',
-      placeholder: '-',
-    }),
-  ],
-
-  vite: {
-    build: {
-      rolldownOptions: {
-        checks: {
-          pluginTimings: false,
-        },
-      },
-    },
-  },
-
+  theme: './theme',
+  build: { ssgForPagination: true },
+  hooks: { ...learningContentHooks },
+  fuse: { extendKeys: ['summary', 'contentType', 'status'] },
+  markdown: { config: addCodeControls },
   themeConfig: {
-    ui: {
-      primary: '#ffaf4ef1',
-
-      pageHeader: {
-        image: {
-          overlay: true,
-          overlayColor: 'rgba(0, 0, 0, 0.8)',
-          overlayOpacityInitial: 0.45,
-          overlayOpacity: 0.58,
-        },
+    colors: { primary: '#965A70' },
+    postFooter: { navigationMerge: true },
+  },
+  vite: {
+    ssgOptions: {
+      onPageRendered(route: string, html: string) {
+        const decoded = decodeURI(route)
+        if (decoded !== route && route.startsWith('/posts/'))
+          encodedPages.set(route, decoded)
+        // KaTeX CSS requests the font faces used by an article; preloading every
+        // bundled fallback font also downloads them on the illustration homepage.
+        return html.replace(/<link\b[^>]*>/gi, tag =>
+          /\bas=["']font["']/i.test(tag) && /KaTeX_/.test(tag) ? '' : tag,
+        )
       },
-
-      pinnedPost: {
-        image: {
-          overlay: true,
-          overlayColor: 'rgba(0, 0, 0, 0.72)',
-          overlayOpacityInitial: 0.12,
-          overlayOpacity: 0.46,
-          transitionDuration: '0.35s',
-        },
-      },
-
-      postList: {
-        responsive: {
-          '2xl': 1,
-          xl: 1,
-          lg: 1,
-          md: 1,
-          sm: 1,
-        },
+      async onFinished() {
+        // HTTP servers decode URL escapes before looking up the static file.
+        for (const [route, decoded] of encodedPages) {
+          const extension = route.endsWith('/') ? 'index.html' : '.html'
+          await rename(resolve('dist', `.${route}${extension}`), resolve('dist', `.${decoded}${extension}`))
+        }
+        encodedPages.clear()
       },
     },
-
-    hero: {
-      title: 'Kaede Rei の 小 窝',
-      motto: '嵌入式、机械臂、ROS 农业机器人',
-      urls: [
-        '/images/hero/ansy.png',
-      ],
-      randomUrls: false,
-      style: 'dim',
-      fixedImg: false,
-      typewriter: true,
-      enableHitokoto: true,
-      waveTheme: 'fish',
-      socialStyle: 'single',
-    },
-
-    notice: {
-      message: '<b>这里是 Kaede Rei 的技术博客与学习记录。</b>',
-    },
-
-    pinnedPost: {
-      text: 'Start Here',
-      entries: [
-        {
-          title: 'About Me',
-          desc: '关于我的介绍',
-          link: '/about',
-          img: '/images/pinned/about.png',
-        },
-        {
-          title: '学习路径',
-          desc: 'AgroTech 协会培养路线',
-          link: '/learning-path',
-          img: '/images/pinned/path.png',
-        },
-        {
-          title: 'GitHub',
-          desc: '我的 GitHub 仓库',
-          link: 'https://github.com/Kaede-Rei',
-          img: '/images/pinned/github.png',
-        },
-      ],
-    },
-
-    pagination: {
-      animation: false,
-      infiniteScrollOptions: {
-        preload: false,
-      },
-    },
-
-    postFooter: {
-      navigationMerge: true,
-    },
-
-    navbar: [
-      { text: '首页', link: '/', icon: 'i-ri-home-4-line' },
-      { text: '分类', link: '/categories', icon: 'i-ri-folder-2-line' },
-      { text: '归档', link: '/archives', icon: 'i-ri-archive-line' },
-      { text: '标签', link: '/tags', icon: 'i-ri-price-tag-3-line' },
-      {
-        text: '学习路径',
-        link: '/learning-path',
-        icon: 'i-ri-road-map-line',
-        items: [
-          { text: '电控组', link: '/learning-path/electrical-control', icon: 'i-ri-cpu-line' },
-          { text: '机械臂运控组', link: '/learning-path/arm-motion-control', icon: 'i-ri-robot-2-line' },
-        ],
-      },
-      { text: '关于', link: '/about', icon: 'i-ri-user-3-line' },
-      { text: '友情链接', link: '/links', icon: 'i-ri-links-line' },
-    ],
-
-    navbarOptions: {
-      title: ['Kaede', 'Rei'],
-      subTitle: 'Embedded / Arm / Agri Robot',
-      invert: ['home'],
-      autoHide: ['home'],
-      showMarker: false,
-    },
-
-    postList: {
-      text: 'Notes Lists',
-      isImageReversed: true,
-      defaultImage: [
-        '/images/covers/anon.png',
-      ],
-    },
-
-    layout: {
-      general: {
-        layout: 'triple-columns',
-        sidebar: {
-          left: [
-            'SakuraSidebarSiteInfo',
-            'SakuraSidebarCategories',
-          ],
-          right: [],
-        },
-      },
-    },
-
-    tags: {
-      rainbow: true,
-    },
-
-    scrollToTop: true,
-    scrollIndicator: false,
-    scrollLock: false,
-
-    footer: {
-      since: 2026,
+    build: {
+      rolldownOptions: { checks: { pluginTimings: false } },
     },
   },
 })
