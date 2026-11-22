@@ -4,7 +4,7 @@ import { useSpring } from '@vueuse/motion'
 import { usePostList, useSiteConfig } from 'valaxy'
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { association, featuredProjects } from '../../data/site'
+import { featuredProjects } from '../../data/site'
 import { isPointerClick } from '../utils/anchor-scroll'
 import { formatPostDate } from '../utils/content'
 import { currentLearningTracks, learningTitle } from '../utils/learning'
@@ -128,21 +128,17 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
           </RouterLink>
         </div>
       </section>
+      <KaedeSidebar />
     </div>
 
     <section id="projects" class="kaede-home-section" aria-labelledby="projects-title">
       <div class="kaede-section-heading">
-        <h2 id="projects-title" tabindex="-1">精选项目</h2>
+        <h2 id="projects-title" tabindex="-1">机器人开发项目</h2>
       </div>
       <div class="kaede-project-grid">
         <KaedeProjectCard v-for="(project, index) in featuredProjects" :key="project.id" :project="project"
           :priority="index === 0 ? 'lead' : index === 2 ? 'compact' : 'standard'" />
       </div>
-      <RouterLink class="kaede-atil-link" :to="association.path">
-        <ATILBrand variant="compact" decorative />
-        <span>我在 ATIL 的工作</span>
-        <span class="kaede-link-arrow" aria-hidden="true">→</span>
-      </RouterLink>
     </section>
   </template>
 
@@ -168,5 +164,4 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
       <RouterLink v-for="index in Math.max(numberOfPages, 1)" :key="index" :to="index === 1 ? '/' : `/page/${index}`" :aria-current="page === index ? 'page' : undefined">{{ index }}</RouterLink>
     </nav>
   </section>
-  <KaedeSidebar v-if="isHome" />
 </template>

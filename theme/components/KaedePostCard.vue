@@ -5,7 +5,6 @@ import { formatPostDate, imageUrl, listValue, postSummary } from '../utils/conte
 
 const props = defineProps<{ post: Post, reverse?: boolean, textOnly?: boolean }>()
 const category = computed(() => listValue(props.post.categories).at(-1))
-const featured = computed(() => props.post.featured === true)
 const excerpt = computed(() => postSummary(props.post))
 const date = computed(() => formatPostDate(props.post.date))
 const cover = computed(() => {
@@ -22,7 +21,6 @@ const cover = computed(() => {
       <div class="kaede-post-meta">
         <time v-if="date" :datetime="date">{{ date }}</time>
         <RouterLink v-if="category" :to="{ path: '/categories', query: { category } }">{{ category }}</RouterLink>
-        <span v-if="featured">精选</span>
       </div>
     </div>
     <div v-if="cover && !textOnly" class="kaede-post-cover">

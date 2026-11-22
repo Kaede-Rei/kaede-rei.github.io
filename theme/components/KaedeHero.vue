@@ -38,7 +38,7 @@ let visited = false
         <h1 class="kaede-hero-title" tabindex="-1">让机器人从模型<br class="kaede-hero-break">走向真实运行</h1>
         <p class="kaede-hero-intro">我是华南农业大学本科生、AgroTech-SCAU 主要负责人之一，从事机械臂控制、嵌入式软件与系统集成，整理可复用的代码、工具和工程经验</p>
         <div class="kaede-actions">
-          <RouterLink to="/#projects" class="kaede-button kaede-button--primary">个人代表项目 <span aria-hidden="true" class="kaede-link-arrow">↓</span></RouterLink>
+          <RouterLink to="/#projects" class="kaede-button kaede-button--primary">查看开发项目 <span aria-hidden="true" class="kaede-link-arrow">↓</span></RouterLink>
           <RouterLink to="/archives" class="kaede-button">阅读技术笔记 <span aria-hidden="true" class="kaede-link-arrow">→</span></RouterLink>
         </div>
       </div>

@@ -162,7 +162,7 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-waves { position: absolute; inset: auto -1px -1px; width: calc(100% + 2px); height: clamp(24px, 4vw, 52px); fill: var(--bg); }
 .kaede-wave-back { opacity: .54; }
 
-.kaede-home-entries { margin-top: clamp(40px, 6vw, 80px); }
+.kaede-home-entries { display: grid; grid-template-columns: minmax(0, 1fr) clamp(208px, 23vw, 260px); gap: 16px; margin-top: clamp(40px, 6vw, 80px); }
 .kaede-home-section { margin-top: clamp(44px, 6vw, 80px); min-width: 0; }
 .kaede-section-heading h2 { margin: 0; font: 650 clamp(23px, 3vw, 30px)/1.35 var(--display-font); }
 .kaede-section-heading p { max-width: 56ch; margin: 8px 0 0; color: var(--muted); }
@@ -176,8 +176,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-entry-action { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; color: var(--accent); font-size: 14px; font-weight: 650; }
 .kaede-project-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; margin-top: 20px; }
 .kaede-project-card--lead { grid-column: 1 / -1; }
-.kaede-atil-link { display: inline-flex; align-items: center; min-height: 44px; gap: 10px; margin-top: 20px; color: var(--accent); font-weight: 650; }
-.kaede-atil-link > picture.atil-brand-mark { --mark-size: 44px; }
 
 .kaede-feed-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 8px 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .kaede-feed-modes {
@@ -218,13 +216,16 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-empty { color: var(--muted); }
 .kaede-empty a { color: var(--accent); text-decoration: underline; margin-inline-start: 4px; }
 
-.kaede-contact { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 18px; padding: clamp(16px, 2.5vw, 28px); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
-.kaede-contact h2 { margin: 0; font: 650 clamp(21px, 3vw, 26px)/1.35 var(--display-font); }
-.kaede-contact p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
-.kaede-avatar-link { display: block; border-radius: 50%; background: var(--surface-soft); }
-.kaede-avatar-link img { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; }
-.kaede-contact-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; color: var(--accent); }
-.kaede-contact-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; font-size: 14px; }
+.kaede-contact { display: flex; flex-direction: column; align-self: start; align-items: center; gap: 14px; padding: clamp(16px, 2.2vw, 28px); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.kaede-contact h2 { margin: 0; font: 650 clamp(21px, 3vw, 26px)/1.35 var(--display-font); text-align: center; }
+.kaede-avatar-link { display: grid; justify-items: center; gap: 8px; border-radius: 8px; }
+.kaede-avatar-link img { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; background: var(--surface-soft); }
+.kaede-contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; color: var(--accent); }
+.kaede-contact-links a { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 8px; font-size: 20px; }
+.kaede-contact-links a:focus-visible { background: var(--accent-soft); }
+.kaede-atil-link { display: grid; gap: 8px; inline-size: min(100%, 220px); padding-block-start: 14px; border-block-start: 1px solid var(--line); color: var(--accent); font-size: 14px; font-weight: 650; text-align: center; }
+.kaede-atil-link img { display: block; inline-size: 100%; block-size: auto; border-radius: 8px; }
+.kaede-atil-link-label { display: flex; align-items: center; justify-content: center; gap: 6px; }
 
 .kaede-page { min-width: 0; width: 100%; max-width: var(--reading-width); margin-inline: auto; }
 .kaede-page-header { padding-bottom: clamp(16px, 3vw, 28px); margin-bottom: clamp(20px, 3vw, 32px); border-bottom: 1px solid var(--line); }
@@ -365,8 +366,8 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 
 @media (hover: hover) and (pointer: fine) {
   .kaede-button:hover, .kaede-atil-link:hover, .kaede-track-entry:hover .kaede-entry-action { text-decoration: underline; }
-  .kaede-nav-links a:hover, .kaede-footer a:hover, .kaede-archive-item:hover, .kaede-post-card h3 a:hover { color: var(--accent); }
-  .kaede-nav-tools button:hover, .kaede-theme-control:hover, .kaede-toc-desktop nav a:hover, .kaede-toc-panel nav a:hover { background: var(--accent-soft); }
+  .kaede-nav-links a:hover, .kaede-footer a:hover, .kaede-archive-item:hover, .kaede-post-card h3 a:hover, .kaede-avatar-link:hover { color: var(--accent); }
+  .kaede-nav-tools button:hover, .kaede-theme-control:hover, .kaede-toc-desktop nav a:hover, .kaede-toc-panel nav a:hover, .kaede-contact-links a:hover { background: var(--accent-soft); }
   .kaede-feed-modes button:not([aria-pressed='true']):hover { background: var(--surface-soft); }
   .kaede-track-entry { transition: border-color var(--hover-duration) ease; }
   .kaede-track-entry:hover { border-color: var(--accent); }
@@ -380,8 +381,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 }
 @media (max-width: 960px) {
   :root { --gutter: 24px; }
-  .kaede-contact { grid-template-columns: auto minmax(0, 1fr); }
-  .kaede-contact-links { grid-column: 2; }
 }
 @media (max-width: 800px) {
   :root { --nav-height: 58px; }
@@ -426,7 +425,7 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 }
 @media (max-width: 720px) {
   :root { --gutter: 18px; }
-  .kaede-hero-grid, .kaede-project-grid { grid-template-columns: minmax(0, 1fr); }
+  .kaede-hero-grid, .kaede-project-grid, .kaede-home-entries { grid-template-columns: minmax(0, 1fr); }
   .kaede-hero-title { font-size: clamp(30px, 6vw, 36px); }
   .kaede-hero-intro { font-size: 16px; margin-block: 14px 18px; }
   .kaede-hero-break { display: none; }
@@ -448,8 +447,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
   .kaede-post-card.has-cover:not(.is-text) { grid-template-columns: minmax(0, 1fr); }
   .kaede-post-cover { grid-row: 1; }
   .kaede-post-cover img { aspect-ratio: 2.5; }
-  .kaede-contact { justify-items: start; }
-  .kaede-contact-links { grid-column: 1 / -1; }
 }
 @media (max-width: 340px) {
   :root { --gutter: 16px; }
