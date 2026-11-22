@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { useMotionProperties, useReducedMotion, useSpring } from '@vueuse/motion'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { isPlainClick, isPointerClick, navigateToAnchor } from '../utils/anchor-scroll'
 
 interface Heading {
   id: string
@@ -13,6 +15,16 @@ const route = useRoute()
 const router = useRouter()
 const dialog = ref<HTMLDialogElement>()
 const trigger = ref<HTMLButtonElement>()
+const reducedMotion = useReducedMotion()
+const closedScale = .98
+const { motionProperties: panelMotion } = useMotionProperties(dialog, { scale: closedScale })
+const panelSpring = useSpring(panelMotion, {
+  stiffness: 550,
+  damping: 42,
+  mass: 1,
+  restDelta: .0001,
+  restSpeed: .001,
+})
 const selected = ref<Heading>()
 const headings = ref<Heading[]>([])
 const includeDetails = ref(false)
@@ -41,25 +53,48 @@ function readHeadings() {
     })
   updateLocation()
 }
-function close(restoreFocus = true) {
-  dialog.value?.close()
+function setPanelMotion(panel: HTMLDialogElement, opening: boolean, fromPointer = false) {
+  const target = opening ? 1 : closedScale
+  const animate = fromPointer && !reducedMotion.value && (opening || CSS.supports('overlay: auto'))
+  panel.toggleAttribute('data-pointer-motion', animate)
+  if (animate) {
+    void panelSpring.set({ scale: target })
+    return
+  }
+  panelSpring.stop()
+  panelMotion.scale = target
+}
+watch(reducedMotion, (reduced) => {
+  const panel = dialog.value
+  if (reduced && panel) setPanelMotion(panel, panel.open)
+})
+function close(restoreFocus = true, fromPointer = false) {
+  const panel = dialog.value
+  if (!panel?.open) return
+  setPanelMotion(panel, false, fromPointer)
+  panel.close()
+  panel.inert = true
   if (restoreFocus) trigger.value?.focus({ preventScroll: true })
 }
-async function open() {
-  dialog.value?.showModal()
-  await nextTick()
-  dialog.value?.querySelector<HTMLElement>('[aria-current="location"]')?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+function closeFromClick(event: MouseEvent) {
+  close(true, isPointerClick(event))
 }
-async function jump(event: MouseEvent, heading: Heading) {
-  if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+async function open(event: MouseEvent) {
+  const panel = dialog.value
+  if (!panel || panel.open) return
+  setPanelMotion(panel, true, isPointerClick(event))
+  panel.inert = false
+  panel.showModal()
+  await nextTick()
+  if (panel.open)
+    panel.querySelector<HTMLElement>('[aria-current="location"]')?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+}
+function jump(event: MouseEvent, heading: Heading) {
+  if (!isPlainClick(event)) return
   event.preventDefault()
-  if (dialog.value?.open) close(false)
-  const hash = `#${heading.id}`
-  if (route.hash !== hash) await router.replace({ hash })
-  heading.element.tabIndex = -1
-  heading.element.focus({ preventScroll: true })
-  heading.element.scrollIntoView({ block: 'start', behavior: 'instant' })
+  close(false)
   selected.value = heading
+  void navigateToAnchor(router, heading.element, isPointerClick(event), true)
 }
 function toggleDetails() {
   includeDetails.value = !includeDetails.value
@@ -85,7 +120,7 @@ onUnmounted(() => {
         <h2 id="kaede-toc-label">本页目录</h2>
         <ul>
           <li v-for="heading in headings.filter(item => includeDetails || item.level < 4)" :key="heading.id" :class="`level-${heading.level}`">
-            <a :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
+            <a data-toc-link :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
           </li>
         </ul>
         <button v-if="headings.some(heading => heading.level === 4)" type="button" :aria-expanded="includeDetails" @click="toggleDetails">{{ includeDetails ? '收起小节' : '展开小节' }}</button>
@@ -95,13 +130,13 @@ onUnmounted(() => {
       <span class="i-ri-list-unordered" aria-hidden="true" />目录<span v-if="selected" class="kaede-toc-position">{{ selected.text }}</span>
     </button>
     <dialog id="kaede-toc-dialog" ref="dialog" class="kaede-toc-dialog" aria-labelledby="kaede-toc-dialog-label"
-      @cancel.prevent="close()" @click.self="close()">
+      @cancel.prevent="close()" @click.self="closeFromClick">
       <div class="kaede-toc-panel">
-        <header><h2 id="kaede-toc-dialog-label">本页目录</h2><button type="button" aria-label="关闭目录" autofocus @click="close()"><span class="i-ri-close-line" aria-hidden="true" /></button></header>
+        <header><h2 id="kaede-toc-dialog-label">本页目录</h2><button type="button" aria-label="关闭目录" autofocus @click="closeFromClick"><span class="i-ri-close-line" aria-hidden="true" /></button></header>
         <nav aria-labelledby="kaede-toc-dialog-label">
           <ul>
             <li v-for="heading in headings.filter(item => includeDetails || item.level < 4)" :key="heading.id" :class="`level-${heading.level}`">
-              <a :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
+              <a data-toc-link :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
             </li>
           </ul>
           <button v-if="headings.some(heading => heading.level === 4)" type="button" :aria-expanded="includeDetails" @click="toggleDetails">{{ includeDetails ? '收起小节' : '展开小节' }}</button>

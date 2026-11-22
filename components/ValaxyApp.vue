@@ -1,22 +1,36 @@
 <script setup lang="ts">
 import { useHead, useSeoMeta } from '@unhead/vue'
-import { useColorMode } from '@vueuse/core'
+import { useColorMode, useMediaQuery } from '@vueuse/core'
+import { useMotionProperties, useSpring } from '@vueuse/motion'
 import { useAppStore, useFrontmatter, useLayout, useSiteConfig, useValaxyApp } from 'valaxy'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { profile } from '../data/site'
 import KaedeSearch from '../theme/components/KaedeSearch.vue'
 import { imageUrl, postSummary } from '../theme/utils/content'
 import { postLayoutBootstrap } from '../theme/utils/post-layout'
+import { handleSamePageAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
+import { installPointerSprings } from '../theme/utils/pointer-springs'
 
 useValaxyApp()
 const app = useAppStore()
 const site = useSiteConfig()
 const fm = useFrontmatter()
 const route = useRoute()
+const router = useRouter()
 const layout = useLayout()
 const menuOpen = ref(false)
+const menuVisible = ref(false)
+const menuUsesMotion = ref(false)
 const menuToggle = ref<HTMLButtonElement>()
+const menuPanel = ref<HTMLElement>()
+const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+const mobileNavigation = useMediaQuery('(max-width: 800px)')
+const menuClosedOffset = -6
+const { motionProperties: menuMotion } = useMotionProperties(menuPanel, { y: menuClosedOffset })
+const menuSpring = useSpring(menuMotion, { stiffness: 550, damping: 42, mass: 1 })
+let menuTransition = 0
+let pointerSprings: ReturnType<typeof installPointerSprings> | undefined
 const searchOpen = ref(false)
 const searchRef = ref<{ dismiss: () => void }>()
 const themeReady = ref(false)
@@ -70,9 +84,41 @@ useSeoMeta({
   twitterImage: shareImage,
 })
 
+function setMenuOpen(open: boolean, fromPointer = false) {
+  const transition = ++menuTransition
+  const target = open ? 0 : menuClosedOffset
+  const animate = fromPointer && !reduceMotion.value
+  menuOpen.value = open
+  menuUsesMotion.value = animate
+
+  if (!animate) {
+    menuSpring.stop()
+    menuMotion.y = target
+    menuVisible.value = open
+    return
+  }
+
+  menuVisible.value = true
+  // Retarget the existing motion value so its current velocity carries through.
+  void Promise.resolve(menuSpring.set({ y: target })).then(() => {
+    if (transition === menuTransition && !menuOpen.value)
+      menuVisible.value = false
+  })
+}
+function toggleMobileMenu(event: MouseEvent) {
+  const fromPointer = event instanceof PointerEvent && event.pointerType !== ''
+  setMenuOpen(!menuOpen.value, fromPointer)
+}
+watch(reduceMotion, (reduced) => {
+  if (reduced && menuUsesMotion.value) setMenuOpen(menuOpen.value)
+})
+watch(mobileNavigation, (mobile) => {
+  if (!mobile && menuVisible.value) setMenuOpen(false)
+})
+
 function openSearch(event?: MouseEvent) {
   if (event?.currentTarget instanceof HTMLElement) event.currentTarget.focus({ preventScroll: true })
-  menuOpen.value = false
+  setMenuOpen(false)
   searchOpen.value = true
 }
 provide('kaedeOpenSearch', openSearch)
@@ -86,10 +132,10 @@ function shortcut(event: KeyboardEvent) {
   }
 }
 function closeMenuFromKeyboard(event: KeyboardEvent) {
-  if (!menuOpen.value) return
+  if (!menuVisible.value) return
   event.preventDefault()
-  menuOpen.value = false
-  menuToggle.value?.focus()
+  setMenuOpen(false)
+  menuToggle.value?.focus({ preventScroll: true })
 }
 function decodeAddress(value: string) {
   try { return decodeURIComponent(value) }
@@ -108,11 +154,14 @@ function rememberKeyboardLink(event: MouseEvent | KeyboardEvent) {
   if (next !== destination(route.path, route.hash)) keyboardDestination = next
 }
 function chooseMobileLink(to: string) {
-  menuOpen.value = false
+  setMenuOpen(false)
   if (to === cleanPath(route.path)) menuToggle.value?.focus()
   else keyboardDestination = to
 }
-watch(() => route.path, () => { menuOpen.value = false })
+watch(() => route.path, () => {
+  if (menuVisible.value) setMenuOpen(false)
+  pointerSprings?.reset()
+})
 watch(() => route.fullPath, async () => {
   if (keyboardDestination === destination(route.path, route.hash)) {
     await nextTick()
@@ -125,15 +174,23 @@ watch(() => route.fullPath, async () => {
   }
   keyboardDestination = ''
 })
+function activateAnchor(event: MouseEvent) {
+  handleSamePageAnchor(event, router)
+}
 onMounted(() => {
+  pointerSprings = installPointerSprings()
   themeReady.value = true
   app.showLoading = false
   window.addEventListener('keydown', shortcut)
+  document.addEventListener('click', activateAnchor, { capture: true })
   document.addEventListener('click', rememberKeyboardLink, { capture: true })
   document.addEventListener('keydown', rememberKeyboardLink, { capture: true })
 })
 onUnmounted(() => {
   window.removeEventListener('keydown', shortcut)
+  stopAnchorScroll()
+  pointerSprings?.dispose()
+  document.removeEventListener('click', activateAnchor, { capture: true })
   document.removeEventListener('click', rememberKeyboardLink, { capture: true })
   document.removeEventListener('keydown', rememberKeyboardLink, { capture: true })
 })
@@ -167,13 +224,16 @@ onUnmounted(() => {
               <option value="dark">深色</option>
             </select>
           </label>
-          <button ref="menuToggle" type="button" class="kaede-menu-toggle"
+          <button ref="menuToggle" type="button" class="kaede-menu-toggle" :class="{ 'has-menu-motion': menuUsesMotion }"
             :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'" :aria-expanded="menuOpen"
-            aria-controls="kaede-mobile-nav" @click="menuOpen = !menuOpen">
-            <span :class="menuOpen ? 'i-ri-close-line' : 'i-ri-menu-line'" aria-hidden="true" />
+            aria-controls="kaede-mobile-nav" @click="toggleMobileMenu">
+            <span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" />
+            <span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" />
           </button>
         </div>
-        <nav id="kaede-mobile-nav" class="kaede-mobile-nav" :hidden="!menuOpen" aria-label="移动导航">
+        <nav id="kaede-mobile-nav" ref="menuPanel" class="kaede-mobile-nav"
+          :class="{ 'is-visible': menuVisible, 'is-open': menuOpen, 'has-menu-motion': menuUsesMotion }"
+          :inert="!menuOpen || undefined" aria-label="移动导航">
           <RouterLink v-for="item in nav" :key="item.to" :to="item.to"
             :class="{ 'is-current': isInSection(item.sections) }"
             :aria-current="cleanPath(route.path) === item.to ? 'page' : isInSection(item.sections) ? 'location' : undefined"

@@ -1,24 +1,39 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { useReducedMotion, useSpring } from '@vueuse/motion'
+import { onMounted, reactive, watch } from 'vue'
 import { profile } from '../../data/site'
 
-const entering = ref(false)
+const reducedMotion = useReducedMotion()
+const waveMotion = reactive({ y: 0 })
+const waveSpring = useSpring(waveMotion, { stiffness: 550, damping: 42, mass: 1, restDelta: .01, restSpeed: .2 })
+
 onMounted(() => {
-  if (!played && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    entering.value = true
-    played = true
+  if (visited)
+    return
+
+  visited = true
+  if (!reducedMotion.value) {
+    waveMotion.y = 3
+    void waveSpring.set({ y: 0 })
+  }
+})
+
+watch(reducedMotion, (reduced) => {
+  if (reduced) {
+    waveSpring.stop()
+    waveMotion.y = 0
   }
 })
 </script>
 
 <script lang="ts">
-let played = false
+let visited = false
 </script>
 
 <template>
   <header class="kaede-hero">
     <div class="kaede-hero-grid">
-      <div class="kaede-hero-copy" :class="{ 'is-entering': entering }">
+      <div class="kaede-hero-copy">
         <p class="kaede-hero-identity">{{ profile.name }} · 机器人开发者</p>
         <h1 class="kaede-hero-title" tabindex="-1">让机器人从模型<br class="kaede-hero-break">走向真实运行</h1>
         <p class="kaede-hero-intro">我是华南农业大学本科生、AgroTech-SCAU 主要负责人之一，从事机械臂控制、嵌入式软件与系统集成，整理可复用的代码、工具和工程经验</p>
@@ -35,7 +50,9 @@ let played = false
             alt="爱音与素世插画" width="1920" height="1358" fetchpriority="high" decoding="async">
         </picture>
         <svg class="kaede-waves" viewBox="0 0 600 52" preserveAspectRatio="none" aria-hidden="true">
-          <path class="kaede-wave-back" d="M0 17C134 61 273 2 403 21s147 28 197-8v39H0Z" />
+          <path class="kaede-wave-back"
+            d="M0 17C134 61 273 2 403 21s147 28 197-8v39H0Z"
+            :style="waveMotion.y ? { transform: `translateY(${waveMotion.y}px)` } : undefined" />
           <path d="M0 33C160 5 245 68 402 34s166 10 198-8v26H0Z" />
         </svg>
       </div>

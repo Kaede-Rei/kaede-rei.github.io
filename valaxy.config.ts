@@ -1,6 +1,7 @@
 import { rename } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { defineValaxyConfig } from 'valaxy'
+import { addCodeControls } from './theme/utils/code-blocks'
 import { learningContentHooks } from './theme/utils/learning-content'
 
 const encodedPages = new Map<string, string>()
@@ -10,6 +11,7 @@ export default defineValaxyConfig({
   build: { ssgForPagination: true },
   hooks: { ...learningContentHooks },
   fuse: { extendKeys: ['summary', 'contentType', 'status'] },
+  markdown: { config: addCodeControls },
   themeConfig: {
     colors: { primary: '#965A70' },
     postFooter: { navigationMerge: true },

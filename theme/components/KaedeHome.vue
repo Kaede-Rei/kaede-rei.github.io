@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
+import { useSpring } from '@vueuse/motion'
 import { usePostList, useSiteConfig } from 'valaxy'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { association, featuredProjects } from '../../data/site'
+import { isPointerClick } from '../utils/anchor-scroll'
 import { formatPostDate } from '../utils/content'
 import { applyPostLayouts, readPostLayouts, type LayoutMode, type PostLayouts } from '../utils/post-layout'
 
@@ -16,6 +18,7 @@ const page = computed(() => Number(route.params.page || 1))
 const isHome = computed(() => route.path === '/')
 const visible = computed(() => posts.value.slice((page.value - 1) * pageSize, page.value * pageSize))
 const isMobile = useMediaQuery('(max-width: 680px)')
+const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 const preferences = ref<PostLayouts>({ version: 2, desktop: 'image', mobile: 'image' })
 const mode = computed(() => isMobile.value ? preferences.value.mobile : preferences.value.desktop)
 const feed = ref<HTMLElement>()
@@ -24,6 +27,17 @@ const modes: { id: LayoutMode, name: string, icon: string }[] = [
   { id: 'text', name: '文字列表', icon: 'i-ri-list-check' },
   { id: 'alternate', name: '交错图文', icon: 'i-ri-layout-row-line' },
 ]
+const modeSlot = computed(() => modes.findIndex(item => item.id === mode.value))
+const motion = reactive({ x: 0 })
+const spring = useSpring(motion, { stiffness: 440, damping: 32, mass: 0.85, restDelta: 0.001 })
+const motionReady = ref(false)
+const feedStyle = computed(() => motionReady.value ? {
+  '--feed-mode-slot': motion.x,
+  '--feed-layout-offset': `${Math.max(-8, Math.min(8, (motion.x - modeSlot.value) * 4))}px`,
+} : undefined)
+let movingCards: HTMLElement[] = []
+let layoutChange = 0
+
 const learning = [
   { title: '电控', description: '从 C 语言与单片机开始，逐步学习控制、通信、RTOS 与工程组织', label: '查看电控路线', path: '/learning-path/electrical-control', icon: 'i-ri-cpu-line' },
   { title: '机械臂运控', description: '从空间几何与建模出发，连接 ROS 2、运动规划与模仿学习实践', label: '查看机械臂路线', path: '/learning-path/arm-motion-control', icon: 'i-ri-node-tree' },
@@ -32,16 +46,35 @@ const learning = [
 onMounted(() => {
   preferences.value = readPostLayouts()
   applyPostLayouts(preferences.value)
+  snapIndicator()
+  motionReady.value = true
 })
-async function changeLayout(value: LayoutMode) {
-  if (value === mode.value) return
-  const cards = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [])
-  const anchor = cards.find(card => card.getBoundingClientRect().top >= 72 && card.getBoundingClientRect().top < window.innerHeight)
-  const offset = anchor?.getBoundingClientRect().top ?? 0
+watch([isMobile, reduceMotion], snapIndicator)
+onUnmounted(clearMovingCards)
+
+function clearMovingCards() {
+  for (const card of movingCards) card.classList.remove('is-layout-settling')
+  movingCards = []
+}
+
+function snapIndicator() {
+  spring.stop()
+  motion.x = modeSlot.value
+  clearMovingCards()
+}
+
+async function changeLayout(value: LayoutMode, event: MouseEvent) {
+  if (value === mode.value || (value === 'alternate' && isMobile.value)) return
+  const change = ++layoutChange
+  const cards = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [], card => ({
+    card,
+    bounds: card.getBoundingClientRect(),
+  }))
+  const anchor = cards.find(({ bounds }) => bounds.top >= 72 && bounds.top < window.innerHeight)
+  const animate = isPointerClick(event) && !reduceMotion.value
 
   if (isMobile.value) {
-    if (value === 'alternate') return
-    preferences.value.mobile = value
+    if (value !== 'alternate') preferences.value.mobile = value
   }
   else {
     preferences.value.desktop = value
@@ -50,8 +83,24 @@ async function changeLayout(value: LayoutMode) {
   applyPostLayouts(preferences.value)
   try { localStorage.setItem('kaede-post-layout-v2', JSON.stringify(preferences.value)) }
   catch {}
+  if (animate) {
+    clearMovingCards()
+    movingCards = cards
+      .filter(({ bounds }) => bounds.top < window.innerHeight && bounds.bottom > 72)
+      .map(({ card }) => card)
+    for (const card of movingCards) card.classList.add('is-layout-settling')
+    // Retarget the same spring so the current motion and velocity carry through rapid switches.
+    void Promise.resolve(spring.set({ x: modeSlot.value })).then(() => {
+      if (change === layoutChange) clearMovingCards()
+    })
+  }
+  else {
+    snapIndicator()
+  }
+
   await nextTick()
-  if (anchor) window.scrollBy({ top: anchor.getBoundingClientRect().top - offset, behavior: 'instant' })
+  if (anchor && change === layoutChange)
+    window.scrollBy({ top: anchor.card.getBoundingClientRect().top - anchor.bounds.top, behavior: 'instant' })
 }
 </script>
 
@@ -100,16 +149,17 @@ async function changeLayout(value: LayoutMode) {
     </section>
   </template>
 
-  <section ref="feed" class="kaede-home-section kaede-feed" aria-labelledby="recent-title">
+  <section ref="feed" class="kaede-home-section kaede-feed" aria-labelledby="recent-title" :style="feedStyle">
     <div class="kaede-feed-toolbar">
       <div class="kaede-section-heading">
         <h2 id="recent-title">{{ isHome ? '最近文章' : '文章列表' }}</h2>
         <p v-if="isHome">设计取舍、调试记录和可复用的工程方法</p>
       </div>
       <div class="kaede-feed-modes" role="group" aria-label="文章排列方式">
+        <span class="kaede-feed-mode-indicator" aria-hidden="true" />
         <button v-for="item in modes" :key="item.id" type="button"
           :class="{ 'kaede-desktop-mode': item.id === 'alternate' }" :aria-label="item.name"
-          :title="item.name" :aria-pressed="mode === item.id" @click="changeLayout(item.id)">
+          :title="item.name" :aria-pressed="mode === item.id" @click="changeLayout(item.id, $event)">
           <span :class="item.icon" aria-hidden="true" />
         </button>
       </div>

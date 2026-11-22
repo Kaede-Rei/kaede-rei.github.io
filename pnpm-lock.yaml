@@ -13,6 +13,9 @@ importers:
 
   .:
     dependencies:
+      '@vueuse/motion':
+        specifier: 3.0.3
+        version: 3.0.3(magicast@0.5.2)(vue@3.5.22(typescript@5.9.3))
       valaxy:
         specifier: 0.28.4
         version: 0.28.4(patch_hash=d37041f313b3d7a1ced57345591f47ac5e510392fca14fe2869d223ed55cfc63)(@babel/parser@7.29.2)(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@nuxt/kit@3.21.2(magicast@0.5.2))(@types/markdown-it@14.1.2)(@types/node@25.5.0)(@vue/compiler-dom@3.5.31)(@vue/compiler-sfc@3.5.31)(axios@1.14.0)(eslint@10.1.0(jiti@2.6.1))(postcss@8.5.8)(terser@5.46.1)(typescript@5.9.3)(yaml@2.8.3)

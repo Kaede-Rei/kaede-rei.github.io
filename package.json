@@ -16,6 +16,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@vueuse/motion": "3.0.3",
     "valaxy": "0.28.4",
     "valaxy-addon-vercount": "^0.0.7",
     "valaxy-theme-sakura": "^0.10.2",

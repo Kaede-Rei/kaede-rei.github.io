@@ -1,95 +1,85 @@
 import { nextTick } from 'vue'
 import { defineAppSetup } from 'valaxy'
+import { codeToolbar, copyFailure } from '../theme/utils/code-blocks'
+import { samePagePath, scrollToRouteAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
 
 const COLLAPSED_HEIGHT = 280
 const CODE_SELECTOR = '.kaede-post .prose pre'
 let codeId = 0
 
-function codeText(pre: HTMLPreElement, wrapper: HTMLElement) {
+function codeText(pre: HTMLPreElement) {
   const code = pre.querySelector('code') || pre
   const lines = Array.from(code.querySelectorAll('.line:not(.diff.remove)'))
   const text = lines.length ? lines.map(line => line.textContent || '').join('\n') : code.textContent || ''
-  return /\blanguage-(shellscript|shell|bash|sh|zsh)\b/.test(wrapper.className)
+  const language = pre.closest('[class*="language-"]')
+  return /\blanguage-(shellscript|shell|bash|sh|zsh)\b/.test(language?.className ?? '')
     ? text.replace(/^ *(\$|>) /gm, '').trim()
     : text
 }
 
+function prepareCodeBlock(pre: HTMLPreElement) {
+  const viewport = pre.parentElement
+  if (viewport?.classList.contains('kaede-code-viewport'))
+    return viewport.previousElementSibling
+
+  // Raw authored HTML does not pass through the Markdown renderer.
+  const collapsible = pre.scrollHeight > COLLAPSED_HEIGHT + 8
+  pre.id ||= `kaede-html-code-${++codeId}`
+  pre.tabIndex = 0
+  const fallbackViewport = document.createElement('div')
+  fallbackViewport.className = 'kaede-code-viewport'
+  pre.before(fallbackViewport)
+  fallbackViewport.append(pre)
+  fallbackViewport.insertAdjacentHTML('beforebegin', codeToolbar(pre.id, collapsible))
+  return fallbackViewport.previousElementSibling
+}
+
 function setupCodeBlock(pre: HTMLPreElement) {
   if (pre.dataset.kaedeCodeReady || !pre.parentElement) return
+  const toolbar = prepareCodeBlock(pre)
+  if (!(toolbar instanceof HTMLElement)) return
+  const copy = toolbar.querySelector<HTMLButtonElement>('[data-code-copy]')
+  const status = toolbar.querySelector<HTMLElement>('.kaede-code-status > span')
+  if (!copy || !status) return
   pre.dataset.kaedeCodeReady = 'true'
 
-  const parent = pre.parentElement
-  const wrapper = parent.matches('div[class*="language-"], .shiki-container, figure')
-    ? parent
-    : document.createElement('div')
-  if (wrapper !== parent) {
-    pre.before(wrapper)
-    wrapper.append(pre)
-  }
-  wrapper.classList.add('code-collapse-container')
-  pre.id ||= `kaede-code-${++codeId}`
-  pre.tabIndex = 0
-
-  const toolbar = document.createElement('div')
-  toolbar.className = 'kaede-code-actions'
-  const copy = wrapper.querySelector<HTMLButtonElement>(':scope > button.copy') || document.createElement('button')
-  copy.type = 'button'
-  copy.textContent = '复制代码'
-  copy.title = '复制代码'
-  const status = document.createElement('span')
-  status.className = 'kaede-code-status'
-  status.setAttribute('role', 'status')
   copy.addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText(codeText(pre, wrapper))
+      await navigator.clipboard.writeText(codeText(pre))
       status.textContent = '已复制'
     }
     catch {
-      status.textContent = '复制失败，请选择文本手动复制'
+      status.textContent = copyFailure
     }
   })
-  toolbar.append(copy)
-  wrapper.insertBefore(toolbar, pre)
-  toolbar.append(status)
 
-  if (pre.scrollHeight <= COLLAPSED_HEIGHT + 8) return
-  const toggle = document.createElement('button')
-  toggle.type = 'button'
-  toggle.className = 'code-collapse-toggle'
-  toggle.setAttribute('aria-controls', pre.id)
-  const fade = document.createElement('div')
-  fade.className = 'code-collapse-fade'
-  fade.setAttribute('aria-hidden', 'true')
-  toolbar.insertBefore(toggle, status)
-  wrapper.append(fade)
-  wrapper.classList.add('is-code-collapsible')
-
-  function setCollapsed(collapsed: boolean) {
-    wrapper.classList.toggle('is-code-collapsed', collapsed)
+  const toggle = toolbar.querySelector<HTMLButtonElement>('[data-code-toggle]')
+  toggle?.addEventListener('click', () => {
+    const collapsed = toggle.getAttribute('aria-expanded') === 'true'
+    toolbar.dataset.collapsed = String(collapsed)
     toggle.textContent = collapsed ? '展开代码' : '收起代码'
     toggle.setAttribute('aria-expanded', String(!collapsed))
-    pre.style.maxHeight = collapsed ? `${COLLAPSED_HEIGHT}px` : ''
-    pre.style.overflowY = collapsed ? 'hidden' : ''
-    fade.hidden = !collapsed
-  }
-  setCollapsed(true)
-  toggle.addEventListener('click', () => setCollapsed(toggle.getAttribute('aria-expanded') === 'true'))
+    if (collapsed) pre.scrollTop = 0
+  })
 }
 
 export default defineAppSetup(({ isClient, router }) => {
   if (!isClient) return
 
   router.options.scrollBehavior = async (to, from, savedPosition) => {
+    const samePage = samePagePath(to.path, from.path)
+    if (savedPosition || !samePage) stopAnchorScroll()
     if (savedPosition) return savedPosition
     if (to.hash) {
       await nextTick()
+      if (to.fullPath !== router.currentRoute.value.fullPath) return false
       const anchor = document.getElementById(to.hash.slice(1))
       if (anchor) {
-        anchor.scrollIntoView({ block: 'start', behavior: 'instant' })
+        scrollToRouteAnchor(anchor, samePage)
         return false
       }
     }
-    if (to.path !== from.path) return { top: 0 }
+    if (!samePage) return { top: 0 }
   }
 
   function refreshCodeBlocks() {
