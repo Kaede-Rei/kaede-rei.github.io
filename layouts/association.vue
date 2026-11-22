@@ -1,4 +1,6 @@
 <template>
-  <ATILPageHeader />
-  <div class="kaede-page content"><RouterView /></div>
+  <section class="kaede-page content">
+    <ATILPageHeader />
+    <RouterView />
+  </section>
 </template>

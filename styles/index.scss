@@ -120,6 +120,8 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-main.has-home-layout { margin-top: 0; }
 .kaede-main.has-home-layout > .kaede-page-header { padding-top: clamp(28px, 5vw, 64px); }
 .kaede-main.has-association-layout { margin-top: 0; }
+.kaede-main.has-technical-doc-layout { width: min(1360px, calc(100% - 2 * var(--gutter))); }
+
 .kaede-footer { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px 32px; margin-top: clamp(48px, 7vw, 88px); padding: 28px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
 .kaede-footer-name { color: var(--ink); font: 600 21px/1.3 var(--display-font); }
 .kaede-footer p { margin: 5px 0 0; }
@@ -160,11 +162,11 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-waves { position: absolute; inset: auto -1px -1px; width: calc(100% + 2px); height: clamp(24px, 4vw, 52px); fill: var(--bg); }
 .kaede-wave-back { opacity: .54; }
 
-.kaede-home-entries { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 20px; margin-top: clamp(40px, 6vw, 80px); }
+.kaede-home-entries { margin-top: clamp(40px, 6vw, 80px); }
 .kaede-home-section { margin-top: clamp(44px, 6vw, 80px); min-width: 0; }
 .kaede-section-heading h2 { margin: 0; font: 650 clamp(23px, 3vw, 30px)/1.35 var(--display-font); }
 .kaede-section-heading p { max-width: 56ch; margin: 8px 0 0; color: var(--muted); }
-.kaede-path-entry, .kaede-agrotech-entry { padding: clamp(16px, 2.2vw, 28px); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.kaede-path-entry { padding: clamp(16px, 2.2vw, 28px); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .kaede-path-entry-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
 .kaede-track-entry { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 6px 9px; align-content: start; align-items: center; padding: 14px; border: 1px solid transparent; border-radius: 8px; background: var(--surface-soft); }
 .kaede-track-entry strong { font-size: 18px; line-height: 1.35; }
@@ -172,14 +174,10 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-track-description, .kaede-track-entry .kaede-entry-action { grid-column: 1 / -1; }
 .kaede-track-description { color: var(--muted); font-size: 14px; }
 .kaede-entry-action { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; color: var(--accent); font-size: 14px; font-weight: 650; }
-.kaede-agrotech-entry { display: grid; align-content: center; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px 16px; background: linear-gradient(142deg, var(--atil-bg), var(--atil-bg-deep)); border-color: var(--atil-bg-deep); color: var(--atil-fg); }
-.kaede-agrotech-entry:focus-visible { box-shadow: inset 0 0 0 2px var(--atil-gold); }
-.kaede-agrotech-label { color: var(--atil-gold); font-size: 13px; font-weight: 650; }
-.kaede-agrotech-entry h2 { margin: 4px 0 0; font: 600 clamp(22px, 2.25vw, 31px)/1.15 var(--display-font); overflow-wrap: anywhere; }
-.kaede-agrotech-entry > p { grid-column: 1 / -1; color: var(--atil-muted); margin: 0; }
-.kaede-agrotech-entry .kaede-entry-action { grid-column: 1 / -1; color: var(--atil-gold); }
 .kaede-project-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; margin-top: 20px; }
 .kaede-project-card--lead { grid-column: 1 / -1; }
+.kaede-atil-link { display: inline-flex; align-items: center; min-height: 44px; gap: 10px; margin-top: 20px; color: var(--accent); font-weight: 650; }
+.kaede-atil-link > picture.atil-brand-mark { --mark-size: 44px; }
 
 .kaede-feed-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 8px 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .kaede-feed-modes {
@@ -295,7 +293,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  max-width: min(310px, calc(100% - 32px));
   padding: 6px 12px;
   border: 1px solid var(--accent);
   border-radius: 8px;
@@ -305,8 +302,7 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
   font-size: 14px;
   white-space: nowrap;
 }
-.kaede-toc-position { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--muted); border-left: 1px solid var(--line); padding-left: 8px; }
-.kaede-toc-dialog { width: min(450px, calc(100% - 32px)); max-height: min(75dvh, 720px); padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.kaede-toc-dialog { --toc-max-height: min(75dvh, 720px); width: min(450px, calc(100% - 24px)); max-height: var(--toc-max-height); padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); overflow: hidden; }
 .kaede-toc-dialog::backdrop { background: #20182785; }
 .kaede-toc-dialog:not([open]), .kaede-toc-dialog:not([open])::backdrop { pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) {
@@ -328,17 +324,28 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
     .kaede-toc-dialog[data-pointer-motion][open]::backdrop { opacity: 0; }
   }
 }
-.kaede-toc-panel header { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 14px 6px 18px; background: var(--surface); border-bottom: 1px solid var(--line); }
-.kaede-toc-panel h2, .kaede-toc-desktop h2 { margin: 0; font-size: 16px; font-weight: 700; }
-.kaede-toc-panel header button { width: 44px; height: 44px; border-radius: 8px; }
-.kaede-toc-panel nav { padding: 12px; }
-.kaede-toc-desktop ul, .kaede-toc-panel ul { list-style: none; margin: 0; padding: 0; }
-.kaede-toc-desktop nav a, .kaede-toc-panel nav a { display: flex; align-items: center; min-height: 36px; border-inline-start: 2px solid transparent; font-size: 14px; line-height: 1.35; padding: 5px 7px; overflow-wrap: anywhere; }
-.kaede-toc-panel nav a { min-height: 44px; }
-.kaede-toc-desktop nav li.level-3 a, .kaede-toc-panel nav li.level-3 a { padding-inline-start: 15px; }
-.kaede-toc-desktop nav li.level-4 a, .kaede-toc-panel nav li.level-4 a { padding-inline-start: 23px; }
-.kaede-toc-desktop nav a[aria-current], .kaede-toc-panel nav a[aria-current] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 650; }
-.kaede-toc-desktop nav button, .kaede-toc-panel nav button { margin-top: 6px; min-height: 44px; color: var(--accent); text-decoration: underline; }
+.kaede-toc-panel { display: flex; flex-direction: column; max-height: calc(var(--toc-max-height) - 2px); }
+.kaede-toc-heading { display: flex; align-items: center; flex: none; gap: 8px; padding: 0 4px 4px; border-bottom: 1px solid var(--line); }
+.kaede-toc-heading h2 { margin: 0 auto 0 0; font-size: 16px; font-weight: 700; }
+.kaede-toc-panel .kaede-toc-heading { padding: 4px 10px 4px 16px; }
+.kaede-toc-close { display: grid; place-items: center; min-width: 44px; min-height: 44px; border-radius: 8px; }
+.kaede-toc-expand { min-height: 36px; padding-inline: 5px; color: var(--accent); font-size: 13px; white-space: nowrap; }
+.kaede-toc-panel .kaede-toc-expand { min-height: 44px; }
+.kaede-toc-scroll { min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 6px 5px; }
+.kaede-toc-panel .kaede-toc-scroll { padding: 8px 12px; }
+.kaede-toc-items { list-style: none; margin: 0; padding: 0; }
+.kaede-toc-items .is-nested { margin: 0 0 4px 9px; padding-inline-start: 6px; border-inline-start: 1px solid var(--line); }
+.kaede-toc-items a { display: flex; align-items: baseline; gap: .4em; border-inline-start: 2px solid transparent; border-radius: 5px; padding: 6px 7px; font-size: 14px; line-height: 1.4; }
+.kaede-toc-items:not(.is-nested) > li > a { font-weight: 650; }
+.kaede-toc-items.is-nested a { color: var(--muted); }
+.kaede-toc-items a[aria-current] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 650; }
+.kaede-toc-panel .kaede-toc-items a { min-height: 44px; padding-block: 11px; }
+:is(.kaede-toc-heading button, .kaede-toc-items a):focus-visible { outline-offset: 1px; }
+.kaede-toc-number { flex: none; font-variant-numeric: tabular-nums; }
+.kaede-toc-text { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 680px) {
+  .kaede-toc-dialog { position: fixed; inset: auto 0 max(12px, env(safe-area-inset-bottom)); margin: 0 auto; transform-origin: bottom center; }
+}
 
 .kaede-article-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .kaede-article-nav a, .kaede-taxonomy a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; gap: 5px; padding: 5px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
@@ -357,20 +364,19 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-friend-links small { display: block; color: var(--muted); font-size: 14px; }
 
 @media (hover: hover) and (pointer: fine) {
-  .kaede-button:hover, .kaede-agrotech-entry:hover .kaede-entry-action, .kaede-track-entry:hover .kaede-entry-action { text-decoration: underline; }
+  .kaede-button:hover, .kaede-atil-link:hover, .kaede-track-entry:hover .kaede-entry-action { text-decoration: underline; }
   .kaede-nav-links a:hover, .kaede-footer a:hover, .kaede-archive-item:hover, .kaede-post-card h3 a:hover { color: var(--accent); }
   .kaede-nav-tools button:hover, .kaede-theme-control:hover, .kaede-toc-desktop nav a:hover, .kaede-toc-panel nav a:hover { background: var(--accent-soft); }
   .kaede-feed-modes button:not([aria-pressed='true']):hover { background: var(--surface-soft); }
-  .kaede-track-entry, .kaede-agrotech-entry { transition: border-color var(--hover-duration) ease; }
+  .kaede-track-entry { transition: border-color var(--hover-duration) ease; }
   .kaede-track-entry:hover { border-color: var(--accent); }
-  .kaede-agrotech-entry:hover { border-color: var(--atil-gold); }
 }
 @media (min-width: 1080px) {
-  .kaede-reader { display: grid; grid-template-columns: minmax(0, var(--reading-width)) minmax(200px, 220px); align-items: start; justify-content: center; gap: clamp(32px, 4vw, 48px); max-width: none; }
+  .kaede-reader { display: grid; grid-template-columns: minmax(0, var(--reading-width)) minmax(240px, 270px); align-items: start; justify-content: center; gap: clamp(32px, 4vw, 48px); max-width: none; }
   .kaede-reader.has-no-toc { grid-template-columns: minmax(0, var(--reading-width)); }
   .kaede-toc-toggle { display: none; }
-  .kaede-toc-desktop { position: sticky; top: calc(var(--nav-height) + 16px); display: block; max-height: calc(100dvh - var(--nav-height) - 28px); overflow: auto; padding: 8px 6px 12px 12px; border-left: 1px solid var(--line); }
-  .kaede-toc-desktop h2 { margin: 0 0 8px 6px; }
+  .kaede-toc-desktop { position: sticky; top: calc(var(--nav-height) + 16px); display: block; min-width: 0; padding-inline-start: 12px; border-inline-start: 1px solid var(--line); }
+  .kaede-toc-desktop > nav { display: flex; flex-direction: column; max-height: calc(100dvh - var(--nav-height) - 28px); }
 }
 @media (max-width: 960px) {
   :root { --gutter: 24px; }
@@ -420,7 +426,7 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 }
 @media (max-width: 720px) {
   :root { --gutter: 18px; }
-  .kaede-hero-grid, .kaede-home-entries, .kaede-project-grid { grid-template-columns: minmax(0, 1fr); }
+  .kaede-hero-grid, .kaede-project-grid { grid-template-columns: minmax(0, 1fr); }
   .kaede-hero-title { font-size: clamp(30px, 6vw, 36px); }
   .kaede-hero-intro { font-size: 16px; margin-block: 14px 18px; }
   .kaede-hero-break { display: none; }

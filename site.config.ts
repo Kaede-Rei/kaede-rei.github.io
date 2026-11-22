@@ -1,4 +1,5 @@
 import { defineSiteConfig } from 'valaxy'
+import { legacyArmRedirects } from './data/redirects'
 import { profile } from './data/site'
 
 export default defineSiteConfig({
@@ -54,5 +55,10 @@ export default defineSiteConfig({
   search: {
     enable: true,
     provider: 'fuse',
+  },
+
+  redirects: {
+    useVueRouter: false,
+    rules: legacyArmRedirects,
   },
 })

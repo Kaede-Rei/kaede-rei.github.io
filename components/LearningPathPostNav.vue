@@ -48,12 +48,12 @@ const chapterNav = computed(() => {
     <div class="learning-chapter-links">
       <RouterLink :to="chapterNav.phase.overviewLink">返回本阶段</RouterLink>
       <RouterLink :to="chapterNav.track.path">
-        {{ chapterNav.nextPhase ? `返回${chapterNav.track.title}` : '返回本学习路径' }}
+        {{ chapterNav.nextPhase ? `返回${chapterNav.track.title}` : '返回方向总览' }}
       </RouterLink>
       <RouterLink v-if="chapterNav.nextReadable" :to="chapterNav.nextReadable.path">
         下一可读章节：{{ chapterNav.nextReadable.title }}
       </RouterLink>
-      <RouterLink v-if="!chapterNav.nextPhase" to="/agrotech">查看 ATIL 工程资料</RouterLink>
+      <RouterLink v-if="!chapterNav.nextPhase" to="/learning-path">返回技术积累</RouterLink>
     </div>
   </nav>
   <nav v-else-if="blogPrev?.path || blogNext?.path" class="kaede-post-nav" aria-label="前后文章">

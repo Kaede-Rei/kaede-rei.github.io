@@ -199,12 +199,12 @@ defineExpose({ dismiss })
           autofocus
           type="search"
           role="combobox"
-          aria-label="搜索文章、学习路径与项目介绍"
+          aria-label="搜索文章、技术积累与项目介绍"
           aria-autocomplete="list"
           aria-controls="kaede-search-options"
           :aria-expanded="hits.length > 0"
           :aria-activedescendant="activeId"
-          placeholder="搜索文章、学习路径与项目介绍"
+          placeholder="搜索文章、技术积累与项目介绍"
           autocomplete="off"
           enterkeyhint="search"
           @keydown="onInputKeydown"
@@ -226,7 +226,7 @@ defineExpose({ dismiss })
             <a :href="href" @click="openResult('/archives', $event)">文章</a>
           </RouterLink>
           <RouterLink v-if="!failed" to="/learning-path" custom v-slot="{ href }">
-            <a :href="href" @click="openResult('/learning-path', $event)">学习路径</a>
+            <a :href="href" @click="openResult('/learning-path', $event)">技术积累</a>
           </RouterLink>
         </div>
         <div v-show="hits.length" id="kaede-search-options" role="listbox" aria-label="搜索结果">

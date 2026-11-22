@@ -71,10 +71,10 @@ export interface SearchRecord {
 
 export const searchTypeLabels: Record<SearchType, string> = {
   article: '文章',
-  'learning-path': '学习路线',
-  'learning-chapter': '学习章节',
+  'learning-path': '技术积累',
+  'learning-chapter': '技术文档',
   about: '关于',
-  association: '协会介绍',
+  association: '协作项目',
   page: '页面',
 }
 

@@ -1,8 +1,8 @@
 ---
-title: "学习路径"
+title: "技术积累"
 layout: learning
 contentType: learning-route
-summary: "按阶段学习电控与机械臂运控，从基础知识和开发工具走向项目实践"
+summary: "Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档"
 ---
 
 ## 内容状态

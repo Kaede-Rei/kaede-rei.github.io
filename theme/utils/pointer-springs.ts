@@ -2,7 +2,7 @@ import { useSpring } from '@vueuse/motion'
 import { reactive, watch } from 'vue'
 
 const pressable = [
-  '.kaede-button', '.kaede-track-entry', '.kaede-agrotech-entry', '.kaede-nav-tools button',
+  '.kaede-button', '.kaede-track-entry', '.kaede-nav-tools button',
   '.kaede-toc-toggle', '.kaede-toc-panel button', '.kaede-feed-modes button',
   '.kaede-search-dialog button', '.kaede-code-actions button',
 ].join(', ')

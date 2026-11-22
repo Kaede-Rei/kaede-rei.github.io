@@ -1,6 +1,8 @@
 import type { RouteRecordNormalized } from 'vue-router'
+import { robotArmDevelopmentTrack } from './robot-arm-development'
 
 export const learningPath = '/learning-path'
+export const learningTitle = '技术积累'
 
 interface LearningPhase {
   id: string
@@ -18,11 +20,10 @@ interface LearningTrack {
 }
 
 const electricalPath = `${learningPath}/electrical-control`
-const armPath = `${learningPath}/arm-motion-control`
 
 export const learningTracks = {
   'electrical-control': {
-    title: '电控学习路径',
+    title: '嵌入式电控',
     path: electricalPath,
     description: '从 C 语言与单片机入门，逐步学习 STM32、控制算法、RTOS 与工程组织，也可按基础和项目需求选学通信、电路和图形界面等方向',
     phases: [
@@ -56,35 +57,10 @@ export const learningTracks = {
       },
     ],
   },
-  'arm-motion-control': {
-    title: '机械臂运控学习路径',
-    path: armPath,
-    description: '从机器人空间几何与建模开始，进入 ROS 2、MoveIt 2 与任务规划，再延伸到示教数据和模仿学习实践',
-    phases: [
-      {
-        id: 'phase-1',
-        title: '第一阶段 · 理论与编程基础',
-        overviewLink: `${armPath}/phase-1`,
-        audience: '具备基础编程与线性代数知识，想学习机械臂建模的读者',
-        description: '先理解空间几何、运动学和模型，再结合编程与数值工具验证基本概念',
-      },
-      {
-        id: 'phase-2',
-        title: '第二阶段 · ROS 2 与 MoveIt 2',
-        overviewLink: `${armPath}/phase-2`,
-        audience: '了解坐标变换和运动学基础，准备实践机器人建模与规划的读者',
-        description: '从环境和模型开始，学习规划、约束、末端控制与任务组织',
-      },
-      {
-        id: 'phase-3',
-        title: '第三阶段 · 具身智能实践',
-        overviewLink: `${armPath}/phase-3`,
-        audience: '了解机械臂运动规划与基本调试，想实践示教与策略部署的读者',
-        description: '围绕示教数据、模仿学习和后续实验，了解从数据到策略运行的流程',
-      },
-    ],
-  },
+  'robot-arm-development': robotArmDevelopmentTrack,
 } satisfies Record<string, LearningTrack>
+
+export const currentLearningTracks = Object.values(learningTracks)
 
 export type LearningTrackId = keyof typeof learningTracks
 export const learningStatusLabels = {

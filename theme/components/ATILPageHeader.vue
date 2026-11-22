@@ -1,97 +1,48 @@
 <script setup lang="ts">
-import { association } from '../../data/site'
+import { useFrontmatter } from 'valaxy'
+import { association, profile } from '../../data/site'
 import ATILBrand from './ATILBrand.vue'
+
+const frontmatter = useFrontmatter()
 </script>
 
 <template>
-  <header class="atil-page-header">
-    <nav class="atil-breadcrumb" aria-label="面包屑">
+  <header class="kaede-page-header">
+    <nav class="kaede-breadcrumb" aria-label="面包屑">
       <RouterLink to="/">首页</RouterLink>
+      <span aria-hidden="true">/</span>
+      <RouterLink to="/about">关于</RouterLink>
       <span aria-hidden="true">/</span>
       <span aria-current="page">{{ association.shortName }}</span>
     </nav>
     <div class="atil-page-heading">
-      <p class="atil-name">{{ association.shortName }} · {{ association.organization }}</p>
-      <h1 class="kaede-page-title" tabindex="-1">{{ association.name }}</h1>
-      <p>{{ association.description }}</p>
-      <div class="atil-page-actions">
-        <a class="kaede-button atil-primary-action" :href="association.githubOrg">访问 GitHub 组织</a>
-        <RouterLink class="kaede-button atil-secondary-action" to="/learning-path">查看学习路径</RouterLink>
+      <ATILBrand variant="compact" decorative />
+      <div>
+        <h1 id="我在-atil-的工作" class="kaede-page-title" tabindex="-1">{{ frontmatter.title }}</h1>
+        <p>{{ association.name }} · {{ association.organization }}</p>
       </div>
     </div>
-    <ATILBrand variant="banner" decorative />
+    <p id="公开工作方向" class="kaede-page-summary" tabindex="-1">
+      我是 {{ association.organization }} 的{{ profile.associationRole }}，参与项目组织与开发，主要关注机械臂控制、嵌入式软件和系统集成，也为后续项目整理公共模块和接口文档
+    </p>
   </header>
 </template>
 
 <style scoped>
-.atil-page-header {
-  display: grid;
-  gap: clamp(24px, 4vw, 48px);
-  width: min(1180px, calc(100% - 2 * var(--gutter, 24px)));
-  box-sizing: border-box;
-  margin: clamp(16px, 3vw, 32px) auto 0;
-  padding: clamp(16px, 4vw, 48px);
-  border-radius: 16px;
-  background: linear-gradient(160deg, var(--atil-bg), var(--atil-bg-deep));
-  color: var(--atil-fg);
-}
-
-.atil-breadcrumb,
-.atil-page-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.atil-breadcrumb {
-  color: var(--atil-muted);
-  font-size: .875rem;
-}
-
-.atil-breadcrumb a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: .16em;
-}
-
 .atil-page-heading {
-  display: grid;
+  display: flex;
+  align-items: center;
   gap: 16px;
-  max-width: 760px;
 }
 
-.atil-page-heading h1,
+.atil-page-heading :deep(.atil-brand-mark) {
+  --mark-size: 52px;
+}
+
 .atil-page-heading p {
-  margin: 0;
-  color: inherit;
-  overflow-wrap: anywhere;
-}
-
-.atil-page-heading .atil-name {
-  color: var(--atil-gold);
+  margin: 4px 0 0;
+  color: var(--muted);
   font-size: .875rem;
-  font-weight: 600;
-}
-
-.atil-page-actions .atil-primary-action {
-  color: var(--atil-bg-deep);
-  background: var(--atil-gold);
-  border-color: var(--atil-gold);
-}
-
-.atil-page-actions .atil-secondary-action {
-  color: var(--atil-fg);
-  background: transparent;
-  border-color: var(--atil-muted);
-}
-
-.atil-page-actions a:hover {
-  text-decoration: underline;
-  text-underline-offset: .16em;
-}
-
-.atil-page-header :focus-visible {
-  outline-color: var(--atil-gold);
+  overflow-wrap: anywhere;
 }
 </style>

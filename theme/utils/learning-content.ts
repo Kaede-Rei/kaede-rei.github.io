@@ -1,5 +1,6 @@
 import type { EditableTreeNode } from 'vue-router/unplugin'
 import { chapterFromRoute, learningContext, learningMeta, learningPath, learningTracks } from './learning'
+import { robotArmDevelopmentPath, robotArmDevelopmentReferencesPath } from './robot-arm-development'
 
 type MarkdownPage = {
   content: string
@@ -43,8 +44,17 @@ function validateOutline(root: EditableTreeNode) {
     if (!route.component)
       continue
 
-    paths.add(route.fullPath.replace(/\/$/, ''))
-    if (learningMeta(route.meta.frontmatter).contentType !== 'learning-chapter')
+    const path = route.fullPath.replace(/\/$/, '')
+    paths.add(path)
+    const meta = learningMeta(route.meta.frontmatter)
+    if (meta.track === 'robot-arm-development') {
+      const expectedParent = meta.contentType === 'learning-route' ? learningPath
+        : meta.contentType === 'learning-phase' ? robotArmDevelopmentPath
+          : learningContext(meta)?.phase.overviewLink
+      if (!expectedParent || expectedParent !== meta.parentLink)
+        throw new Error(`${path}: 机械臂文档的父级与分组不一致`)
+    }
+    if (meta.contentType !== 'learning-chapter')
       continue
 
     const chapter = chapterFromRoute(route.fullPath, route.meta.frontmatter)
@@ -58,6 +68,9 @@ function validateOutline(root: EditableTreeNode) {
     chapterOrders.set(key, chapter.path)
   }
 
+  for (const path of [learningPath, robotArmDevelopmentPath, robotArmDevelopmentReferencesPath]) {
+    if (!paths.has(path)) throw new Error(`${path}: 技术积累入口不存在`)
+  }
   for (const track of Object.values(learningTracks)) {
     for (const phase of track.phases) {
       if (!paths.has(phase.overviewLink.split('#')[0]))

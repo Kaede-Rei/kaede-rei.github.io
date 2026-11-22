@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { learningChapters, learningContext, learningTrack } from '../theme/utils/learning'
+import { learningChapters, learningContext, learningPath, learningTrack } from '../theme/utils/learning'
 
 const route = useRoute()
 const router = useRouter()
@@ -68,7 +68,7 @@ const showChapters = computed(() => context.value || track.value?.path.endsWith(
         查看下一阶段 →
       </RouterLink>
       <RouterLink v-if="context" :to="track.path" class="learning-action">返回{{ track.title }}</RouterLink>
-      <RouterLink to="/agrotech" class="learning-action">查看 ATIL 工程资料</RouterLink>
+      <RouterLink :to="learningPath" class="learning-action">返回技术积累</RouterLink>
     </div>
   </div>
 </template>

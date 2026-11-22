@@ -24,6 +24,6 @@ const years = computed(() => [...new Set(dated.value.map(post => formatPostDate(
         <span>{{ post.title }}</span><span class="kaede-link-arrow" aria-hidden="true">→</span>
       </RouterLink>
     </section>
-    <p v-if="!posts.length" class="kaede-empty">暂无文章 <RouterLink to="/learning-path">查看学习路径</RouterLink></p>
+    <p v-if="!posts.length" class="kaede-empty">暂无文章 <RouterLink to="/learning-path">查看技术积累</RouterLink></p>
   </section>
 </template>

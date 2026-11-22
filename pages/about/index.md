@@ -36,12 +36,12 @@ import { association, featuredProjects, profile, projects } from '../../data/sit
 
 <RouterLink class="about-association" :to="association.path">
   <ATILBrand variant="compact" decorative />
-  <span>了解 ATIL</span>
+  <span>查看我在 ATIL 的工作</span>
 </RouterLink>
 
 ## 阅读与交流
 
-技术笔记记录设计取舍和调试过程，学习路径按阶段整理并持续更新相关基础与工具
+技术笔记记录设计取舍和调试过程，技术积累按主题整理我在嵌入式电控与机械臂系统开发中的学习和实践
 
 技术问题可以在对应公开仓库讨论，也可以通过邮箱联系我
 

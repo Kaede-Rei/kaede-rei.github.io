@@ -30,7 +30,7 @@ export const addCodeControls: NonNullable<MarkdownOptions['config']> = (md) => {
       const [tokens, index, , env] = args
       const html = render(...args) as string | Promise<string>
       if (typeof env.id !== 'string'
-        || (env.frontmatter?.layout !== 'post' && !/[/\\]pages[/\\]posts[/\\]/.test(env.id)))
+        || (!['post', 'technical-doc'].includes(env.frontmatter?.layout) && !/[/\\]pages[/\\]posts[/\\]/.test(env.id)))
         return html
 
       const decorate = (markup: string) => markup.replace(

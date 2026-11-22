@@ -8,6 +8,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { profile } from '../data/site'
 import KaedeSearch from '../theme/components/KaedeSearch.vue'
 import { imageUrl, postSummary } from '../theme/utils/content'
+import { learningTitle } from '../theme/utils/learning'
 import { postLayoutBootstrap } from '../theme/utils/post-layout'
 import { handleSamePageAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
 import { installPointerSprings } from '../theme/utils/pointer-springs'
@@ -41,9 +42,8 @@ const isPost = computed(() => route.path.startsWith('/posts/'))
 const nav = [
   { text: '首页', to: '/', sections: ['/'] },
   { text: '文章', to: '/archives', sections: ['/archives', '/posts', '/categories', '/tags', '/page'] },
-  { text: '学习路径', to: '/learning-path', sections: ['/learning-path'] },
-  { text: 'ATIL', to: '/agrotech', sections: ['/agrotech'] },
-  { text: '关于', to: '/about', sections: ['/about'] },
+  { text: learningTitle, to: '/learning-path', sections: ['/learning-path'] },
+  { text: '关于', to: '/about', sections: ['/about', '/agrotech'] },
 ]
 const cleanPath = (path: string) => path.replace(/\/$/, '') || '/'
 const isInSection = (sections: string[]) => sections.some(section =>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { learningContext, learningMeta, learningPath, learningTrack, learningTracks } from '../theme/utils/learning'
+import { currentLearningTracks, learningContext, learningMeta, learningPath, learningTitle, learningTrack } from '../theme/utils/learning'
 
 const route = useRoute()
 const meta = computed(() => learningMeta(route.meta.frontmatter))
@@ -17,7 +17,7 @@ const summary = computed(() => context.value?.phase.description || track.value?.
       <nav class="kaede-breadcrumb" aria-label="面包屑">
         <RouterLink to="/">首页</RouterLink>
         <template v-if="track">
-          <span aria-hidden="true">/</span><RouterLink :to="learningPath">学习路径</RouterLink>
+          <span aria-hidden="true">/</span><RouterLink :to="learningPath">{{ learningTitle }}</RouterLink>
         </template>
         <template v-if="context">
           <span aria-hidden="true">/</span><RouterLink :to="context.track.path">{{ context.track.title }}</RouterLink>
@@ -27,8 +27,8 @@ const summary = computed(() => context.value?.phase.description || track.value?.
       <p class="learning-description">{{ summary }}</p>
       <p v-if="context" class="learning-audience">适合：{{ context.phase.audience }}</p>
     </header>
-    <nav v-if="!track" class="learning-track-links" aria-label="学习方向">
-      <RouterLink v-for="entry in learningTracks" :key="entry.path" :to="entry.path">
+    <nav v-if="!track" class="learning-track-links" aria-label="技术积累方向">
+      <RouterLink v-for="entry in currentLearningTracks" :key="entry.path" :to="entry.path">
         <strong>{{ entry.title }} <span aria-hidden="true">→</span></strong>
         <span>{{ entry.description }}</span>
       </RouterLink>

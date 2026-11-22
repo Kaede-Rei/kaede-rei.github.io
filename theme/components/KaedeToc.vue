@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { useMotionProperties, useReducedMotion, useSpring } from '@vueuse/motion'
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { isPlainClick, isPointerClick, navigateToAnchor } from '../utils/anchor-scroll'
+import KaedeTocItems from './KaedeTocItems.vue'
 
 interface Heading {
   id: string
+  number?: string
   text: string
   level: number
   element: HTMLElement
+  root: string
+  children: Heading[]
 }
 
-const route = useRoute()
+const props = withDefaults(defineProps<{ contentSelector?: string }>(), {
+  contentSelector: '.kaede-post .prose',
+})
 const router = useRouter()
 const dialog = ref<HTMLDialogElement>()
 const trigger = ref<HTMLButtonElement>()
+const desktopList = ref<HTMLElement>()
+const dialogList = ref<HTMLElement>()
 const reducedMotion = useReducedMotion()
 const closedScale = .98
 const { motionProperties: panelMotion } = useMotionProperties(dialog, { scale: closedScale })
@@ -25,34 +33,90 @@ const panelSpring = useSpring(panelMotion, {
   restDelta: .0001,
   restSpeed: .001,
 })
-const selected = ref<Heading>()
-const headings = ref<Heading[]>([])
-const includeDetails = ref(false)
+const selected = shallowRef<Heading>()
+const headings = shallowRef<Heading[]>([])
+const outline = shallowRef<Heading[]>([])
+const showAll = ref(false)
+const focusedRoot = ref('')
+const hasChildren = computed(() => outline.value.some(heading => heading.children.length > 0))
 let frame = 0
 
 function updateLocation() {
   frame = 0
-  const visible = headings.value.filter(heading => includeDetails.value || heading.level < 4)
-  const beforeTop = visible.filter(heading => heading.element.getBoundingClientRect().top <= 120)
-  selected.value = beforeTop.at(-1) || visible[0]
+  const root = document.documentElement
+  const inset = Number.parseFloat(getComputedStyle(root).scrollPaddingTop) || 0
+  if (window.scrollY > 0 && root.scrollHeight - window.scrollY - window.innerHeight <= 1) {
+    selected.value = headings.value.at(-1)
+    return
+  }
+  selected.value = headings.value.findLast(heading => heading.element.getBoundingClientRect().top <= inset + 12)
+    ?? headings.value[0]
 }
 function queueUpdate() {
   if (!frame) frame = requestAnimationFrame(updateLocation)
 }
 function readHeadings() {
-  headings.value = Array.from(document.querySelectorAll<HTMLElement>('.kaede-post .prose :is(h2,h3,h4)[id]'))
-    .map(element => {
-      const copy = element.cloneNode(true) as HTMLElement
-      copy.querySelectorAll('.header-anchor').forEach(anchor => anchor.remove())
-      copy.querySelectorAll('.katex').forEach(formula => {
-        const math = formula.querySelector('math')
-        math?.querySelector('annotation')?.remove()
-        if (math?.textContent) formula.replaceWith(math.textContent)
-      })
-      return { id: element.id, text: (copy.textContent || '').trim(), level: Number(element.tagName[1]), element }
+  const elements = document.querySelectorAll<HTMLElement>(`:is(${props.contentSelector}) :is(h2,h3,h4)[id]`)
+  const roots: Heading[] = []
+  const ancestors: Heading[] = []
+  headings.value = Array.from(elements, element => {
+    const copy = element.cloneNode(true) as HTMLElement
+    copy.querySelectorAll('.header-anchor').forEach(anchor => anchor.remove())
+    copy.querySelectorAll('.katex').forEach(formula => {
+      const math = formula.querySelector('math')
+      math?.querySelector('annotation')?.remove()
+      if (math?.textContent) formula.replaceWith(math.textContent)
     })
+    const label = (copy.textContent || '').trim()
+    const numbered = label.match(/^(\d+(?:\.\d+)*[.、]?\s+|[一二三四五六七八九十]+、)\s*(.+)$/u)
+    const level = Number(element.tagName[1])
+    while (ancestors.length && ancestors[ancestors.length - 1].level >= level) ancestors.pop()
+    const parent = ancestors.at(-1)
+    const heading: Heading = {
+      id: element.id,
+      number: numbered?.[1].trim(),
+      text: numbered?.[2] ?? label,
+      level,
+      element,
+      root: parent?.root ?? element.id,
+      children: [],
+    }
+    const siblings = parent?.children ?? roots
+    siblings.push(heading)
+    ancestors.push(heading)
+    return heading
+  })
+  outline.value = roots
   updateLocation()
 }
+
+function revealCurrent(list?: HTMLElement) {
+  if (!list?.clientHeight || list.contains(document.activeElement)) return
+  const current = list.querySelector('[aria-current="location"]')
+  if (!current) return
+  const viewport = list.getBoundingClientRect()
+  const item = current.getBoundingClientRect()
+  const gutter = 6
+  if (item.top < viewport.top + gutter) list.scrollTop += item.top - viewport.top - gutter
+  else if (item.bottom > viewport.bottom - gutter) list.scrollTop += item.bottom - viewport.bottom + gutter
+}
+
+watch([selected, showAll], () => {
+  revealCurrent(desktopList.value)
+  if (dialog.value?.open) revealCurrent(dialogList.value)
+}, { flush: 'post' })
+
+function rememberFocusedRoot(event: FocusEvent) {
+  const item = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-toc-root]') : null
+  focusedRoot.value = item?.dataset.tocRoot ?? ''
+}
+
+function releaseFocusedRoot(event: FocusEvent) {
+  if (event.currentTarget instanceof HTMLElement && event.relatedTarget instanceof Node
+    && event.currentTarget.contains(event.relatedTarget)) return
+  focusedRoot.value = ''
+}
+
 function setPanelMotion(panel: HTMLDialogElement, opening: boolean, fromPointer = false) {
   const target = opening ? 1 : closedScale
   const animate = fromPointer && !reducedMotion.value && (opening || CSS.supports('overlay: auto'))
@@ -86,19 +150,15 @@ async function open(event: MouseEvent) {
   panel.inert = false
   panel.showModal()
   await nextTick()
-  if (panel.open)
-    panel.querySelector<HTMLElement>('[aria-current="location"]')?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+  if (panel.open) revealCurrent(dialogList.value)
 }
-function jump(event: MouseEvent, heading: Heading) {
+function jump(event: MouseEvent, id: string) {
   if (!isPlainClick(event)) return
+  const heading = headings.value.find(item => item.id === id)
+  if (!heading) return
   event.preventDefault()
   close(false)
-  selected.value = heading
   void navigateToAnchor(router, heading.element, isPointerClick(event), true)
-}
-function toggleDetails() {
-  includeDetails.value = !includeDetails.value
-  updateLocation()
 }
 onMounted(async () => {
   await nextTick()
@@ -117,29 +177,34 @@ onUnmounted(() => {
   <template v-if="headings.length">
     <aside class="kaede-toc-desktop" aria-label="本页目录">
       <nav aria-labelledby="kaede-toc-label">
-        <h2 id="kaede-toc-label">本页目录</h2>
-        <ul>
-          <li v-for="heading in headings.filter(item => includeDetails || item.level < 4)" :key="heading.id" :class="`level-${heading.level}`">
-            <a data-toc-link :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
-          </li>
-        </ul>
-        <button v-if="headings.some(heading => heading.level === 4)" type="button" :aria-expanded="includeDetails" @click="toggleDetails">{{ includeDetails ? '收起小节' : '展开小节' }}</button>
+        <header class="kaede-toc-heading">
+          <h2 id="kaede-toc-label">本页目录</h2>
+          <button v-if="hasChildren" class="kaede-toc-expand" type="button" :aria-expanded="showAll"
+            aria-controls="kaede-toc-desktop-list" @click="showAll = !showAll">{{ showAll ? '收起其他' : '展开全部' }}</button>
+        </header>
+        <div id="kaede-toc-desktop-list" ref="desktopList" class="kaede-toc-scroll"
+          @focusin="rememberFocusedRoot" @focusout="releaseFocusedRoot">
+          <KaedeTocItems :items="outline" :current-id="selected?.id" :current-root="selected?.root"
+            :focused-root="focusedRoot" :show-all="showAll" @jump="jump" />
+        </div>
       </nav>
     </aside>
     <button ref="trigger" class="kaede-toc-toggle" type="button" aria-haspopup="dialog" aria-controls="kaede-toc-dialog" @click="open">
-      <span class="i-ri-list-unordered" aria-hidden="true" />目录<span v-if="selected" class="kaede-toc-position">{{ selected.text }}</span>
+      <span class="i-ri-list-unordered" aria-hidden="true" />目录
     </button>
     <dialog id="kaede-toc-dialog" ref="dialog" class="kaede-toc-dialog" aria-labelledby="kaede-toc-dialog-label"
       @cancel.prevent="close()" @click.self="closeFromClick">
       <div class="kaede-toc-panel">
-        <header><h2 id="kaede-toc-dialog-label">本页目录</h2><button type="button" aria-label="关闭目录" autofocus @click="closeFromClick"><span class="i-ri-close-line" aria-hidden="true" /></button></header>
-        <nav aria-labelledby="kaede-toc-dialog-label">
-          <ul>
-            <li v-for="heading in headings.filter(item => includeDetails || item.level < 4)" :key="heading.id" :class="`level-${heading.level}`">
-              <a data-toc-link :href="`#${encodeURIComponent(heading.id)}`" :aria-current="selected?.id === heading.id ? 'location' : undefined" @click="jump($event, heading)">{{ heading.text }}</a>
-            </li>
-          </ul>
-          <button v-if="headings.some(heading => heading.level === 4)" type="button" :aria-expanded="includeDetails" @click="toggleDetails">{{ includeDetails ? '收起小节' : '展开小节' }}</button>
+        <header class="kaede-toc-heading">
+          <h2 id="kaede-toc-dialog-label">本页目录</h2>
+          <button v-if="hasChildren" class="kaede-toc-expand" type="button" :aria-expanded="showAll"
+            aria-controls="kaede-toc-dialog-list" @click="showAll = !showAll">{{ showAll ? '收起其他' : '展开全部' }}</button>
+          <button class="kaede-toc-close" type="button" aria-label="关闭目录" autofocus @click="closeFromClick"><span class="i-ri-close-line" aria-hidden="true" /></button>
+        </header>
+        <nav id="kaede-toc-dialog-list" ref="dialogList" class="kaede-toc-scroll" aria-labelledby="kaede-toc-dialog-label"
+          @focusin="rememberFocusedRoot" @focusout="releaseFocusedRoot">
+          <KaedeTocItems :items="outline" :current-id="selected?.id" :current-root="selected?.root"
+            :focused-root="focusedRoot" :show-all="showAll" @jump="jump" />
         </nav>
       </div>
     </dialog>

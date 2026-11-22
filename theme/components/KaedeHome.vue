@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router'
 import { association, featuredProjects } from '../../data/site'
 import { isPointerClick } from '../utils/anchor-scroll'
 import { formatPostDate } from '../utils/content'
+import { currentLearningTracks, learningTitle } from '../utils/learning'
 import { applyPostLayouts, readPostLayouts, type LayoutMode, type PostLayouts } from '../utils/post-layout'
 
 const allPosts = usePostList()
@@ -39,8 +40,8 @@ let movingCards: HTMLElement[] = []
 let layoutChange = 0
 
 const learning = [
-  { title: '电控', description: '从 C 语言与单片机开始，逐步学习控制、通信、RTOS 与工程组织', label: '查看电控路线', path: '/learning-path/electrical-control', icon: 'i-ri-cpu-line' },
-  { title: '机械臂运控', description: '从空间几何与建模出发，连接 ROS 2、运动规划与模仿学习实践', label: '查看机械臂路线', path: '/learning-path/arm-motion-control', icon: 'i-ri-node-tree' },
+  { ...currentLearningTracks[0], label: '查看电控笔记', icon: 'i-ri-cpu-line' },
+  { ...currentLearningTracks[1], label: '查看机械臂文档', icon: 'i-ri-node-tree' },
 ]
 
 onMounted(() => {
@@ -115,8 +116,8 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
     <div class="kaede-home-entries">
       <section class="kaede-path-entry" aria-labelledby="learning-title">
         <div class="kaede-section-heading">
-          <h2 id="learning-title"><RouterLink to="/learning-path">学习路径</RouterLink></h2>
-          <p>按阶段查看基础知识、开发工具和项目实践，大纲标明可阅读的章节</p>
+          <h2 id="learning-title"><RouterLink to="/learning-path">{{ learningTitle }}</RouterLink></h2>
+          <p>我的嵌入式电控与机械臂开发笔记，按主题整理基础知识、工具和工程实践</p>
         </div>
         <div class="kaede-path-entry-links">
           <RouterLink v-for="track in learning" :key="track.path" class="kaede-track-entry" :to="track.path">
@@ -127,15 +128,6 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
           </RouterLink>
         </div>
       </section>
-      <RouterLink class="kaede-agrotech-entry" :to="association.path">
-        <ATILBrand variant="compact" decorative />
-        <div>
-          <span class="kaede-agrotech-label">ATIL · AgroTech-SCAU</span>
-          <h2>{{ association.name }}</h2>
-        </div>
-        <p>{{ association.homeIntro }}</p>
-        <span class="kaede-entry-action">了解 ATIL <span class="kaede-link-arrow" aria-hidden="true">→</span></span>
-      </RouterLink>
     </div>
 
     <section id="projects" class="kaede-home-section" aria-labelledby="projects-title">
@@ -146,6 +138,11 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
         <KaedeProjectCard v-for="(project, index) in featuredProjects" :key="project.id" :project="project"
           :priority="index === 0 ? 'lead' : index === 2 ? 'compact' : 'standard'" />
       </div>
+      <RouterLink class="kaede-atil-link" :to="association.path">
+        <ATILBrand variant="compact" decorative />
+        <span>我在 ATIL 的工作</span>
+        <span class="kaede-link-arrow" aria-hidden="true">→</span>
+      </RouterLink>
     </section>
   </template>
 

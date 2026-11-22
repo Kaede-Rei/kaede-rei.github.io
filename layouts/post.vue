@@ -3,7 +3,7 @@ import { useFrontmatter } from 'valaxy'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { formatPostDate, imageUrl, listValue, postCoverRole, postSummary } from '../theme/utils/content'
-import { learningContext } from '../theme/utils/learning'
+import { learningContext, learningTitle } from '../theme/utils/learning'
 
 const route = useRoute()
 const fm = useFrontmatter()
@@ -24,7 +24,7 @@ const cover = computed(() => {
       <header class="kaede-page-header">
         <nav class="kaede-breadcrumb" aria-label="面包屑">
           <template v-if="chapter">
-            <RouterLink to="/learning-path">学习路径</RouterLink><span aria-hidden="true">/</span>
+            <RouterLink to="/learning-path">{{ learningTitle }}</RouterLink><span aria-hidden="true">/</span>
             <RouterLink :to="chapter.track.path">{{ chapter.track.title }}</RouterLink><span aria-hidden="true">/</span>
             <RouterLink :to="chapter.phase.overviewLink">{{ chapter.phase.title }}</RouterLink>
           </template>
