@@ -1,29 +1,7 @@
 ---
-title: 电控组学习路径
+title: "电控学习路径"
+layout: learning
+contentType: learning-route
+summary: "从 C 语言、51 单片机与 STM32 入门，逐步学习控制、通信、RTOS 和嵌入式工程组织"
+track: electrical-control
 ---
-
-# 电控组学习路径
-
-## 第一阶段：基础入门
-
-### 1. [C语言与 51 单片机入门](/learning-path/electrical-control/1.md)
-### 2. [STM32 与 PCB 设计入门](/learning-path/electrical-control/2.md)
-
-## 第二阶段：能力扩展
-
-### 3.1 [基础控制算法入门](/learning-path/electrical-control/3-1.md)
-### 3.2 [多机通信](/learning-path/electrical-control/3-2.md)
-### 3.3 [嵌入式视觉入门](/learning-path/electrical-control/3-3.md)
-### 3.4 [电路设计入门](/learning-path/electrical-control/3-4.md)
-### 3.5 [RTOS 入门](/learning-path/electrical-control/3-5.md)
-
-## 第三阶段：综合提升
-
-### 4.1 [自动控制原理入门](/learning-path/electrical-control/4-1.md)
-### 4.2 [嵌入式图形化设计入门](/learning-path/electrical-control/4-2.md)
-### 4.3 [物联网入门](/learning-path/electrical-control/4-3.md)
-### 4.4 [嵌入式 AI 入门](/learning-path/electrical-control/4-4.md)
-
-## 第四阶段：工程能力
-
-### 5. [编程 / 架构思维 / 实用工具](/learning-path/electrical-control/5.md)

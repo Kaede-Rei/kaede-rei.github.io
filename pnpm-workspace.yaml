@@ -1,0 +1,3 @@
+# Preserve literal Markdown $& / $' sequences when Valaxy inserts SSR HTML.
+patchedDependencies:
+  valaxy@0.28.4: patches/valaxy@0.28.4.patch

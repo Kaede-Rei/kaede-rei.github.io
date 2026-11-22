@@ -1,15 +1,14 @@
 ---
-title: 第三阶段 - 具身智能
+title: "第三阶段 · 具身智能实践"
+layout: learning
+contentType: learning-phase
+summary: "围绕示教数据和模仿学习，学习从机械臂遥操作与采集到策略训练和运行的流程"
+track: arm-motion-control
+phase: phase-3
 ---
 
-# 第三阶段 - 具身智能
+## 学习建议
 
-本模块是当前机器人学的前沿，重点探索人工智能如何通过物理躯体与环境交互；通过结合 **LeRobot** 仿生学习框架与 **Isaac Sim** 高性能物理仿真，实现从感知到动作的端到端（End-to-End）映射
+掌握第二阶段的运动规划后，用 LeRobot 实践模仿学习，后续方向包括用 Isaac Sim 探索大规模强化学习
 
-> **进阶逻辑：** 具身智能的开发必须建立在可靠的运动规划（模块二）之上；通过仿真环境或真实场景中的大规模强化学习或模仿学习，将算法模型生成的轨迹转化为真实的驱动指令
-
-## 目录
-
-### [3.1 数据驱动的机器人模仿学习（LeRobot）](/learning-path/arm-motion-control/phase-3/3-1)
-### [3.2 仿真环境的大规模强化学习（Isaac Sim）](/learning-path/arm-motion-control/phase-3/3-2)
-### [3.3 训练与推理部署](/learning-path/arm-motion-control/phase-3/3-3)
+这一阶段关注如何在仿真或真实场景中训练从感知到动作的端到端策略，再将模型生成的轨迹转为驱动指令

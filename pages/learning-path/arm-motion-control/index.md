@@ -1,13 +1,7 @@
 ---
-title: 机械臂运控组学习路径
+title: "机械臂运控学习路径"
+layout: learning
+contentType: learning-route
+summary: "从空间几何与建模开始，进入 ROS 2、MoveIt 2 与任务规划，再到遥操作、示教数据与模仿学习"
+track: arm-motion-control
 ---
-
-# 机械臂运控组学习路径
-
-## [第一阶段 - 理论与编程基础](/learning-path/arm-motion-control/phase-1/index.md)
-
-## [第二阶段 - ROS2 + MoveIt2](/learning-path/arm-motion-control/phase-2/index.md)
-
-## [第三阶段 - 具身智能](/learning-path/arm-motion-control/phase-3/index.md)
-
-

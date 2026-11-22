@@ -1,5 +1,5 @@
 ---
-title: 旧标准 c++ 下的函数式编程（TL 库）
+title: 旧标准 C++ 中的 optional、expected 与链式处理
 date: 2026-04-08
 updated: 2026-04-08
 categories: 笔记
@@ -7,8 +7,10 @@ tags:
   - C++
   - 接口设计
   - 函数式编程
-top: 2
+summary: 用 TL 库表达可缺失的值与结构化错误，梳理 optional、expected 和 variant 的分工，并通过链式组合整理多步数据处理与失败传播
 cover: /images/covers/ansy.jpg
+coverRole: decorative
+featured: false
 ---
 
 ## 1. 引言

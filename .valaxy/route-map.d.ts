@@ -55,6 +55,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/agrotech/': RouteRecordInfo<
+      '/agrotech/',
+      '/agrotech',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/archives/': RouteRecordInfo<
       '/archives/',
       '/archives',
@@ -411,13 +418,13 @@ declare module 'vue-router/auto-routes' {
    * @internal
    */
   export interface _RouteFileInfoMap {
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/index.vue': {
+    'theme/pages/index.vue': {
       routes:
         | '/'
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy@0.28.4_@babel+parser_6046c482f2cae9a8ea4fdf503856ded0/node_modules/valaxy/client/pages/[...path].vue': {
+    'node_modules/.pnpm/valaxy@0.28.4_patch_hash=d3_52f10721fd03dc777776e39d9b762309/node_modules/valaxy/client/pages/[...path].vue': {
       routes:
         | '/[...path]'
       views:
@@ -432,6 +439,12 @@ declare module 'vue-router/auto-routes' {
     'pages/about/index.md': {
       routes:
         | '/about/'
+      views:
+        | never
+    }
+    'pages/agrotech/index.md': {
+      routes:
+        | '/agrotech/'
       views:
         | never
     }
@@ -681,7 +694,7 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'node_modules/.pnpm/valaxy-theme-sakura@0.10.2__382af95aeeb53b3bc866cac3b1d5bbbc/node_modules/valaxy-theme-sakura/pages/page/[page].vue': {
+    'theme/pages/page/[page].vue': {
       routes:
         | '/page/[page]'
       views:

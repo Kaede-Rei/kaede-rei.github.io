@@ -1,47 +1,51 @@
 import { defineSiteConfig } from 'valaxy'
+import { profile } from './data/site'
 
 export default defineSiteConfig({
-  url: 'https://kaede-rei.github.io/',
+  url: profile.url,
   lang: 'zh-CN',
-  title: 'Kaede Rei の 小 窝',
-  favicon: '/favicon.svg',
+  pageSize: 6,
+  languages: ['zh-CN'],
+  title: profile.siteTitle,
+  favicon: '/images/brand/atil-mark.png',
 
   author: {
-    name: 'Kaede Rei',
-    link: 'https://github.com/Kaede-Rei',
-    avatar: '/images/soyo.png',
-    intro: '智能农业机器人 / 机械臂 / ROS / 嵌入式',
+    name: profile.name,
+    link: profile.github,
+    avatar: profile.avatar,
+    email: profile.email,
+    intro: profile.intro,
   },
-  description: 'Kaede Rei 的技术博客与学习路径',
+  description: profile.description,
+
+  excerpt: {
+    auto: true,
+    length: 180,
+    type: 'html',
+  },
 
   social: [
     {
       name: 'GitHub',
-      link: 'https://github.com/Kaede-Rei',
+      link: profile.github,
       icon: 'i-ri-github-line',
       color: '#6e5494',
     },
     {
       name: '哔哩哔哩',
-      link: 'https://space.bilibili.com/24410561',
+      link: profile.bilibili,
       icon: 'i-ri-bilibili-line',
       color: '#FF8EB3',
     },
     {
-      name: 'X',
-      link: 'https://x.com/你的用户名',
-      icon: 'i-ri-twitter-x-fill',
-      color: '#111111',
-    },
-    {
       name: 'E-Mail',
-      link: 'mailto:kaerei@foxmail.com',
+      link: `mailto:${profile.email}`,
       icon: 'i-ri-mail-line',
       color: '#8E71C1',
     },
     {
       name: 'RSS',
-      link: '/atom.xml',
+      link: profile.rss,
       icon: 'i-ri-rss-line',
       color: 'orange',
     },

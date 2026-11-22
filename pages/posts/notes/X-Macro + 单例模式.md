@@ -1,5 +1,5 @@
 ---
-title: X-Macro + 单例模式
+title: X-Macro 与单例：集中命令定义，明确访问边界
 date: 2026-04-07
 updated: 2026-04-07
 categories: 笔记
@@ -8,8 +8,10 @@ tags:
   - C++
   - 接口设计
   - 代码组织
-top: 2
+summary: 用一张主表维护命令、映射与分发信息，再讨论单例适用的生命周期与访问边界，减少接口扩展时的重复维护和状态分散
 cover: /images/covers/ansy1.png
+coverRole: decorative
+featured: false
 ---
 
 ## 1. 引言
