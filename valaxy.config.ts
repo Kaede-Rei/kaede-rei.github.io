@@ -11,7 +11,10 @@ export default defineValaxyConfig({
   build: { ssgForPagination: true },
   hooks: { ...learningContentHooks },
   fuse: { extendKeys: ['summary', 'contentType', 'status'] },
-  markdown: { config: addCodeControls },
+  markdown: {
+    config: addCodeControls,
+    theme: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
+  },
   themeConfig: {
     colors: { primary: '#965A70' },
     postFooter: { navigationMerge: true },

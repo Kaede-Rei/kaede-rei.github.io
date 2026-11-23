@@ -1,7 +1,8 @@
-import { nextTick } from 'vue'
+import { useSpring } from '@vueuse/motion'
+import { nextTick, reactive, watch } from 'vue'
 import { defineAppSetup } from 'valaxy'
 import { codeToolbar, copyFailure } from '../theme/utils/code-blocks'
-import { samePagePath, scrollToRouteAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
+import { isPointerClick, samePagePath, scrollToRouteAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
 
 const COLLAPSED_HEIGHT = 280
 const CODE_SELECTOR = '.kaede-post .prose pre'
@@ -24,14 +25,18 @@ function prepareCodeBlock(pre: HTMLPreElement) {
 
   // Raw authored HTML does not pass through the Markdown renderer.
   const collapsible = pre.scrollHeight > COLLAPSED_HEIGHT + 8
+  const language = pre.parentElement?.querySelector(':scope > .lang')?.textContent?.trim()
   pre.id ||= `kaede-html-code-${++codeId}`
   pre.tabIndex = 0
+  const panel = document.createElement('div')
+  panel.className = 'kaede-code-panel'
+  panel.innerHTML = codeToolbar(pre.id, collapsible, language)
   const fallbackViewport = document.createElement('div')
   fallbackViewport.className = 'kaede-code-viewport'
-  pre.before(fallbackViewport)
+  pre.before(panel)
   fallbackViewport.append(pre)
-  fallbackViewport.insertAdjacentHTML('beforebegin', codeToolbar(pre.id, collapsible))
-  return fallbackViewport.previousElementSibling
+  panel.append(fallbackViewport)
+  return panel.firstElementChild
 }
 
 function setupCodeBlock(pre: HTMLPreElement) {
@@ -39,27 +44,63 @@ function setupCodeBlock(pre: HTMLPreElement) {
   const toolbar = prepareCodeBlock(pre)
   if (!(toolbar instanceof HTMLElement)) return
   const copy = toolbar.querySelector<HTMLButtonElement>('[data-code-copy]')
+  const copyLabel = copy?.querySelector('.kaede-code-button-label')
+  const copyIcon = copy?.querySelector('[data-copy-icon]')
+  const checkIcon = copy?.querySelector('[data-copy-check]')
   const status = toolbar.querySelector<HTMLElement>('.kaede-code-status > span')
-  if (!copy || !status) return
+  if (!copy || !copyLabel || !copyIcon || !checkIcon || !status) return
   pre.dataset.kaedeCodeReady = 'true'
 
+  let copyRevision = 0
+  let copyFeedback: number | undefined
+  const showCopyState = (state: 'idle' | 'copied' | 'error') => {
+    const copied = state === 'copied'
+    copy.dataset.copyState = state
+    copyLabel.textContent = copied ? '已复制' : '复制代码'
+    copyIcon.toggleAttribute('hidden', copied)
+    checkIcon.toggleAttribute('hidden', !copied)
+    status.textContent = state === 'error' ? copyFailure : copied ? '已复制' : ''
+  }
+
   copy.addEventListener('click', async () => {
+    const revision = ++copyRevision
+    window.clearTimeout(copyFeedback)
+    showCopyState('idle')
     try {
       await navigator.clipboard.writeText(codeText(pre))
-      status.textContent = '已复制'
+      if (revision !== copyRevision) return
+      showCopyState('copied')
+      copyFeedback = window.setTimeout(() => showCopyState('idle'), 1800)
     }
     catch {
-      status.textContent = copyFailure
+      if (revision === copyRevision) showCopyState('error')
     }
   })
 
   const toggle = toolbar.querySelector<HTMLButtonElement>('[data-code-toggle]')
-  toggle?.addEventListener('click', () => {
+  const toggleLabel = toggle?.querySelector('.kaede-code-button-label')
+  const chevron = toggle?.querySelector<SVGSVGElement>('[data-code-chevron]')
+  if (!toggle || !toggleLabel || !chevron) return
+
+  const rotation = reactive({ x: 0 })
+  let spring: ReturnType<typeof useSpring> | undefined
+  watch(() => rotation.x, angle => { chevron.style.rotate = `${angle}deg` }, { flush: 'sync' })
+  toggle.addEventListener('click', (event) => {
     const collapsed = toggle.getAttribute('aria-expanded') === 'true'
     toolbar.dataset.collapsed = String(collapsed)
-    toggle.textContent = collapsed ? '展开代码' : '收起代码'
+    toggleLabel.textContent = collapsed ? '展开代码' : '收起代码'
     toggle.setAttribute('aria-expanded', String(!collapsed))
     if (collapsed) pre.scrollTop = 0
+
+    const angle = collapsed ? 0 : 180
+    if (isPointerClick(event) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      spring ??= useSpring(rotation, { stiffness: 640, damping: 42, mass: 1, restDelta: .01, restSpeed: .1 })
+      void spring.set({ x: angle })
+    }
+    else {
+      spring?.stop()
+      rotation.x = angle
+    }
   })
 }
 

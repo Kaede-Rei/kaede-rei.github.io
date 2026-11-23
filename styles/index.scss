@@ -243,6 +243,14 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-post-nav .kaede-next { margin-inline-start: auto; text-align: end; }
 
 .kaede-markdown-frame, .kaede-markdown-frame .markdown-body { min-width: 0; }
+.kaede-markdown-frame {
+  --code-canvas: var(--surface);
+  --code-toolbar: var(--surface-soft);
+}
+.dark .kaede-markdown-frame {
+  --code-canvas: var(--surface-soft);
+  --code-toolbar: var(--surface);
+}
 .kaede-markdown-frame .markdown-body { background: transparent; color: var(--ink); }
 .kaede-markdown-frame .prose { color: var(--ink); max-width: none; font: clamp(16px, 1.65vw, 17px)/1.85 var(--va-font-family-base); overflow-wrap: anywhere; }
 .kaede-markdown-frame .prose :is(h1, h2, h3, h4) { color: var(--ink); font-weight: 650; line-height: 1.4; }
@@ -255,11 +263,11 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-markdown-frame .prose :is(ul, ol) { padding-left: 1.5em; margin: 1em 0; }
 .kaede-markdown-frame .prose li { margin: .3em 0; }
 .kaede-markdown-frame .prose img { max-width: 100%; height: auto; display: block; border-radius: 8px; margin: 18px auto; }
-.kaede-markdown-frame .prose :not(pre) > code { font-family: var(--va-font-family-mono); font-size: .87em; color: var(--accent); background: var(--surface-soft); border-radius: 4px; padding: 2px 5px; }
-.kaede-markdown-frame .prose pre { position: relative; background: var(--surface-soft); border: 1px solid var(--line); border-radius: 8px; margin: 12px 0 24px; padding: 16px; font: 14px/1.65 var(--va-font-family-mono); overflow-x: auto; tab-size: 4; }
+.kaede-markdown-frame .prose :not(pre) > code { font-family: var(--va-font-family-mono); font-size: .87em; color: var(--ink); background: var(--surface-soft); border-radius: 4px; padding: 2px 5px; }
+.kaede-markdown-frame .prose pre { position: relative; color: var(--ink); background: var(--code-canvas); border: 1px solid var(--line); border-radius: 8px; margin: 12px 0 24px; padding: 16px; font: 14px/1.65 var(--va-font-family-mono); overflow-x: auto; tab-size: 4; }
 .kaede-markdown-frame .prose pre code { font: inherit; color: inherit; background: transparent; padding: 0; overflow-wrap: normal; }
-.kaede-markdown-frame .prose .shiki span { color: var(--shiki-light); }
-.dark .kaede-markdown-frame .prose .shiki span { color: var(--shiki-dark); }
+.kaede-markdown-frame .prose .shiki span { color: var(--shiki-light, inherit); }
+.dark .kaede-markdown-frame .prose .shiki span { color: var(--shiki-dark, inherit); }
 .kaede-markdown-frame .prose blockquote { margin: 20px 0; padding: 8px 18px; background: var(--surface-soft); border-left: 3px solid var(--accent); color: var(--muted); }
 .kaede-markdown-frame .prose blockquote p { margin: 5px 0; }
 .kaede-markdown-frame .prose table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 14px; margin: 22px 0; }
@@ -269,17 +277,93 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-markdown-frame .prose .header-anchor { font-weight: 400; margin-inline-end: .25em; text-decoration: none; }
 .kaede-markdown-frame .prose .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 8px 0; }
 
-.kaede-post .prose div:has(> .kaede-code-actions) > :is(button.copy, .code-block-unfold-btn) { display: none; }
-.kaede-code-actions { display: flex; align-items: center; gap: 5px; background: var(--surface-soft); padding: 3px 6px; border: 1px solid var(--line); border-radius: 8px; margin-top: 14px; }
-.kaede-code-actions button { flex: none; min-height: 44px; padding: 4px 8px; border-radius: 8px; color: var(--accent); font-size: 14px; }
-.kaede-code-status { display: grid; flex: 1 1 0; min-width: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
-.kaede-code-status::before, .kaede-code-status > span { grid-area: 1 / 1; }
-.kaede-code-status::before { content: attr(data-reserve); visibility: hidden; }
+.kaede-markdown-frame .prose div[class*='language-']:has(> .kaede-code-panel) {
+  margin: 14px 0 24px;
+  background: transparent;
+}
+.kaede-markdown-frame .prose div[class*='language-']:has(> .kaede-code-panel) > :is(button.copy, .code-block-unfold-btn, .lang) { display: none; }
+.kaede-code-panel {
+  min-width: 0;
+  overflow: clip;
+  margin: 14px 0 24px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--code-canvas);
+}
+.kaede-markdown-frame .prose div[class*='language-'] > .kaede-code-panel { margin: 0; }
+.kaede-code-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--code-toolbar);
+}
+.kaede-code-actions:has([data-code-toggle]) { grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto auto; }
+.kaede-code-language {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  color: var(--muted);
+  font: 600 .6875rem/1.4 var(--va-font-family-mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kaede-code-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-inline-size: 6rem;
+  min-block-size: 44px;
+  padding: 4px 8px;
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--code-canvas);
+  font-size: .8125rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.kaede-code-actions [data-code-copy] { grid-area: 1 / 3; }
+.kaede-code-actions [data-code-toggle] { grid-area: 1 / 4; }
+.kaede-code-actions button:focus-visible { outline-offset: 2px; }
+.kaede-code-actions button[data-copy-state='copied'] { border-color: var(--accent); }
+.kaede-code-button-icon { flex: none; inline-size: 1rem; block-size: 1rem; }
+.kaede-code-status {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.kaede-code-actions:has([data-copy-state='error']) .kaede-code-status {
+  position: static;
+  grid-area: 1 / 2;
+  inline-size: auto;
+  block-size: auto;
+  overflow: visible;
+  clip-path: none;
+  color: var(--ink);
+  font-size: .8125rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
 .kaede-code-viewport { position: relative; display: flow-root; min-width: 0; }
-.kaede-markdown-frame .prose .kaede-code-viewport > pre { margin-top: 4px; }
+.kaede-markdown-frame .prose .kaede-code-panel .kaede-code-viewport > pre { margin: 0; border: 0; border-radius: 0; }
+.kaede-markdown-frame .prose .kaede-code-panel pre:focus-visible { outline-offset: -4px; }
+@media (hover: hover) and (pointer: fine) {
+  .kaede-code-actions button:hover { border-color: var(--accent); background: var(--accent-soft); }
+}
+@media (max-width: 480px) {
+  .kaede-code-actions { gap: 6px; padding-inline: 8px; }
+  .kaede-code-actions:has([data-copy-state='error']) .kaede-code-status { grid-area: 2 / 1 / auto / -1; text-align: end; }
+}
 @media (scripting: enabled) {
   .kaede-code-actions[data-collapsed='true'] + .kaede-code-viewport > pre { max-height: 280px; overflow-y: hidden; }
-  .kaede-code-actions[data-collapsed='true'] + .kaede-code-viewport::after { content: ''; position: absolute; pointer-events: none; inset: auto 1px 25px; height: 28px; background: linear-gradient(transparent, var(--surface-soft)); border-radius: 0 0 8px 8px; }
 }
 @media (scripting: none) {
   .kaede-code-actions { display: none; }
