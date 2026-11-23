@@ -10,7 +10,7 @@ tags:
   - 架构设计
   - 接口设计
 summary: 从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计
-cover: /images/covers/ansy2.png
+cover: /images/covers/ansy3.jpg
 coverRole: decorative
 featured: false
 ---
