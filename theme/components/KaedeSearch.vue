@@ -4,8 +4,11 @@ import { useSiteConfig } from 'valaxy'
 import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import type { SearchRecord } from '../utils/content'
+import { isPointerClick } from '../utils/anchor-scroll'
 import { adaptSearchIndex, searchTypeLabels } from '../utils/content'
+import { dismissModal, presentModal } from '../utils/dialog-motion'
 
+const props = defineProps<{ pointerOpening?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 const router = useRouter()
 const site = useSiteConfig()
@@ -73,12 +76,14 @@ async function load() {
 
 function fitViewport() {
   if (!viewport || !dialog.value) return
+  const bottom = Math.max(0, document.documentElement.clientHeight - viewport.offsetTop - viewport.height)
   dialog.value.style.setProperty('--search-viewport-height', `${viewport.height}px`)
   dialog.value.style.setProperty('--search-viewport-top', `${viewport.offsetTop}px`)
+  dialog.value.style.setProperty('--search-viewport-bottom', `${bottom}px`)
 }
 
-function dismiss() {
-  dialog.value?.close()
+function dismiss(event?: MouseEvent) {
+  dismissModal(dialog.value, !!event && isPointerClick(event))
 }
 
 function onCancel(event: Event) {
@@ -160,7 +165,7 @@ onMounted(() => {
   viewport?.addEventListener('resize', fitViewport)
   viewport?.addEventListener('scroll', fitViewport)
   fitViewport()
-  dialog.value?.showModal()
+  if (dialog.value) presentModal(dialog.value, props.pointerOpening)
   input.value?.focus({ preventScroll: true })
   void load()
 })
@@ -177,7 +182,7 @@ defineExpose({ dismiss })
 <template>
   <dialog
     ref="dialog"
-    class="kaede-search-dialog"
+    class="kaede-search-dialog kaede-modal-panel"
     aria-labelledby="kaede-search-title"
     @keydown="onKeydown"
     @cancel="onCancel"
@@ -267,17 +272,14 @@ defineExpose({ dismiss })
 </template>
 
 <style scoped>
-:global(html:has(.kaede-search-dialog[open])) {
-  overflow: hidden;
-}
-
 .kaede-search-dialog {
   --search-top: min(72px, calc(var(--search-viewport-height, 100dvh) * 0.1));
+  --search-max-height: calc(var(--search-viewport-height, 100dvh) - 2 * var(--search-top));
   position: fixed;
   inset: calc(var(--search-viewport-top, 0px) + var(--search-top)) 0 auto;
   margin: 0 auto;
   width: min(620px, calc(100% - 24px));
-  max-height: calc(var(--search-viewport-height, 100dvh) - 2 * var(--search-top));
+  max-height: var(--search-max-height);
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -287,12 +289,28 @@ defineExpose({ dismiss })
   overflow: hidden;
 }
 
-.kaede-search-dialog::backdrop { background: #17131288; }
+@media (min-width: 681px) {
+  .kaede-search-dialog {
+    --modal-enter-y: -28px;
+    --modal-exit-y: -14px;
+    transform-origin: top center;
+  }
+}
+@media (max-width: 680px) {
+  .kaede-search-dialog {
+    --search-max-height: min(78dvh, calc(var(--search-viewport-height, 100dvh) - 12px));
+    inset: auto 0 var(--search-viewport-bottom, 0px);
+    margin: 0;
+    width: 100%;
+    border-radius: 18px 18px 0 0;
+  }
+  .kaede-search-box { padding-bottom: env(safe-area-inset-bottom); }
+}
 
 .kaede-search-box {
   display: flex;
   flex-direction: column;
-  max-height: calc(var(--search-viewport-height, 100dvh) - 2 * var(--search-top) - 2px);
+  max-height: calc(var(--search-max-height) - 2px);
 }
 
 header, footer { display: flex; align-items: center; justify-content: space-between; }

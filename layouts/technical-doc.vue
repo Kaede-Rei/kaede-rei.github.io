@@ -2,10 +2,13 @@
 import { useFrontmatter } from 'valaxy'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isPlainClick } from '../theme/utils/anchor-scroll'
+import { isPlainClick, isPointerClick } from '../theme/utils/anchor-scroll'
+import { dismissModal, presentModal } from '../theme/utils/dialog-motion'
 import { learningPath, learningTitle } from '../theme/utils/learning'
 import { robotArmDevelopmentPath, robotArmDevelopmentTrack } from '../theme/utils/robot-arm-development'
 import { robotArmDocumentSections } from '../theme/utils/technical-documents'
+import { vRouteMasthead } from '../theme/utils/route-masthead'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,15 +45,21 @@ function revealSelected(scope?: HTMLElement) {
 onMounted(() => revealSelected(sidebar.value))
 watch(currentPath, () => revealSelected(sidebar.value), { flush: 'post' })
 
-function showDocuments() {
-  drawer.value?.showModal()
-  revealSelected(drawer.value)
+function showDocuments(event: MouseEvent) {
+  const panel = drawer.value
+  if (!panel || panel.open) return
+  presentModal(panel, isPointerClick(event))
+  revealSelected(panel)
 }
 
-function closeDocuments(restoreFocus = true) {
-  if (!drawer.value?.open) return
-  drawer.value.close()
-  if (restoreFocus) drawerTrigger.value?.focus({ preventScroll: true })
+function closeDocuments(restoreFocus = true, fromPointer = false) {
+  dismissModal(drawer.value, fromPointer, () => {
+    if (restoreFocus) drawerTrigger.value?.focus({ preventScroll: true })
+  })
+}
+
+function closeDocumentsFromClick(event: MouseEvent) {
+  closeDocuments(true, isPointerClick(event))
 }
 
 async function selectFromDrawer(event: MouseEvent, path: string) {
@@ -78,7 +87,7 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
     </aside>
 
     <article class="kaede-post kaede-page content technical-document">
-      <header class="kaede-page-header">
+      <header :key="currentPath" v-route-masthead class="kaede-page-header" data-route-masthead="document">
         <nav class="kaede-breadcrumb" aria-label="面包屑">
           <RouterLink :to="learningPath">{{ learningTitle }}</RouterLink>
           <template v-if="currentPath !== robotArmDevelopmentPath">
@@ -90,21 +99,21 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
             <RouterLink :to="section.path">{{ section.title }}</RouterLink>
           </template>
         </nav>
-        <h1 class="kaede-page-title" tabindex="-1">{{ frontmatter.title }}</h1>
-        <p v-if="frontmatter.summary" class="kaede-page-summary">{{ frontmatter.summary }}</p>
+        <KaedeMastheadTitle>{{ frontmatter.title }}</KaedeMastheadTitle>
+        <p v-if="frontmatter.summary" data-masthead-copy class="kaede-page-summary">{{ frontmatter.summary }}</p>
       </header>
       <RouterView v-slot="{ Component }">
         <component :is="Component" :key="route.path" />
       </RouterView>
-      <nav v-if="listing.length" class="technical-doc-index" aria-label="文档索引">
-        <h2>{{ section ? '本分组文档' : '分组总览' }}</h2>
+      <nav v-if="listing.length" :key="`index-${currentPath}`" class="technical-doc-index" aria-label="文档索引">
+        <h2 v-viewport-entrance:doc-index="'lead'">{{ section ? '本分组文档' : '分组总览' }}</h2>
         <ul>
-          <li v-for="entry in listing" :key="entry.path"><RouterLink :to="entry.path">{{ entry.title }}</RouterLink></li>
+          <li v-for="entry in listing" :key="entry.path" v-viewport-entrance:doc-index.fade><RouterLink :to="entry.path">{{ entry.title }}</RouterLink></li>
         </ul>
       </nav>
-      <nav v-if="previous || next" class="kaede-post-nav" aria-label="前后文档">
-        <RouterLink v-if="previous" :to="previous.path"><span>← 上一篇</span><strong>{{ previous.title }}</strong></RouterLink>
-        <RouterLink v-if="next" class="kaede-next" :to="next.path"><span>下一篇 →</span><strong>{{ next.title }}</strong></RouterLink>
+      <nav v-if="previous || next" :key="`neighbors-${currentPath}`" class="kaede-post-nav" aria-label="前后文档">
+        <RouterLink v-if="previous" v-viewport-entrance:doc-neighbors="'pair'" :to="previous.path"><span>← 上一篇</span><strong>{{ previous.title }}</strong></RouterLink>
+        <RouterLink v-if="next" v-viewport-entrance:doc-neighbors="'pair'" class="kaede-next" :to="next.path"><span>下一篇 →</span><strong>{{ next.title }}</strong></RouterLink>
       </nav>
     </article>
 
@@ -113,12 +122,12 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
       aria-controls="technical-documents-dialog" @click="showDocuments">
       <span class="i-ri-file-list-3-line" aria-hidden="true" />文档
     </button>
-    <dialog id="technical-documents-dialog" ref="drawer" class="technical-documents-dialog"
-      aria-labelledby="technical-documents-title" @cancel.prevent="closeDocuments()" @click.self="closeDocuments()">
+    <dialog id="technical-documents-dialog" ref="drawer" class="technical-documents-dialog kaede-modal-panel"
+      aria-labelledby="technical-documents-title" @cancel.prevent="closeDocuments()" @click.self="closeDocumentsFromClick">
       <div class="technical-documents-panel">
         <header>
           <h2 id="technical-documents-title">文档</h2>
-          <button type="button" aria-label="关闭文档列表" autofocus @click="closeDocuments()">
+          <button type="button" aria-label="关闭文档列表" autofocus @click="closeDocumentsFromClick">
             <span class="i-ri-close-line" aria-hidden="true" />
           </button>
         </header>
@@ -161,21 +170,33 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
   font-size: 14px;
 }
 .technical-documents-dialog {
+  --documents-max-height: min(75dvh, 720px);
   width: min(420px, calc(100% - 32px));
-  max-height: min(75dvh, 720px);
+  max-height: var(--documents-max-height);
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
   color: var(--ink);
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
-.technical-documents-dialog::backdrop { background: #20182785; }
-.technical-documents-panel { display: flex; flex-direction: column; max-height: min(75dvh - 2px, 718px); }
+.technical-documents-panel { display: flex; flex-direction: column; max-height: calc(var(--documents-max-height) - 2px); }
 .technical-documents-panel header { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px 6px 16px; border-bottom: 1px solid var(--line); }
 .technical-documents-panel h2 { margin: 0; font-size: 1rem; }
 .technical-documents-panel button { width: 44px; height: 44px; }
 .technical-documents-panel .technical-doc-tree-scroll { padding: 8px; }
+@media (max-width: 680px) {
+  .technical-documents-dialog {
+    --documents-max-height: min(78dvh, 720px);
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+  }
+  .technical-documents-panel { padding-bottom: env(safe-area-inset-bottom); }
+}
 @media (min-width: 960px) {
   .technical-doc-reader {
     display: grid;

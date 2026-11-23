@@ -9,6 +9,8 @@ import { isPointerClick } from '../utils/anchor-scroll'
 import { formatPostDate } from '../utils/content'
 import { currentLearningTracks, learningTitle } from '../utils/learning'
 import { applyPostLayouts, readPostLayouts, type LayoutMode, type PostLayouts } from '../utils/post-layout'
+import { vRouteMasthead } from '../utils/route-masthead'
+import { vViewportEntrance } from '../utils/viewport-entrance'
 
 const allPosts = usePostList()
 const posts = computed(() => [...allPosts.value].sort((a, b) => formatPostDate(b.date).localeCompare(formatPostDate(a.date))))
@@ -31,12 +33,11 @@ const modes: { id: LayoutMode, name: string, icon: string }[] = [
 const modeSlot = computed(() => modes.findIndex(item => item.id === mode.value))
 const motion = reactive({ x: 0 })
 const spring = useSpring(motion, { stiffness: 440, damping: 32, mass: 0.85, restDelta: 0.001 })
+const layoutMotion = reactive({ progress: 1 })
+const layoutSpring = useSpring(layoutMotion, { stiffness: 310, damping: 26, mass: 1, restDelta: .002 })
 const motionReady = ref(false)
-const feedStyle = computed(() => motionReady.value ? {
-  '--feed-mode-slot': motion.x,
-  '--feed-layout-offset': `${Math.max(-8, Math.min(8, (motion.x - modeSlot.value) * 4))}px`,
-} : undefined)
-let movingCards: HTMLElement[] = []
+const feedStyle = computed(() => motionReady.value ? { '--feed-mode-slot': motion.x } : undefined)
+let layoutOffsets: { element: HTMLElement, x: number, y: number, cover?: 'move' | 'show' }[] = []
 let layoutChange = 0
 
 const learning = [
@@ -51,28 +52,51 @@ onMounted(() => {
   motionReady.value = true
 })
 watch([isMobile, reduceMotion], snapIndicator)
-onUnmounted(clearMovingCards)
+watch(() => layoutMotion.progress, (progress) => {
+  const visible = Math.min(1, Math.max(0, progress))
+  for (const { element, x, y, cover } of layoutOffsets) {
+    element.style.transform = `translate3d(${x * (1 - progress)}px, ${y * (1 - progress)}px, 0)`
+    if (cover) element.style.opacity = String(cover === 'show'
+      ? .2 + .8 * visible
+      : 1 - .7 * Math.sin(Math.PI * visible))
+  }
+}, { flush: 'sync' })
+onUnmounted(clearLayoutOffsets)
 
-function clearMovingCards() {
-  for (const card of movingCards) card.classList.remove('is-layout-settling')
-  movingCards = []
+function clearLayoutOffsets() {
+  layoutSpring.stop()
+  for (const { element, cover } of layoutOffsets) {
+    element.style.removeProperty('transform')
+    if (cover) element.style.removeProperty('opacity')
+  }
+  layoutOffsets = []
+  layoutMotion.progress = 1
 }
 
 function snapIndicator() {
   spring.stop()
   motion.x = modeSlot.value
-  clearMovingCards()
+  clearLayoutOffsets()
 }
 
 async function changeLayout(value: LayoutMode, event: MouseEvent) {
   if (value === mode.value || (value === 'alternate' && isMobile.value)) return
   const change = ++layoutChange
-  const cards = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [], card => ({
-    card,
-    bounds: card.getBoundingClientRect(),
-  }))
+  const cards = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [], (card) => {
+    const preview = card.querySelector<HTMLElement>('.kaede-post-preview')
+    const cover = card.querySelector<HTMLElement>('.kaede-post-cover')
+    return {
+      card,
+      bounds: card.getBoundingClientRect(),
+      preview,
+      previewLeft: preview?.getBoundingClientRect().left,
+      cover,
+      coverBounds: cover?.getBoundingClientRect(),
+    }
+  })
   const anchor = cards.find(({ bounds }) => bounds.top >= 72 && bounds.top < window.innerHeight)
   const animate = isPointerClick(event) && !reduceMotion.value
+  clearLayoutOffsets()
 
   if (isMobile.value) {
     if (value !== 'alternate') preferences.value.mobile = value
@@ -85,42 +109,59 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
   try { localStorage.setItem('kaede-post-layout-v2', JSON.stringify(preferences.value)) }
   catch {}
   if (animate) {
-    clearMovingCards()
-    movingCards = cards
-      .filter(({ bounds }) => bounds.top < window.innerHeight && bounds.bottom > 72)
-      .map(({ card }) => card)
-    for (const card of movingCards) card.classList.add('is-layout-settling')
-    // Retarget the same spring so the current motion and velocity carry through rapid switches.
-    void Promise.resolve(spring.set({ x: modeSlot.value })).then(() => {
-      if (change === layoutChange) clearMovingCards()
-    })
+    void spring.set({ x: modeSlot.value })
   }
   else {
     snapIndicator()
   }
 
   await nextTick()
-  if (anchor && change === layoutChange)
+  if (change !== layoutChange) return
+  if (anchor)
     window.scrollBy({ top: anchor.card.getBoundingClientRect().top - anchor.bounds.top, behavior: 'instant' })
+  if (!animate || reduceMotion.value) return
+
+  // Capture both layouts around the scroll compensation so the visible rows move from where they were drawn.
+  for (const { card, bounds, preview, previewLeft, cover, coverBounds } of cards) {
+    if (bounds.top >= window.innerHeight || bounds.bottom <= 72) continue
+    const y = bounds.top - card.getBoundingClientRect().top
+    if (Math.abs(y) > .5) layoutOffsets.push({ element: card, x: 0, y })
+    if (preview && previewLeft !== undefined) {
+      const x = previewLeft - preview.getBoundingClientRect().left
+      if (Math.abs(x) > .5) layoutOffsets.push({ element: preview, x, y: 0 })
+    }
+    if (cover && coverBounds) {
+      const next = cover.getBoundingClientRect()
+      const x = coverBounds.width ? coverBounds.left - next.left : 0
+      if (next.width && (!coverBounds.width || Math.abs(x) > .5))
+        layoutOffsets.push({ element: cover, x, y: 0, cover: coverBounds.width ? 'move' : 'show' })
+    }
+  }
+  if (!layoutOffsets.length) return
+
+  layoutMotion.progress = 0
+  void Promise.resolve(layoutSpring.set({ progress: 1 })).then(() => {
+    if (change === layoutChange) clearLayoutOffsets()
+  })
 }
 </script>
 
 <template>
   <KaedeHero v-if="isHome" />
-  <header v-else class="kaede-page-header">
+  <header v-else :key="route.path" v-route-masthead class="kaede-page-header" data-route-masthead="archive">
     <nav class="kaede-breadcrumb" aria-label="面包屑"><RouterLink to="/archives">文章</RouterLink><span aria-hidden="true">/</span><span>第 {{ page }} 页</span></nav>
-    <h1 class="kaede-page-title" tabindex="-1">文章 · 第 {{ page }} 页</h1>
+    <KaedeMastheadTitle>文章 · 第 {{ page }} 页</KaedeMastheadTitle>
   </header>
 
   <template v-if="isHome">
     <div class="kaede-home-entries">
       <section class="kaede-path-entry" aria-labelledby="learning-title">
-        <div class="kaede-section-heading">
+        <div v-viewport-entrance:home-overview="'lead'" class="kaede-section-heading">
           <h2 id="learning-title"><RouterLink to="/learning-path">{{ learningTitle }}</RouterLink></h2>
           <p>我的嵌入式电控与机械臂开发笔记，按主题整理基础知识、工具和工程实践</p>
         </div>
         <div class="kaede-path-entry-links">
-          <RouterLink v-for="track in learning" :key="track.path" class="kaede-track-entry" :to="track.path">
+          <RouterLink v-for="track in learning" :key="track.path" v-viewport-entrance:home-tracks="'pair'" class="kaede-track-entry" :to="track.path">
             <span :class="track.icon" class="kaede-track-icon" aria-hidden="true" />
             <strong>{{ track.title }}</strong>
             <span class="kaede-track-description">{{ track.description }}</span>
@@ -128,22 +169,23 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
           </RouterLink>
         </div>
       </section>
-      <KaedeSidebar />
+      <KaedeSidebar v-viewport-entrance:home-overview="'pair'" />
     </div>
 
     <section id="projects" class="kaede-home-section" aria-labelledby="projects-title">
-      <div class="kaede-section-heading">
+      <div v-viewport-entrance:home-projects="'lead'" class="kaede-section-heading">
         <h2 id="projects-title" tabindex="-1">机器人开发项目</h2>
       </div>
       <div class="kaede-project-grid">
-        <KaedeProjectCard v-for="(project, index) in featuredProjects" :key="project.id" :project="project"
+        <KaedeProjectCard v-for="(project, index) in featuredProjects" :key="project.id"
+          v-viewport-entrance:home-projects="index === 0 ? 'feature' : 'pair'" :project="project"
           :priority="index === 0 ? 'lead' : index === 2 ? 'compact' : 'standard'" />
       </div>
     </section>
   </template>
 
   <section ref="feed" class="kaede-home-section kaede-feed" aria-labelledby="recent-title" :style="feedStyle">
-    <div class="kaede-feed-toolbar">
+    <div v-viewport-entrance:home-articles.fade class="kaede-feed-toolbar">
       <div class="kaede-section-heading">
         <h2 id="recent-title">{{ isHome ? '最近文章' : '文章列表' }}</h2>
         <p v-if="isHome">设计取舍、调试记录和可复用的工程方法</p>
@@ -157,7 +199,8 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
         </button>
       </div>
     </div>
-    <KaedePostCard v-for="(post, index) in visible" :key="post.path" :post="post" :reverse="index % 2 === 1" />
+    <KaedePostCard v-for="(post, index) in visible" :key="post.path" v-viewport-entrance:home-articles.fade
+      :post="post" :reverse="index % 2 === 1" />
     <p v-if="!visible.length" class="kaede-empty">这一页暂无文章 <RouterLink to="/archives">返回文章列表</RouterLink></p>
     <RouterLink v-if="isHome" class="kaede-button kaede-all-articles" to="/archives">查看全部文章 <span class="kaede-link-arrow" aria-hidden="true">→</span></RouterLink>
     <nav v-else-if="numberOfPages > 1 || page !== 1" class="kaede-pagination" aria-label="文章分页">

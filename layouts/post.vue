@@ -4,6 +4,8 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { formatPostDate, imageUrl, listValue, postCoverRole, postSummary } from '../theme/utils/content'
 import { learningContext, learningTitle } from '../theme/utils/learning'
+import { vRouteMasthead } from '../theme/utils/route-masthead'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const fm = useFrontmatter()
@@ -21,7 +23,7 @@ const cover = computed(() => {
 <template>
   <div class="kaede-reader" :class="{ 'has-no-toc': fm.status === 'planned' }">
     <article class="kaede-post kaede-page content">
-      <header class="kaede-page-header">
+      <header :key="route.path" v-route-masthead class="kaede-page-header" data-route-masthead="article">
         <nav class="kaede-breadcrumb" aria-label="面包屑">
           <template v-if="chapter">
             <RouterLink to="/learning-path">{{ learningTitle }}</RouterLink><span aria-hidden="true">/</span>
@@ -35,16 +37,16 @@ const cover = computed(() => {
             </template>
           </template>
         </nav>
-        <h1 class="kaede-page-title" tabindex="-1">{{ fm.title }}</h1>
-        <p v-if="summary && fm.status !== 'planned'" class="kaede-page-summary">{{ summary }}</p>
-        <div v-if="!chapter" class="kaede-post-meta">
+        <KaedeMastheadTitle>{{ fm.title }}</KaedeMastheadTitle>
+        <p v-if="summary && fm.status !== 'planned'" data-masthead-copy class="kaede-page-summary">{{ summary }}</p>
+        <div v-if="!chapter" data-masthead-copy="detail" class="kaede-post-meta">
           <time v-if="date" :datetime="date">发布于 {{ date }}</time>
           <time v-if="updated && updated !== date" :datetime="updated">更新于 {{ updated }}</time>
           <span v-if="fm.readingTime">约 {{ fm.readingTime }} 分钟</span>
         </div>
         <LearningChapterHeader v-if="chapter" />
       </header>
-      <figure v-if="cover" class="kaede-reading-cover">
+      <figure v-if="cover" :key="route.path" v-viewport-entrance="'feature'" class="kaede-reading-cover">
         <img :src="cover" :alt="fm.coverAlt || ''" decoding="async">
         <figcaption v-if="fm.coverCaption">{{ fm.coverCaption }}</figcaption>
       </figure>

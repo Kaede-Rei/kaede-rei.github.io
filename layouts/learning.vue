@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { currentLearningTracks, learningContext, learningMeta, learningPath, learningTitle, learningTrack } from '../theme/utils/learning'
+import { vRouteMasthead } from '../theme/utils/route-masthead'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const meta = computed(() => learningMeta(route.meta.frontmatter))
@@ -13,7 +15,7 @@ const summary = computed(() => context.value?.phase.description || track.value?.
 
 <template>
   <section class="kaede-page learning-page">
-    <header class="kaede-page-header">
+    <header :key="route.path" v-route-masthead class="kaede-page-header" data-route-masthead="guide">
       <nav class="kaede-breadcrumb" aria-label="面包屑">
         <RouterLink to="/">首页</RouterLink>
         <template v-if="track">
@@ -23,12 +25,12 @@ const summary = computed(() => context.value?.phase.description || track.value?.
           <span aria-hidden="true">/</span><RouterLink :to="context.track.path">{{ context.track.title }}</RouterLink>
         </template>
       </nav>
-      <h1 class="kaede-page-title" tabindex="-1">{{ title }}</h1>
-      <p class="learning-description">{{ summary }}</p>
-      <p v-if="context" class="learning-audience">适合：{{ context.phase.audience }}</p>
+      <KaedeMastheadTitle>{{ title }}</KaedeMastheadTitle>
+      <p data-masthead-copy class="learning-description">{{ summary }}</p>
+      <p v-if="context" data-masthead-copy="detail" class="learning-audience">适合：{{ context.phase.audience }}</p>
     </header>
     <nav v-if="!track" class="learning-track-links" aria-label="技术积累方向">
-      <RouterLink v-for="entry in currentLearningTracks" :key="entry.path" :to="entry.path">
+      <RouterLink v-for="entry in currentLearningTracks" :key="entry.path" v-viewport-entrance:learning-tracks :to="entry.path">
         <strong>{{ entry.title }} <span aria-hidden="true">→</span></strong>
         <span>{{ entry.description }}</span>
       </RouterLink>

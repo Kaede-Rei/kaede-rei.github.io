@@ -1,0 +1,60 @@
+.kaede-masthead-window,
+.kaede-masthead-title { display: block; }
+
+@media screen and (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-route-masthead] {
+    --masthead-title: kaede-masthead-roll;
+    --masthead-time: 620ms;
+    --masthead-copy-delay: 160ms;
+  }
+
+  [data-route-masthead='profile'],
+  [data-route-masthead='atil'] {
+    --masthead-title: kaede-masthead-wipe;
+    --masthead-time: 700ms;
+    --masthead-copy-delay: 205ms;
+  }
+
+  [data-route-masthead='article'] {
+    --masthead-title: kaede-masthead-wipe;
+    --masthead-time: 560ms;
+    --masthead-copy-delay: 125ms;
+  }
+
+  [data-route-masthead='document'],
+  [data-route-masthead='taxonomy'] {
+    --masthead-time: 540ms;
+    --masthead-copy-delay: 110ms;
+  }
+
+  html:not(:has(:target)) [data-route-masthead]:not(:focus-within) .kaede-masthead-window {
+    overflow: clip;
+  }
+
+  html:not(:has(:target)) [data-route-masthead]:not(:focus-within) .kaede-masthead-title {
+    animation: var(--masthead-title) var(--masthead-time) var(--ease-out) backwards;
+  }
+
+  html:not(:has(:target)) [data-route-masthead]:not(:focus-within) [data-masthead-copy] {
+    animation: kaede-masthead-copy 480ms var(--ease-out) var(--masthead-copy-delay) backwards;
+  }
+
+  html:not(:has(:target)) [data-route-masthead]:not(:focus-within) [data-masthead-copy='detail'] {
+    animation-delay: calc(var(--masthead-copy-delay) + 65ms);
+  }
+}
+
+@keyframes kaede-masthead-roll {
+  from { opacity: .2; transform: translateY(82%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kaede-masthead-wipe {
+  from { opacity: .22; transform: translateY(20px); clip-path: inset(0 84% 0 0); }
+  to { opacity: 1; transform: translateY(0); clip-path: inset(0); }
+}
+
+@keyframes kaede-masthead-copy {
+  from { opacity: .24; transform: translateY(17px); }
+  to { opacity: 1; transform: translateY(0); }
+}

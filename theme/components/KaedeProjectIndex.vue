@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ProjectRecord } from '../../data/site'
+import { vViewportEntrance } from '../utils/viewport-entrance'
 
 defineProps<{
   projects: readonly ProjectRecord[]
@@ -10,7 +11,7 @@ defineProps<{
 
 <template>
   <ul class="kaede-project-index" role="list">
-    <li v-for="project in projects" :key="project.id">
+    <li v-for="project in projects" :key="project.id" v-viewport-entrance:project-index>
       <a class="kaede-project-index-name" :href="project.url">{{ project.title }}</a>
       <p>{{ project.summary }}</p>
       <p class="kaede-project-index-meta">

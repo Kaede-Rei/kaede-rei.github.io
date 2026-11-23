@@ -16,6 +16,9 @@ importers:
       '@vueuse/motion':
         specifier: 3.0.3
         version: 3.0.3(magicast@0.5.2)(vue@3.5.22(typescript@5.9.3))
+      lenis:
+        specifier: 1.3.26
+        version: 1.3.26(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3))
       valaxy:
         specifier: 0.28.4
         version: 0.28.4(patch_hash=d37041f313b3d7a1ced57345591f47ac5e510392fca14fe2869d223ed55cfc63)(@babel/parser@7.29.2)(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@nuxt/kit@3.21.2(magicast@0.5.2))(@types/markdown-it@14.1.2)(@types/node@25.5.0)(@vue/compiler-dom@3.5.31)(@vue/compiler-sfc@3.5.31)(axios@1.14.0)(eslint@10.1.0(jiti@2.6.1))(postcss@8.5.8)(terser@5.46.1)(typescript@5.9.3)(yaml@2.8.3)
@@ -2566,8 +2569,8 @@ packages:
   leac@0.6.0:
     resolution: {integrity: sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg==}
 
-  lenis@1.3.21:
-    resolution: {integrity: sha512-RXWTYm7KQE4Kv8ezxL6wvK0Oiv7aRr6FDo+eNaaniTeu7pLdHokqMIJ5CXO4x5ezvd+9ONdpSFkprLpXsVWmEw==}
+  lenis@1.3.26:
+    resolution: {integrity: sha512-s/xTCZCxTFvHbAN1OzuhNaN5YPJH2ail0XAkctKW1b+RUAG4nUL5UHLXwNko1h8aEeT2jspBXegMgPJd8zcuag==}
     peerDependencies:
       '@nuxt/kit': '>=3.0.0'
       react: '>=17.0.0'
@@ -6587,7 +6590,7 @@ snapshots:
 
   leac@0.6.0: {}
 
-  lenis@1.3.21(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3)):
+  lenis@1.3.26(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3)):
     optionalDependencies:
       '@nuxt/kit': 3.21.2(magicast@0.5.2)
       vue: 3.5.22(typescript@5.9.3)
@@ -7622,7 +7625,7 @@ snapshots:
       '@iconify-json/fa6-solid': 1.2.4
       '@iconify-json/mdi': 1.2.3
       interactjs: 1.10.27
-      lenis: 1.3.21(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3))
+      lenis: 1.3.26(@nuxt/kit@3.21.2(magicast@0.5.2))(vue@3.5.22(typescript@5.9.3))
       typeit: 8.8.7
       valaxy-addon-hitokoto: 0.0.1
       valaxy-addon-vercount: 0.0.7

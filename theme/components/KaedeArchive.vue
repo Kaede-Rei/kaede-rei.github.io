@@ -2,6 +2,8 @@
 import { usePostList } from 'valaxy'
 import { computed } from 'vue'
 import { formatPostDate } from '../utils/content'
+import { vRouteMasthead } from '../utils/route-masthead'
+import { vViewportEntrance } from '../utils/viewport-entrance'
 
 const posts = usePostList()
 const dated = computed(() => [...posts.value].sort((a, b) => formatPostDate(b.date).localeCompare(formatPostDate(a.date))))
@@ -10,16 +12,16 @@ const years = computed(() => [...new Set(dated.value.map(post => formatPostDate(
 
 <template>
   <section class="kaede-page kaede-index content">
-    <header class="kaede-page-header">
-      <h1 class="kaede-page-title" tabindex="-1">文章</h1>
-      <p class="kaede-page-summary">记录设计取舍、调试过程和可以复用的工程方法</p>
+    <header v-route-masthead class="kaede-page-header" data-route-masthead="archive">
+      <KaedeMastheadTitle>文章</KaedeMastheadTitle>
+      <p data-masthead-copy class="kaede-page-summary">记录设计取舍、调试过程和可以复用的工程方法</p>
     </header>
     <KaedeArticleNav />
     <p class="kaede-archive-count">共 {{ posts.length }} 篇文章</p>
     <section v-for="year in years" :key="year" class="kaede-archive-year">
-      <h2>{{ year || '日期未标注' }}</h2>
+      <h2 v-viewport-entrance:archive-articles="'lead'">{{ year || '日期未标注' }}</h2>
       <RouterLink v-for="post in dated.filter(item => formatPostDate(item.date).slice(0, 4) === year && item.path)"
-        :key="post.path" :to="post.path!" class="kaede-archive-item">
+        :key="post.path" v-viewport-entrance:archive-articles.fade :to="post.path!" class="kaede-archive-item">
         <time v-if="year" :datetime="formatPostDate(post.date)">{{ formatPostDate(post.date).slice(5) }}</time>
         <span>{{ post.title }}</span><span class="kaede-link-arrow" aria-hidden="true">→</span>
       </RouterLink>

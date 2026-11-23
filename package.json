@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@vueuse/motion": "3.0.3",
+    "lenis": "1.3.26",
     "valaxy": "0.28.4",
     "valaxy-addon-vercount": "^0.0.7",
     "valaxy-theme-sakura": "^0.10.2",

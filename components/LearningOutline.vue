@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { learningChapters, learningContext, learningPath, learningTrack } from '../theme/utils/learning'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const router = useRouter()
@@ -34,7 +35,7 @@ const showChapters = computed(() => context.value || track.value?.path.endsWith(
       </RouterLink>
     </nav>
 
-    <section v-for="(section, index) in sections" :key="section.id" class="learning-stage">
+    <section v-for="(section, index) in sections" :key="section.id" v-viewport-entrance:learning-stages class="learning-stage">
       <h2 :id="context ? 'chapters' : section.id" tabindex="-1">
         {{ context ? '章节目录' : section.title }}
       </h2>

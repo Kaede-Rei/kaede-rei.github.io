@@ -6,6 +6,9 @@ const pressable = [
   '.kaede-nav-tools button',
   '.kaede-toc-toggle', '.kaede-toc-panel button', '.kaede-feed-modes button',
   '.kaede-search-dialog button', '.kaede-code-actions button',
+  '.kaede-nav-links a', '.kaede-mobile-nav a', '.kaede-pagination a',
+  '.kaede-article-nav a', '.kaede-taxonomy a', '.kaede-post-nav a', '.learning-chapter-neighbors a',
+  '.technical-documents-toggle', '.technical-documents-dialog button', '.kaede-friend-links a',
 ].join(', ')
 
 export function installPointerSprings() {
@@ -54,7 +57,8 @@ export function installPointerSprings() {
         () => { element.style.removeProperty('scale') },
       ))
     }
-    motions.get(element)?.move(.97)
+    const emphasized = element.matches('.kaede-button, .kaede-track-entry, .kaede-contact-links a, .kaede-feed-modes button')
+    motions.get(element)?.move(emphasized ? .94 : .97)
   }
 
   function release(event: PointerEvent) {
@@ -78,7 +82,7 @@ export function installPointerSprings() {
         () => { arrow.style.removeProperty('translate') },
       ))
     }
-    motions.get(arrow)?.move(entering ? 3 : 0)
+    motions.get(arrow)?.move(entering ? 7 : 0)
   }
 
   function reset() {

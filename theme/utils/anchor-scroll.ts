@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 import { useSpring } from '@vueuse/motion'
 import { reactive, watch } from 'vue'
+import { cancelHomeWheelScroll, scrollHomeImmediately } from './home-scroll'
 
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
 const scrollPosition = reactive({ y: 0 })
@@ -30,7 +31,8 @@ export function stopAnchorScroll() {
 }
 
 function scrollToY(top: number) {
-  window.scrollTo({ top, left: window.scrollX, behavior: 'instant' })
+  if (!scrollHomeImmediately(top))
+    window.scrollTo({ top, left: window.scrollX, behavior: 'instant' })
 }
 
 function anchorTop(target: HTMLElement) {
@@ -42,6 +44,7 @@ function anchorTop(target: HTMLElement) {
 }
 
 function scrollToAnchor(target: HTMLElement, pointer: boolean) {
+  cancelHomeWheelScroll()
   const reducedMotion = window.matchMedia(reducedMotionQuery)
   if (!pointer || reducedMotion.matches) {
     stopAnchorScroll()
@@ -61,7 +64,8 @@ function scrollToAnchor(target: HTMLElement, pointer: boolean) {
     scrollPosition.y = window.scrollY
     activeScroll = new AbortController()
     const { signal } = activeScroll
-    window.addEventListener('wheel', stopAnchorScroll, { passive: true, signal })
+    // Release the spring before Lenis reads this same wheel event.
+    window.addEventListener('wheel', stopAnchorScroll, { capture: true, passive: true, signal })
     window.addEventListener('touchmove', stopAnchorScroll, { passive: true, signal })
     window.addEventListener('keydown', (event) => {
       if (!event.defaultPrevented && ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key))
@@ -119,6 +123,7 @@ export function handleSamePageAnchor(event: MouseEvent, router: Router) {
     || link.hasAttribute('data-toc-link')) return
   if (link.classList.contains('kaede-skip-link')) {
     stopAnchorScroll()
+    cancelHomeWheelScroll()
     return
   }
 

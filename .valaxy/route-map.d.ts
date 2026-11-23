@@ -461,6 +461,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/posts/notes/MCU C 架构设计：产品、组件与平台的职责划分': RouteRecordInfo<
+      '/posts/notes/MCU C 架构设计：产品、组件与平台的职责划分',
+      '/posts/notes/MCU%20C%20%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A7%E5%93%81%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%92%E5%88%86',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/notes/micromamba 构建移动环境': RouteRecordInfo<
       '/posts/notes/micromamba 构建移动环境',
       '/posts/notes/micromamba%20%E6%9E%84%E5%BB%BA%E7%A7%BB%E5%8A%A8%E7%8E%AF%E5%A2%83',
@@ -864,6 +871,12 @@ declare module 'vue-router/auto-routes' {
     'pages/posts/notes/机械臂动力学.md': {
       routes:
         | '/posts/notes/机械臂动力学'
+      views:
+        | never
+    }
+    'pages/posts/notes/MCU C 架构设计：产品、组件与平台的职责划分.md': {
+      routes:
+        | '/posts/notes/MCU C 架构设计：产品、组件与平台的职责划分'
       views:
         | never
     }

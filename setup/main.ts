@@ -107,9 +107,16 @@ function setupCodeBlock(pre: HTMLPreElement) {
 export default defineAppSetup(({ isClient, router }) => {
   if (!isClient) return
 
+  const pageMotion = window.matchMedia('(prefers-reduced-motion: no-preference)')
+  let pageEntrance: Animation | undefined
+  pageMotion.addEventListener('change', () => pageEntrance?.cancel())
+
   router.options.scrollBehavior = async (to, from, savedPosition) => {
     const samePage = samePagePath(to.path, from.path)
-    if (savedPosition || !samePage) stopAnchorScroll()
+    if (savedPosition || !samePage) {
+      stopAnchorScroll()
+      pageEntrance?.cancel()
+    }
     if (savedPosition) return savedPosition
     if (to.hash) {
       await nextTick()
@@ -120,7 +127,22 @@ export default defineAppSetup(({ isClient, router }) => {
         return false
       }
     }
-    if (!samePage) return { top: 0 }
+    if (!samePage) {
+      if (from.matched.length && !to.hash && pageMotion.matches) {
+        requestAnimationFrame(() => {
+          if (!pageMotion.matches || router.currentRoute.value !== to) return
+          const main = document.getElementById('main-content')
+          // Keep a keyboard-focused destination clear and leave the same main element in place.
+          if (!main?.animate || main.contains(document.activeElement)) return
+          const landing = to.path === '/' || to.path === '/about' || to.path === '/learning-path'
+          pageEntrance = main.animate([{ opacity: landing ? .38 : .62 }, { opacity: 1 }], {
+            duration: landing ? 310 : 210,
+            easing: getComputedStyle(main).getPropertyValue('--ease-out').trim(),
+          })
+        })
+      }
+      return { top: 0 }
+    }
   }
 
   function refreshCodeBlocks() {

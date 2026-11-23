@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useMotionProperties, useReducedMotion, useSpring } from '@vueuse/motion'
 import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { isPlainClick, isPointerClick, navigateToAnchor } from '../utils/anchor-scroll'
+import { dismissModal, presentModal } from '../utils/dialog-motion'
 import KaedeTocItems from './KaedeTocItems.vue'
 
 interface Heading {
@@ -23,16 +23,6 @@ const dialog = ref<HTMLDialogElement>()
 const trigger = ref<HTMLButtonElement>()
 const desktopList = ref<HTMLElement>()
 const dialogList = ref<HTMLElement>()
-const reducedMotion = useReducedMotion()
-const closedScale = .98
-const { motionProperties: panelMotion } = useMotionProperties(dialog, { scale: closedScale })
-const panelSpring = useSpring(panelMotion, {
-  stiffness: 550,
-  damping: 42,
-  mass: 1,
-  restDelta: .0001,
-  restSpeed: .001,
-})
 const selected = shallowRef<Heading>()
 const headings = shallowRef<Heading[]>([])
 const outline = shallowRef<Heading[]>([])
@@ -117,28 +107,10 @@ function releaseFocusedRoot(event: FocusEvent) {
   focusedRoot.value = ''
 }
 
-function setPanelMotion(panel: HTMLDialogElement, opening: boolean, fromPointer = false) {
-  const target = opening ? 1 : closedScale
-  const animate = fromPointer && !reducedMotion.value && (opening || CSS.supports('overlay: auto'))
-  panel.toggleAttribute('data-pointer-motion', animate)
-  if (animate) {
-    void panelSpring.set({ scale: target })
-    return
-  }
-  panelSpring.stop()
-  panelMotion.scale = target
-}
-watch(reducedMotion, (reduced) => {
-  const panel = dialog.value
-  if (reduced && panel) setPanelMotion(panel, panel.open)
-})
 function close(restoreFocus = true, fromPointer = false) {
-  const panel = dialog.value
-  if (!panel?.open) return
-  setPanelMotion(panel, false, fromPointer)
-  panel.close()
-  panel.inert = true
-  if (restoreFocus) trigger.value?.focus({ preventScroll: true })
+  dismissModal(dialog.value, fromPointer, () => {
+    if (restoreFocus) trigger.value?.focus({ preventScroll: true })
+  })
 }
 function closeFromClick(event: MouseEvent) {
   close(true, isPointerClick(event))
@@ -146,9 +118,7 @@ function closeFromClick(event: MouseEvent) {
 async function open(event: MouseEvent) {
   const panel = dialog.value
   if (!panel || panel.open) return
-  setPanelMotion(panel, true, isPointerClick(event))
-  panel.inert = false
-  panel.showModal()
+  presentModal(panel, isPointerClick(event))
   await nextTick()
   if (panel.open) revealCurrent(dialogList.value)
 }
@@ -192,7 +162,7 @@ onUnmounted(() => {
     <button ref="trigger" class="kaede-toc-toggle" type="button" aria-haspopup="dialog" aria-controls="kaede-toc-dialog" @click="open">
       <span class="i-ri-list-unordered" aria-hidden="true" />目录
     </button>
-    <dialog id="kaede-toc-dialog" ref="dialog" class="kaede-toc-dialog" aria-labelledby="kaede-toc-dialog-label"
+    <dialog id="kaede-toc-dialog" ref="dialog" class="kaede-toc-dialog kaede-modal-panel" aria-labelledby="kaede-toc-dialog-label"
       @cancel.prevent="close()" @click.self="closeFromClick">
       <div class="kaede-toc-panel">
         <header class="kaede-toc-heading">

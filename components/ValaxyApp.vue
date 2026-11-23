@@ -3,14 +3,16 @@ import { useHead, useSeoMeta } from '@unhead/vue'
 import { useColorMode, useMediaQuery } from '@vueuse/core'
 import { useMotionProperties, useSpring } from '@vueuse/motion'
 import { useAppStore, useFrontmatter, useLayout, useSiteConfig, useValaxyApp } from 'valaxy'
-import { computed, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, provide, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { profile } from '../data/site'
 import KaedeSearch from '../theme/components/KaedeSearch.vue'
 import { imageUrl, postSummary } from '../theme/utils/content'
 import { learningTitle } from '../theme/utils/learning'
 import { postLayoutBootstrap } from '../theme/utils/post-layout'
-import { handleSamePageAnchor, stopAnchorScroll } from '../theme/utils/anchor-scroll'
+import { handleSamePageAnchor, isPointerClick, stopAnchorScroll } from '../theme/utils/anchor-scroll'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
+import { installHomeScroll } from '../theme/utils/home-scroll'
 import { installPointerSprings } from '../theme/utils/pointer-springs'
 
 useValaxyApp()
@@ -20,6 +22,18 @@ const fm = useFrontmatter()
 const route = useRoute()
 const router = useRouter()
 const layout = useLayout()
+const navbar = ref<HTMLElement>()
+const navbarPanel = ref<HTMLElement>()
+const navbarHidden = ref(false)
+const navbarRest = { y: 0, scale: 1, opacity: 1 }
+const { motionProperties: navbarMotion } = useMotionProperties(navbarPanel, navbarRest)
+const navbarSpring = useSpring(navbarMotion, { stiffness: 440, damping: 28, mass: 1 })
+const navLinks = ref<HTMLElement>()
+const navIndicatorReady = ref(false)
+const indicatorMotion = reactive({ x: 0, scaleX: 1 })
+const indicatorSpring = useSpring(indicatorMotion, { stiffness: 440, damping: 28, mass: 1 })
+let scrollEdge = 0
+let navbarResetFrame = 0
 const menuOpen = ref(false)
 const menuVisible = ref(false)
 const menuUsesMotion = ref(false)
@@ -32,7 +46,9 @@ const { motionProperties: menuMotion } = useMotionProperties(menuPanel, { y: men
 const menuSpring = useSpring(menuMotion, { stiffness: 550, damping: 42, mass: 1 })
 let menuTransition = 0
 let pointerSprings: ReturnType<typeof installPointerSprings> | undefined
+let disposeHomeScroll: ReturnType<typeof installHomeScroll> | undefined
 const searchOpen = ref(false)
+const searchPointerOpen = ref(false)
 const searchRef = ref<{ dismiss: () => void }>()
 const themeReady = ref(false)
 const theme = useColorMode({ emitAuto: true, modes: { light: '' } })
@@ -84,6 +100,83 @@ useSeoMeta({
   twitterImage: shareImage,
 })
 
+function navbarScrollPosition() {
+  const root = document.scrollingElement
+  const maximum = root ? Math.max(0, root.scrollHeight - root.clientHeight) : window.scrollY
+  return Math.max(0, Math.min(window.scrollY, maximum))
+}
+function setNavbarHidden(hidden: boolean, instant = false) {
+  if (hidden === navbarHidden.value && (!instant || navbarMotion.y === 0 && navbarMotion.scale === 1 && navbarMotion.opacity === 1)) return
+  navbarHidden.value = hidden
+  const target = hidden ? { y: -(navbar.value?.offsetHeight ?? 0) - 24, scale: .94, opacity: .15 } : navbarRest
+  if (instant || reduceMotion.value) {
+    navbarSpring.stop()
+    Object.assign(navbarMotion, target)
+  }
+  else {
+    void navbarSpring.set(target)
+  }
+}
+function revealNavbar() {
+  setNavbarHidden(false, true)
+  scrollEdge = navbarScrollPosition()
+}
+function resetNavbarPosition() {
+  if (!navbar.value) return
+  revealNavbar()
+  cancelAnimationFrame(navbarResetFrame)
+  // Read the position after Vue Router restores the destination page's scroll.
+  navbarResetFrame = requestAnimationFrame(() => {
+    scrollEdge = navbarScrollPosition()
+    navbarResetFrame = 0
+  })
+}
+function updateNavbar() {
+  const header = navbar.value
+  if (!header) return
+  const y = navbarScrollPosition()
+  const focus = document.activeElement
+  if (navbarResetFrame || reduceMotion.value || menuVisible.value || searchOpen.value
+    || (header.contains(focus) && focus?.matches(':focus-visible'))) {
+    scrollEdge = y
+    setNavbarHidden(false, true)
+    return
+  }
+  if (y <= header.offsetHeight + 12) {
+    scrollEdge = y
+    setNavbarHidden(false)
+    return
+  }
+
+  // Accumulate a direction change across small deltas so a trackpad never chatters.
+  scrollEdge = navbarHidden.value ? Math.max(scrollEdge, y) : Math.min(scrollEdge, y)
+  if (navbarHidden.value ? scrollEdge - y < 8 : y - scrollEdge < 16) return
+  setNavbarHidden(!navbarHidden.value)
+  scrollEdge = y
+}
+
+function syncNavIndicator(animate = false) {
+  const current = navLinks.value?.querySelector<HTMLElement>('[aria-current]')
+  if (!current?.offsetWidth) {
+    indicatorSpring.stop()
+    navIndicatorReady.value = false
+    return
+  }
+
+  const target = { x: current.offsetLeft, scaleX: current.offsetWidth / 100 }
+  if (animate && navIndicatorReady.value && !reduceMotion.value) {
+    void indicatorSpring.set(target)
+  }
+  else {
+    indicatorSpring.stop()
+    Object.assign(indicatorMotion, target)
+  }
+  navIndicatorReady.value = true
+}
+function refreshNavIndicator() {
+  syncNavIndicator()
+}
+
 function setMenuOpen(open: boolean, fromPointer = false) {
   const transition = ++menuTransition
   const target = open ? 0 : menuClosedOffset
@@ -106,17 +199,23 @@ function setMenuOpen(open: boolean, fromPointer = false) {
   })
 }
 function toggleMobileMenu(event: MouseEvent) {
-  const fromPointer = event instanceof PointerEvent && event.pointerType !== ''
-  setMenuOpen(!menuOpen.value, fromPointer)
+  setMenuOpen(!menuOpen.value, isPointerClick(event))
 }
 watch(reduceMotion, (reduced) => {
   if (reduced && menuUsesMotion.value) setMenuOpen(menuOpen.value)
+  if (reduced) {
+    resetNavbarPosition()
+    refreshNavIndicator()
+  }
 })
 watch(mobileNavigation, (mobile) => {
   if (!mobile && menuVisible.value) setMenuOpen(false)
+  resetNavbarPosition()
 })
 
 function openSearch(event?: MouseEvent) {
+  revealNavbar()
+  searchPointerOpen.value = !!event && isPointerClick(event)
   if (event?.currentTarget instanceof HTMLElement) event.currentTarget.focus({ preventScroll: true })
   setMenuOpen(false)
   searchOpen.value = true
@@ -125,6 +224,12 @@ provide('kaedeOpenSearch', openSearch)
 
 function shortcut(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229 || event.repeat) return
+  if (event.key === 'Tab' && (navbarHidden.value || (navbarMotion.y ?? 0) !== 0)) {
+    revealNavbar()
+    // Tab's native focus scroll needs the bar in view before Vue's next render.
+    navbarPanel.value?.style.removeProperty('transform')
+    navbarPanel.value?.style.removeProperty('opacity')
+  }
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault()
     if (searchOpen.value) searchRef.value?.dismiss()
@@ -158,9 +263,13 @@ function chooseMobileLink(to: string) {
   if (to === cleanPath(route.path)) menuToggle.value?.focus()
   else keyboardDestination = to
 }
-watch(() => route.path, () => {
+watch(() => route.path, async () => {
+  const keyboardNavigation = keyboardDestination === destination(route.path, route.hash)
   if (menuVisible.value) setMenuOpen(false)
+  resetNavbarPosition()
   pointerSprings?.reset()
+  await nextTick()
+  syncNavIndicator(!keyboardNavigation)
 })
 watch(() => route.fullPath, async () => {
   if (keyboardDestination === destination(route.path, route.hash)) {
@@ -178,7 +287,13 @@ function activateAnchor(event: MouseEvent) {
   handleSamePageAnchor(event, router)
 }
 onMounted(() => {
+  resetNavbarPosition()
+  refreshNavIndicator()
+  window.addEventListener('scroll', updateNavbar, { passive: true })
+  window.addEventListener('resize', refreshNavIndicator)
+  document.fonts?.addEventListener('loadingdone', refreshNavIndicator)
   pointerSprings = installPointerSprings()
+  disposeHomeScroll = installHomeScroll(router, searchOpen)
   themeReady.value = true
   app.showLoading = false
   window.addEventListener('keydown', shortcut)
@@ -187,8 +302,14 @@ onMounted(() => {
   document.addEventListener('keydown', rememberKeyboardLink, { capture: true })
 })
 onUnmounted(() => {
+  cancelAnimationFrame(navbarResetFrame)
+  indicatorSpring.stop()
+  window.removeEventListener('scroll', updateNavbar)
+  window.removeEventListener('resize', refreshNavIndicator)
+  document.fonts?.removeEventListener('loadingdone', refreshNavIndicator)
   window.removeEventListener('keydown', shortcut)
   stopAnchorScroll()
+  disposeHomeScroll?.()
   pointerSprings?.dispose()
   document.removeEventListener('click', activateAnchor, { capture: true })
   document.removeEventListener('click', rememberKeyboardLink, { capture: true })
@@ -199,18 +320,20 @@ onUnmounted(() => {
 <template>
   <template v-if="layout !== 'empty'">
     <a class="kaede-skip-link" href="#main-content">跳转到正文</a>
-    <header class="kaede-navbar" @keydown.esc="closeMenuFromKeyboard">
-      <div class="kaede-navbar-inner">
+    <header ref="navbar" class="kaede-navbar" :class="{ 'is-tucked': navbarHidden }" @focusin="revealNavbar" @keydown.esc="closeMenuFromKeyboard">
+      <div ref="navbarPanel" class="kaede-navbar-inner">
         <RouterLink class="kaede-brand" to="/">
           <img :src="site.author.avatar" alt="" width="36" height="36">
           <span>Kaede Rei</span>
         </RouterLink>
-        <nav class="kaede-nav-links" aria-label="主导航">
+        <nav ref="navLinks" class="kaede-nav-links" :class="{ 'has-active-indicator': navIndicatorReady }" aria-label="主导航">
           <RouterLink v-for="item in nav" :key="item.to" :to="item.to"
             :class="{ 'is-current': isInSection(item.sections) }"
             :aria-current="cleanPath(route.path) === item.to ? 'page' : isInSection(item.sections) ? 'location' : undefined">
             {{ item.text }}
           </RouterLink>
+          <span class="kaede-nav-indicator" aria-hidden="true"
+            :style="{ transform: `translateX(${indicatorMotion.x}px) scaleX(${indicatorMotion.scaleX})` }" />
         </nav>
         <div class="kaede-nav-tools">
           <button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" @click="openSearch">
@@ -234,7 +357,7 @@ onUnmounted(() => {
         <nav id="kaede-mobile-nav" ref="menuPanel" class="kaede-mobile-nav"
           :class="{ 'is-visible': menuVisible, 'is-open': menuOpen, 'has-menu-motion': menuUsesMotion }"
           :inert="!menuOpen || undefined" aria-label="移动导航">
-          <RouterLink v-for="item in nav" :key="item.to" :to="item.to"
+          <RouterLink v-for="(item, index) in nav" :key="item.to" :to="item.to" :style="{ '--menu-step': index }"
             :class="{ 'is-current': isInSection(item.sections) }"
             :aria-current="cleanPath(route.path) === item.to ? 'page' : isInSection(item.sections) ? 'location' : undefined"
             @click="chooseMobileLink(item.to)">
@@ -244,7 +367,7 @@ onUnmounted(() => {
       </div>
     </header>
     <main id="main-content" class="kaede-main" tabindex="-1" :class="`has-${layout}-layout`"><RouterView /></main>
-    <footer class="kaede-footer">
+    <footer v-viewport-entrance.fade class="kaede-footer">
       <div><RouterLink class="kaede-footer-name" to="/">Kaede Rei の 小窝</RouterLink><p>{{ profile.footerText }}</p></div>
       <div class="kaede-footer-links">
         <RouterLink to="/links">友情链接</RouterLink>
@@ -254,7 +377,106 @@ onUnmounted(() => {
       </div>
       <small>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy">Hairy</a></small>
     </footer>
-    <KaedeSearch v-if="searchOpen" ref="searchRef" @close="searchOpen = false" />
+    <KaedeSearch v-if="searchOpen" ref="searchRef" :pointer-opening="searchPointerOpen" @close="searchOpen = false" />
     <ValaxyAddons />
   </template>
 </template>
+
+<style scoped>
+.kaede-navbar {
+  --navbar-inset: 8px;
+  min-height: calc(var(--nav-height) + 1px);
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.kaede-navbar-inner {
+  top: var(--navbar-inset);
+  width: min(calc(var(--content-width) + 28px), calc(100% - 24px));
+  min-height: calc(var(--nav-height) - var(--navbar-inset));
+  padding-inline: clamp(8px, 1.5vw, 16px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 6px 22px rgb(29 22 27 / 12%);
+  pointer-events: auto;
+}
+
+.kaede-nav-links a {
+  min-height: calc(var(--nav-height) - var(--navbar-inset) - 2px);
+}
+
+.kaede-nav-links {
+  position: relative;
+}
+
+.kaede-nav-links.has-active-indicator a.is-current {
+  border-color: transparent;
+}
+
+.kaede-nav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 2px;
+  background: var(--accent);
+  pointer-events: none;
+  transform-origin: left center;
+  visibility: hidden;
+}
+
+.has-active-indicator .kaede-nav-indicator {
+  visibility: visible;
+}
+
+.kaede-navbar.is-tucked .kaede-navbar-inner {
+  pointer-events: none;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .kaede-navbar-inner {
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .kaede-navbar-inner {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .kaede-mobile-nav {
+    top: calc(100% + 8px);
+    inset-inline: -1px;
+    padding-inline: 8px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 800px) and (prefers-reduced-motion: no-preference) {
+  .kaede-mobile-nav:not(.is-open) a {
+    opacity: 0;
+    translate: -10px -14px;
+  }
+
+  .kaede-mobile-nav.has-menu-motion a {
+    transition: translate 190ms var(--ease-out), opacity 150ms var(--ease-out);
+  }
+
+  .kaede-mobile-nav.is-open.has-menu-motion a {
+    transition-delay: calc(24ms + 32ms * var(--menu-step));
+  }
+
+  .kaede-mobile-nav.is-open.has-menu-motion a:focus-visible {
+    transition: none;
+  }
+}
+</style>

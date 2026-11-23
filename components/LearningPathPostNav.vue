@@ -3,6 +3,7 @@ import { usePrevNext } from 'valaxy'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { chapterFromRoute, learningChapters, learningContext } from '../theme/utils/learning'
+import { vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const router = useRouter()
@@ -29,23 +30,23 @@ const chapterNav = computed(() => {
 </script>
 
 <template>
-  <nav v-if="chapterNav" class="learning-chapter-nav" aria-label="章节导航">
+  <nav v-if="chapterNav" :key="`chapter-${route.path}`" class="learning-chapter-nav" aria-label="章节导航">
     <p v-if="!chapterNav.next && chapterNav.chapter.status !== 'planned'">已到本阶段最后一个可读章节</p>
     <div v-if="chapterNav.prev || chapterNav.next || chapterNav.nextPhase" class="learning-chapter-neighbors">
-      <RouterLink v-if="chapterNav.prev" :to="chapterNav.prev.path">
+      <RouterLink v-if="chapterNav.prev" v-viewport-entrance:chapter-neighbors="'pair'" :to="chapterNav.prev.path">
         <span>← 上一可读章节</span>
         <strong>{{ chapterNav.prev.title }}</strong>
       </RouterLink>
-      <RouterLink v-if="chapterNav.next" :to="chapterNav.next.path">
+      <RouterLink v-if="chapterNav.next" v-viewport-entrance:chapter-neighbors="'pair'" :to="chapterNav.next.path">
         <span>下一可读章节 →</span>
         <strong>{{ chapterNav.next.title }}</strong>
       </RouterLink>
-      <RouterLink v-else-if="chapterNav.nextPhase" :to="chapterNav.nextPhase.overviewLink">
+      <RouterLink v-else-if="chapterNav.nextPhase" v-viewport-entrance:chapter-neighbors="'pair'" :to="chapterNav.nextPhase.overviewLink">
         <span>进入下一阶段 →</span>
         <strong>{{ chapterNav.nextPhase.title }}</strong>
       </RouterLink>
     </div>
-    <div class="learning-chapter-links">
+    <div v-viewport-entrance.fade class="learning-chapter-links">
       <RouterLink :to="chapterNav.phase.overviewLink">返回本阶段</RouterLink>
       <RouterLink :to="chapterNav.track.path">
         {{ chapterNav.nextPhase ? `返回${chapterNav.track.title}` : '返回方向总览' }}
@@ -56,9 +57,9 @@ const chapterNav = computed(() => {
       <RouterLink v-if="!chapterNav.nextPhase" to="/learning-path">返回技术积累</RouterLink>
     </div>
   </nav>
-  <nav v-else-if="blogPrev?.path || blogNext?.path" class="kaede-post-nav" aria-label="前后文章">
-    <RouterLink v-if="blogPrev?.path" :to="blogPrev.path"><span>← 上一篇</span><strong>{{ blogPrev.title }}</strong></RouterLink>
-    <RouterLink v-if="blogNext?.path" class="kaede-next" :to="blogNext.path"><span>下一篇 →</span><strong>{{ blogNext.title }}</strong></RouterLink>
+  <nav v-else-if="blogPrev?.path || blogNext?.path" :key="`post-${route.path}`" class="kaede-post-nav" aria-label="前后文章">
+    <RouterLink v-if="blogPrev?.path" v-viewport-entrance:article-neighbors="'pair'" :to="blogPrev.path"><span>← 上一篇</span><strong>{{ blogPrev.title }}</strong></RouterLink>
+    <RouterLink v-if="blogNext?.path" v-viewport-entrance:article-neighbors="'pair'" class="kaede-next" :to="blogNext.path"><span>下一篇 →</span><strong>{{ blogNext.title }}</strong></RouterLink>
   </nav>
 </template>
 

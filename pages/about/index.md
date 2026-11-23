@@ -9,9 +9,10 @@ comment: false
 
 <script setup>
 import { association, featuredProjects, profile, projects } from '../../data/site'
+import { vViewportEntrance } from '../../theme/utils/viewport-entrance'
 </script>
 
-<p class="about-intro">
+<p class="about-intro" data-masthead-copy>
   <img :src="profile.avatar" alt="" width="96" height="96">
   <span>我是 {{ profile.name }}，{{ profile.school }}本科生、{{ profile.role }}，也是 {{ association.organization }} 的{{ profile.associationRole }}</span>
 </p>
@@ -34,7 +35,7 @@ import { association, featuredProjects, profile, projects } from '../../data/sit
 
 我参与 AgroTech-SCAU 的项目组织与开发，持续整理公共模块、工程文档与学习材料
 
-<RouterLink class="about-association" :to="association.path">
+<RouterLink v-viewport-entrance="'pair'" class="about-association" :to="association.path">
   <ATILBrand variant="compact" decorative />
   <span>查看我在 ATIL 的工作</span>
 </RouterLink>
@@ -45,7 +46,7 @@ import { association, featuredProjects, profile, projects } from '../../data/sit
 
 技术问题可以在对应公开仓库讨论，也可以通过邮箱联系我
 
-<ul>
+<ul v-viewport-entrance.fade>
   <li>GitHub <a :href="profile.github">{{ profile.githubHandle }}</a></li>
   <li>邮箱 <a :href="`mailto:${profile.email}`">{{ profile.email }}</a></li>
   <li>文章订阅 <a :href="profile.rss">RSS</a></li>
