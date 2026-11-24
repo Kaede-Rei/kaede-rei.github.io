@@ -440,6 +440,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/posts/notes/可递归的闭环控制模型': RouteRecordInfo<
+      '/posts/notes/可递归的闭环控制模型',
+      '/posts/notes/%E5%8F%AF%E9%80%92%E5%BD%92%E7%9A%84%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%9E%8B',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/posts/notes/层级状态机': RouteRecordInfo<
       '/posts/notes/层级状态机',
       '/posts/notes/%E5%B1%82%E7%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA',
@@ -853,6 +860,12 @@ declare module 'vue-router/auto-routes' {
     'pages/posts/notes/关于 C 语言模拟 OOP 的设计边界.md': {
       routes:
         | '/posts/notes/关于 C 语言模拟 OOP 的设计边界'
+      views:
+        | never
+    }
+    'pages/posts/notes/可递归的闭环控制模型.md': {
+      routes:
+        | '/posts/notes/可递归的闭环控制模型'
       views:
         | never
     }
