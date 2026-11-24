@@ -14,16 +14,16 @@ const cover = computed(() => {
 </script>
 
 <template>
-  <article v-if="post.path" class="kaede-post-card" :class="{ 'is-reversed': reverse, 'is-text': textOnly, 'has-cover': cover }">
+  <article v-if="post.path" class="kaede-post-card" :data-scene-card="cover && !textOnly ? 'panel' : 'row'" :class="{ 'is-reversed': reverse, 'is-text': textOnly, 'has-cover': cover }">
     <div class="kaede-post-preview">
-      <h3><RouterLink :to="post.path">{{ post.title }}</RouterLink></h3>
-      <p v-if="excerpt">{{ excerpt }}</p>
-      <div class="kaede-post-meta">
+      <h3 data-scene-part="title"><RouterLink :to="post.path">{{ post.title }}</RouterLink></h3>
+      <p v-if="excerpt" data-scene-part="body">{{ excerpt }}</p>
+      <div data-scene-part="meta" class="kaede-post-meta">
         <time v-if="date" :datetime="date">{{ date }}</time>
         <RouterLink v-if="category" :to="{ path: '/categories', query: { category } }">{{ category }}</RouterLink>
       </div>
     </div>
-    <div v-if="cover && !textOnly" class="kaede-post-cover">
+    <div v-if="cover && !textOnly" data-scene-part="media" class="kaede-post-cover">
       <img :src="cover" alt="" width="640" height="360" loading="lazy" decoding="async">
     </div>
   </article>

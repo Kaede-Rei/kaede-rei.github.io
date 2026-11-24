@@ -29,42 +29,42 @@ const showChapters = computed(() => context.value || track.value?.path.endsWith(
 
 <template>
   <div v-if="track" class="learning-outline">
-    <nav v-if="!context" class="learning-stage-links" aria-label="学习阶段">
+    <nav v-if="!context" v-viewport-entrance.fade class="learning-stage-links" aria-label="学习阶段">
       <RouterLink v-for="section in sections" :key="section.id" :to="section.overviewLink">
         {{ section.title }}
       </RouterLink>
     </nav>
 
-    <section v-for="(section, index) in sections" :key="section.id" v-viewport-entrance:learning-stages class="learning-stage">
-      <h2 :id="context ? 'chapters' : section.id" tabindex="-1">
+    <section v-for="(section, index) in sections" :key="section.id" class="learning-stage">
+      <h2 :id="context ? 'chapters' : section.id" v-viewport-entrance="'lead'" tabindex="-1">
         {{ context ? '章节目录' : section.title }}
       </h2>
       <template v-if="!context">
-        <p>{{ section.description }}</p>
-        <p class="learning-audience">适合：{{ section.audience }}</p>
+        <p v-viewport-entrance.fade>{{ section.description }}</p>
+        <p v-viewport-entrance.fade class="learning-audience">适合：{{ section.audience }}</p>
       </template>
-      <p class="learning-count">{{ section.readable }} 个章节可阅读</p>
+      <p v-viewport-entrance.fade class="learning-count">{{ section.readable }} 个章节可阅读</p>
 
       <ul v-if="showChapters" class="learning-chapters">
-        <li v-for="chapter in section.chapters" :key="chapter.path">
-          <div>
+        <li v-for="chapter in section.chapters" :key="chapter.path" v-viewport-entrance:chapter-list="'editorial'" data-scene-card="row">
+          <div data-scene-part="title">
             <RouterLink v-if="chapter.status !== 'planned'" :to="chapter.path" class="learning-chapter-link">
               {{ chapter.title }}
             </RouterLink>
             <span v-else>{{ chapter.title }}</span>
             <p v-if="chapter.status === 'updating'" class="learning-update-note">{{ chapter.updateNote }}</p>
           </div>
-          <LearningStatus :status="chapter.status" />
+          <LearningStatus :status="chapter.status" data-scene-part="meta" />
         </li>
       </ul>
-      <RouterLink v-else :to="section.overviewLink" class="learning-action">查看阶段目录 →</RouterLink>
+      <RouterLink v-else v-viewport-entrance="'pair'" :to="section.overviewLink" class="learning-action">查看阶段目录 →</RouterLink>
 
-      <RouterLink v-if="showChapters && !context && sections[index + 1]" :to="sections[index + 1].overviewLink" class="learning-action">
+      <RouterLink v-if="showChapters && !context && sections[index + 1]" v-viewport-entrance="'pair'" :to="sections[index + 1].overviewLink" class="learning-action">
         查看下一阶段 →
       </RouterLink>
     </section>
 
-    <div class="learning-outline-actions">
+    <div v-viewport-entrance.fade class="learning-outline-actions">
       <RouterLink v-if="context?.nextPhase" :to="context.nextPhase.overviewLink" class="learning-action">
         查看下一阶段 →
       </RouterLink>

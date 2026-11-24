@@ -11,17 +11,17 @@ defineProps<{
 
 <template>
   <ul class="kaede-project-index" role="list">
-    <li v-for="project in projects" :key="project.id" v-viewport-entrance:project-index>
-      <a class="kaede-project-index-name" :href="project.url">{{ project.title }}</a>
-      <p>{{ project.summary }}</p>
-      <p class="kaede-project-index-meta">
+    <li v-for="(project, index) in projects" :key="project.id" v-viewport-entrance:project-index="index === 0 ? 'feature' : 'editorial'" data-scene-card="row">
+      <div data-scene-part="title"><a class="kaede-project-index-name" :href="project.url">{{ project.title }}</a></div>
+      <p data-scene-part="body">{{ project.summary }}</p>
+      <p data-scene-part="meta" class="kaede-project-index-meta">
         <template v-if="showOwners">{{ project.repositoryKind === 'personal' ? '个人仓库' : '组织项目' }} · </template>
         {{ project.stageLabel }}
       </p>
-      <template v-if="showDetails">
+      <div v-if="showDetails" data-scene-part="meta">
         <p v-if="project.detail">{{ project.detail }}</p>
         <a v-if="project.more" :href="project.more.url">{{ project.more.label }}</a>
-      </template>
+      </div>
     </li>
   </ul>
 </template>

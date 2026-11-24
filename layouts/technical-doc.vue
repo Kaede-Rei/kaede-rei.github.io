@@ -8,7 +8,7 @@ import { learningPath, learningTitle } from '../theme/utils/learning'
 import { robotArmDevelopmentPath, robotArmDevelopmentTrack } from '../theme/utils/robot-arm-development'
 import { robotArmDocumentSections } from '../theme/utils/technical-documents'
 import { vRouteMasthead } from '../theme/utils/route-masthead'
-import { vViewportEntrance } from '../theme/utils/viewport-entrance'
+import { vArticleEntrance, vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const router = useRouter()
@@ -86,7 +86,7 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
       </div>
     </aside>
 
-    <article class="kaede-post kaede-page content technical-document">
+    <article v-article-entrance="route.path" class="kaede-post kaede-page content technical-document">
       <header :key="currentPath" v-route-masthead class="kaede-page-header" data-route-masthead="document">
         <nav class="kaede-breadcrumb" aria-label="面包屑">
           <RouterLink :to="learningPath">{{ learningTitle }}</RouterLink>
@@ -108,12 +108,14 @@ async function selectFromDrawer(event: MouseEvent, path: string) {
       <nav v-if="listing.length" :key="`index-${currentPath}`" class="technical-doc-index" aria-label="文档索引">
         <h2 v-viewport-entrance:doc-index="'lead'">{{ section ? '本分组文档' : '分组总览' }}</h2>
         <ul>
-          <li v-for="entry in listing" :key="entry.path" v-viewport-entrance:doc-index.fade><RouterLink :to="entry.path">{{ entry.title }}</RouterLink></li>
+          <li v-for="entry in listing" :key="entry.path" v-viewport-entrance:doc-index="'editorial'" data-scene-card="row">
+            <RouterLink :to="entry.path" data-scene-part="title">{{ entry.title }}</RouterLink>
+          </li>
         </ul>
       </nav>
       <nav v-if="previous || next" :key="`neighbors-${currentPath}`" class="kaede-post-nav" aria-label="前后文档">
-        <RouterLink v-if="previous" v-viewport-entrance:doc-neighbors="'pair'" :to="previous.path"><span>← 上一篇</span><strong>{{ previous.title }}</strong></RouterLink>
-        <RouterLink v-if="next" v-viewport-entrance:doc-neighbors="'pair'" class="kaede-next" :to="next.path"><span>下一篇 →</span><strong>{{ next.title }}</strong></RouterLink>
+        <RouterLink v-if="previous" v-viewport-entrance:doc-neighbors="'pair'" data-scene-card="row" :to="previous.path"><span data-scene-part="meta">← 上一篇</span><strong data-scene-part="title">{{ previous.title }}</strong></RouterLink>
+        <RouterLink v-if="next" v-viewport-entrance:doc-neighbors="'pair'" data-scene-card="row" class="kaede-next" :to="next.path"><span data-scene-part="meta">下一篇 →</span><strong data-scene-part="title">{{ next.title }}</strong></RouterLink>
       </nav>
     </article>
 

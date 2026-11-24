@@ -10,6 +10,7 @@ import { formatPostDate } from '../utils/content'
 import { currentLearningTracks, learningTitle } from '../utils/learning'
 import { applyPostLayouts, readPostLayouts, type LayoutMode, type PostLayouts } from '../utils/post-layout'
 import { vRouteMasthead } from '../utils/route-masthead'
+import { sampleSpring } from '../utils/spring-frames'
 import { vViewportEntrance } from '../utils/viewport-entrance'
 
 const allPosts = usePostList()
@@ -33,11 +34,10 @@ const modes: { id: LayoutMode, name: string, icon: string }[] = [
 const modeSlot = computed(() => modes.findIndex(item => item.id === mode.value))
 const motion = reactive({ x: 0 })
 const spring = useSpring(motion, { stiffness: 440, damping: 32, mass: 0.85, restDelta: 0.001 })
-const layoutMotion = reactive({ progress: 1 })
-const layoutSpring = useSpring(layoutMotion, { stiffness: 310, damping: 26, mass: 1, restDelta: .002 })
-const motionReady = ref(false)
-const feedStyle = computed(() => motionReady.value ? { '--feed-mode-slot': motion.x } : undefined)
-let layoutOffsets: { element: HTMLElement, x: number, y: number, cover?: 'move' | 'show' }[] = []
+const feedIndicator = ref<HTMLElement>()
+const layoutDuration = 520
+const layoutFrames = sampleSpring({ duration: layoutDuration, stiffness: 310, damping: 26 })
+let layoutAnimations: Animation[] = []
 let layoutChange = 0
 
 const learning = [
@@ -49,28 +49,29 @@ onMounted(() => {
   preferences.value = readPostLayouts()
   applyPostLayouts(preferences.value)
   snapIndicator()
-  motionReady.value = true
 })
 watch([isMobile, reduceMotion], snapIndicator)
-watch(() => layoutMotion.progress, (progress) => {
-  const visible = Math.min(1, Math.max(0, progress))
-  for (const { element, x, y, cover } of layoutOffsets) {
-    element.style.transform = `translate3d(${x * (1 - progress)}px, ${y * (1 - progress)}px, 0)`
-    if (cover) element.style.opacity = String(cover === 'show'
-      ? .2 + .8 * visible
-      : 1 - .7 * Math.sin(Math.PI * visible))
-  }
-}, { flush: 'sync' })
+watch(() => [feedIndicator.value, motion.x] as const, ([element, x]) => {
+  element?.style.setProperty('--feed-mode-slot', String(x))
+}, { flush: 'post' })
 onUnmounted(clearLayoutOffsets)
 
 function clearLayoutOffsets() {
-  layoutSpring.stop()
-  for (const { element, cover } of layoutOffsets) {
-    element.style.removeProperty('transform')
-    if (cover) element.style.removeProperty('opacity')
-  }
-  layoutOffsets = []
-  layoutMotion.progress = 1
+  for (const animation of layoutAnimations) animation.cancel()
+  layoutAnimations = []
+}
+
+function animateLayoutOffset(element: HTMLElement, x: number, y: number, cover?: 'move' | 'show') {
+  if (!element.animate) return
+  const frames = layoutFrames.map((progress) => {
+    const visible = Math.min(1, Math.max(0, progress))
+    const opacity = cover === 'show' ? .2 + .8 * visible : 1 - .7 * Math.sin(Math.PI * visible)
+    return {
+      transform: `translate3d(${x * (1 - progress)}px, ${y * (1 - progress)}px, 0)`,
+      ...(cover && { opacity }),
+    }
+  })
+  layoutAnimations.push(element.animate(frames, layoutDuration))
 }
 
 function snapIndicator() {
@@ -82,20 +83,21 @@ function snapIndicator() {
 async function changeLayout(value: LayoutMode, event: MouseEvent) {
   if (value === mode.value || (value === 'alternate' && isMobile.value)) return
   const change = ++layoutChange
-  const cards = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [], (card) => {
+  const animate = isPointerClick(event) && !reduceMotion.value
+  const rows = Array.from(feed.value?.querySelectorAll<HTMLElement>('.kaede-post-card') || [], card => ({ card, bounds: card.getBoundingClientRect() }))
+  const cards = rows.filter(({ bounds }) => animate && bounds.top < window.innerHeight && bounds.bottom > 72).map(({ card, bounds }) => {
     const preview = card.querySelector<HTMLElement>('.kaede-post-preview')
     const cover = card.querySelector<HTMLElement>('.kaede-post-cover')
     return {
       card,
-      bounds: card.getBoundingClientRect(),
+      bounds,
       preview,
       previewLeft: preview?.getBoundingClientRect().left,
       cover,
       coverBounds: cover?.getBoundingClientRect(),
     }
   })
-  const anchor = cards.find(({ bounds }) => bounds.top >= 72 && bounds.top < window.innerHeight)
-  const animate = isPointerClick(event) && !reduceMotion.value
+  const anchor = rows.find(({ bounds }) => bounds.top >= 72 && bounds.top < window.innerHeight)
   clearLayoutOffsets()
 
   if (isMobile.value) {
@@ -121,28 +123,23 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
     window.scrollBy({ top: anchor.card.getBoundingClientRect().top - anchor.bounds.top, behavior: 'instant' })
   if (!animate || reduceMotion.value) return
 
-  // Capture both layouts around the scroll compensation so the visible rows move from where they were drawn.
+  const offsets: Parameters<typeof animateLayoutOffset>[] = []
+  // Measure every new position before starting any animation, so siblings share a single layout pass.
   for (const { card, bounds, preview, previewLeft, cover, coverBounds } of cards) {
-    if (bounds.top >= window.innerHeight || bounds.bottom <= 72) continue
     const y = bounds.top - card.getBoundingClientRect().top
-    if (Math.abs(y) > .5) layoutOffsets.push({ element: card, x: 0, y })
+    if (Math.abs(y) > .5) offsets.push([card, 0, y])
     if (preview && previewLeft !== undefined) {
       const x = previewLeft - preview.getBoundingClientRect().left
-      if (Math.abs(x) > .5) layoutOffsets.push({ element: preview, x, y: 0 })
+      if (Math.abs(x) > .5) offsets.push([preview, x, 0])
     }
     if (cover && coverBounds) {
       const next = cover.getBoundingClientRect()
       const x = coverBounds.width ? coverBounds.left - next.left : 0
       if (next.width && (!coverBounds.width || Math.abs(x) > .5))
-        layoutOffsets.push({ element: cover, x, y: 0, cover: coverBounds.width ? 'move' : 'show' })
+        offsets.push([cover, x, 0, coverBounds.width ? 'move' : 'show'])
     }
   }
-  if (!layoutOffsets.length) return
-
-  layoutMotion.progress = 0
-  void Promise.resolve(layoutSpring.set({ progress: 1 })).then(() => {
-    if (change === layoutChange) clearLayoutOffsets()
-  })
+  for (const offset of offsets) animateLayoutOffset(...offset)
 }
 </script>
 
@@ -161,11 +158,11 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
           <p>我的嵌入式电控与机械臂开发笔记，按主题整理基础知识、工具和工程实践</p>
         </div>
         <div class="kaede-path-entry-links">
-          <RouterLink v-for="track in learning" :key="track.path" v-viewport-entrance:home-tracks="'pair'" class="kaede-track-entry" :to="track.path">
-            <span :class="track.icon" class="kaede-track-icon" aria-hidden="true" />
-            <strong>{{ track.title }}</strong>
-            <span class="kaede-track-description">{{ track.description }}</span>
-            <span class="kaede-entry-action">{{ track.label }} <span class="kaede-link-arrow" aria-hidden="true">→</span></span>
+          <RouterLink v-for="track in learning" :key="track.path" v-viewport-entrance:home-tracks="'pair'" data-scene-card="panel" class="kaede-track-entry" :to="track.path">
+            <span :class="track.icon" data-scene-part="media" class="kaede-track-icon" aria-hidden="true" />
+            <strong data-scene-part="title">{{ track.title }}</strong>
+            <span data-scene-part="body" class="kaede-track-description">{{ track.description }}</span>
+            <span data-scene-part="meta" class="kaede-entry-action">{{ track.label }} <span class="kaede-link-arrow" aria-hidden="true">→</span></span>
           </RouterLink>
         </div>
       </section>
@@ -184,14 +181,14 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
     </section>
   </template>
 
-  <section ref="feed" class="kaede-home-section kaede-feed" aria-labelledby="recent-title" :style="feedStyle">
+  <section ref="feed" class="kaede-home-section kaede-feed" aria-labelledby="recent-title">
     <div v-viewport-entrance:home-articles.fade class="kaede-feed-toolbar">
       <div class="kaede-section-heading">
         <h2 id="recent-title">{{ isHome ? '最近文章' : '文章列表' }}</h2>
         <p v-if="isHome">设计取舍、调试记录和可复用的工程方法</p>
       </div>
       <div class="kaede-feed-modes" role="group" aria-label="文章排列方式">
-        <span class="kaede-feed-mode-indicator" aria-hidden="true" />
+        <span ref="feedIndicator" class="kaede-feed-mode-indicator" aria-hidden="true" />
         <button v-for="item in modes" :key="item.id" type="button"
           :class="{ 'kaede-desktop-mode': item.id === 'alternate' }" :aria-label="item.name"
           :title="item.name" :aria-pressed="mode === item.id" @click="changeLayout(item.id, $event)">
@@ -199,11 +196,11 @@ async function changeLayout(value: LayoutMode, event: MouseEvent) {
         </button>
       </div>
     </div>
-    <KaedePostCard v-for="(post, index) in visible" :key="post.path" v-viewport-entrance:home-articles.fade
+    <KaedePostCard v-for="(post, index) in visible" :key="post.path" v-viewport-entrance:home-articles="'editorial'"
       :post="post" :reverse="index % 2 === 1" />
     <p v-if="!visible.length" class="kaede-empty">这一页暂无文章 <RouterLink to="/archives">返回文章列表</RouterLink></p>
-    <RouterLink v-if="isHome" class="kaede-button kaede-all-articles" to="/archives">查看全部文章 <span class="kaede-link-arrow" aria-hidden="true">→</span></RouterLink>
-    <nav v-else-if="numberOfPages > 1 || page !== 1" class="kaede-pagination" aria-label="文章分页">
+    <RouterLink v-if="isHome" v-viewport-entrance="'pair'" class="kaede-button kaede-all-articles" to="/archives">查看全部文章 <span class="kaede-link-arrow" aria-hidden="true">→</span></RouterLink>
+    <nav v-else-if="numberOfPages > 1 || page !== 1" v-viewport-entrance="'pair'" class="kaede-pagination" aria-label="文章分页">
       <RouterLink v-for="index in Math.max(numberOfPages, 1)" :key="index" :to="index === 1 ? '/' : `/page/${index}`" :aria-current="page === index ? 'page' : undefined">{{ index }}</RouterLink>
     </nav>
   </section>

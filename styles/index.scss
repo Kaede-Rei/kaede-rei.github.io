@@ -85,34 +85,18 @@ body::before {
     radial-gradient(ellipse at 83% 67%, var(--canvas-warm), transparent 58%);
   opacity: .8;
 }
-@media (prefers-reduced-motion: no-preference) {
+html[data-kaede-home] body::before {
+  background: radial-gradient(ellipse at 25% 24%, var(--home-canvas-rose), transparent 55%),
+    radial-gradient(ellipse at 80% 62%, var(--home-canvas-amber), transparent 59%);
+}
+@media (min-width: 801px) and (hover: hover) and (pointer: fine) {
+  body::before { position: absolute; inset: 0 0 auto; height: 100svh; }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 800px), (prefers-reduced-motion: no-preference) and (pointer: coarse) {
   @supports (animation-timeline: scroll(root block)) {
     body::before {
       animation: kaede-canvas-drift linear both;
       animation-timeline: scroll(root block);
-    }
-
-    body:has(.kaede-hero)::before,
-    body:has(.kaede-hero)::after {
-      position: fixed;
-      z-index: -1;
-      inset: -12svh -12vw;
-      content: '';
-      pointer-events: none;
-      animation-timeline: scroll(root block);
-      animation-range: 0px min(300svh, 100%);
-    }
-
-    body:has(.kaede-hero)::before {
-      background: radial-gradient(ellipse at 28% 36%, var(--home-canvas-rose), transparent 58%);
-      animation-name: kaede-home-rose;
-    }
-
-    body:has(.kaede-hero)::after {
-      background: radial-gradient(ellipse at 72% 65%, var(--home-canvas-amber), transparent 60%);
-      animation-name: kaede-home-amber;
-      animation-fill-mode: both;
-      animation-timing-function: linear;
     }
   }
 }
@@ -121,18 +105,6 @@ body::before {
   52% { transform: translate3d(4vw, 6vh, 0); opacity: 1; }
   to { transform: translate3d(-2vw, 1vh, 0); }
 }
-@keyframes kaede-home-rose {
-  from { transform: translate3d(-8vw, -9svh, 0); opacity: .88; }
-  35% { transform: translate3d(19vw, 10svh, 0) scale(1.17); opacity: 1; }
-  70% { transform: translate3d(11vw, -16svh, 0) scale(1.1); opacity: .55; }
-  to { transform: translate3d(-9vw, 6svh, 0); opacity: .8; }
-}
-@keyframes kaede-home-amber {
-  from { transform: translate3d(7vw, 8svh, 0); opacity: .76; }
-  35% { transform: translate3d(-17vw, -8svh, 0) scale(1.15); opacity: .68; }
-  70% { transform: translate3d(-10vw, 13svh, 0) scale(1.2); opacity: 1; }
-  to { transform: translate3d(9vw, -6svh, 0); opacity: .82; }
-}
 a { color: inherit; text-decoration: none; text-underline-offset: .2em; }
 img { max-width: 100%; }
 button, input, select { font: inherit; }
@@ -140,6 +112,31 @@ button { border: 0; background: none; color: inherit; cursor: pointer; }
 button:disabled { cursor: default; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 [hidden] { display: none !important; }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.lenis-smooth :where(a[href], button, summary, input, select, textarea) { transition: none; }
+
+  :where(html:not(.lenis-smooth)) :where(a[href], button, summary, select, textarea, input:not([type='hidden']), [role='button'], [role='link'], [role='tab'], [role='option'], [role^='menuitem'], [role='checkbox'], [role='radio'], [role='switch']) {
+    transition: color var(--hover-duration) ease, text-underline-offset var(--hover-duration) var(--ease-out),
+      border-color var(--hover-duration) ease;
+  }
+
+  :where(html:not(.lenis-smooth)) :where(a[href], [role='link']):not([aria-disabled='true']):hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: .33em;
+  }
+
+  :where(html:not(.lenis-smooth)) :where(button, summary, [role='button'], [role='tab'], [role^='menuitem'], a[href][aria-label]):not([data-scroll-scene], [data-scene-part]) {
+    transition-property: translate, color, text-underline-offset, border-color;
+  }
+
+  :where(html:not(.lenis-smooth)) :where(button, summary, [role='button'], [role='tab'], [role^='menuitem'], a[href][aria-label]):not(:disabled, [aria-disabled='true'], [data-scroll-scene], [data-scene-part]):hover {
+    translate: 0 -3px;
+  }
+
+  :where(html:not(.lenis-smooth)) :where(select, textarea, input:not([type='hidden'])):not(:disabled, [aria-disabled='true']):hover { border-color: var(--accent); }
+}
 :where(button, a, label) > span[class*='i-ri'] { display: inline-block; width: 1.12em; height: 1.12em; flex-shrink: 0; vertical-align: -.16em; }
 kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); border-radius: 4px; padding: 3px 5px; white-space: nowrap; }
 
@@ -252,9 +249,26 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 .kaede-project-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; margin-top: 20px; }
 .kaede-project-card--lead { grid-column: 1 / -1; }
 
+html[data-kaede-home] :is(#projects, .kaede-feed) { position: relative; isolation: isolate; }
+html[data-kaede-home] :is(#projects, .kaede-feed)::before {
+  position: absolute;
+  z-index: -1;
+  inset: -48px -12px auto;
+  height: clamp(220px, 45vh, 430px);
+  opacity: .83;
+  content: '';
+  pointer-events: none;
+}
+html[data-kaede-home] #projects::before {
+  background: radial-gradient(ellipse at 35% 37%, var(--home-canvas-amber), transparent 65%);
+}
+html[data-kaede-home] .kaede-feed::before {
+  background: radial-gradient(ellipse at 66% 26%, var(--home-canvas-rose), transparent 64%);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll(root block)) {
-    html:not([data-kaede-hero-enter]) .kaede-hero-art {
+    html:not([data-kaede-hero-enter='direct']) .kaede-hero-art {
       animation: kaede-hero-recede linear both;
       animation-timeline: scroll(root block);
       animation-range: 0px 58svh;
@@ -268,24 +282,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
       }
     }
 
-    .kaede-main.has-home-layout #projects {
-      position: relative;
-      isolation: isolate;
-      view-timeline-name: --kaede-projects;
-    }
-
-    .kaede-main.has-home-layout #projects::before {
-      position: absolute;
-      inset: -20px -10px 0;
-      z-index: -1;
-      content: '';
-      pointer-events: none;
-      background: radial-gradient(ellipse at 38% 22%, var(--home-canvas-rose), transparent 62%),
-        radial-gradient(ellipse at 74% 54%, var(--home-canvas-amber), transparent 61%);
-      animation: kaede-projects-light linear both;
-      animation-timeline: --kaede-projects;
-      animation-range: entry 0% exit 80%;
-    }
   }
 }
 
@@ -298,12 +294,6 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
   from { translate: 0 0; opacity: 1; }
   45% { opacity: 1; }
   to { translate: 0 -28px; opacity: .46; }
-}
-@keyframes kaede-projects-light {
-  from { transform: translate3d(0, -46px, 0) scale(.86); opacity: 0; }
-  33% { transform: translate3d(0, 0, 0) scale(1); opacity: .8; }
-  68% { transform: translate3d(0, 24px, 0) scale(.98); opacity: .64; }
-  to { transform: translate3d(0, 58px, 0) scale(.9); opacity: 0; }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
@@ -503,6 +493,30 @@ kbd { font: 12px/1.2 var(--va-font-family-mono); border: 1px solid var(--line); 
 }
 @media (scripting: enabled) {
   .kaede-code-actions[data-collapsed='true'] + .kaede-code-viewport > pre { max-height: 280px; overflow-y: hidden; }
+  .kaede-code-actions:has([data-code-toggle]) + .kaede-code-viewport::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 18px;
+    content: '';
+    pointer-events: none;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--code-canvas) 72%, transparent));
+    opacity: 0;
+    translate: 0 5px;
+  }
+  .kaede-code-actions[data-collapsed='true'] + .kaede-code-viewport::after { opacity: 1; translate: 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .kaede-code-actions[data-code-motion] + .kaede-code-viewport::after {
+    transition: opacity 220ms var(--ease-out), translate 220ms var(--ease-out);
+  }
+  [data-code-copy][data-code-motion][data-copy-state='copied'] [data-copy-check] {
+    animation: kaede-copy-confirm 280ms var(--ease-out) both;
+  }
+}
+@keyframes kaede-copy-confirm {
+  from { opacity: .4; transform: scale(.62); }
+  58% { opacity: 1; transform: scale(1.18); }
+  to { opacity: 1; transform: scale(1); }
 }
 @media (scripting: none) {
   .kaede-code-actions { display: none; }

@@ -30,20 +30,48 @@ const showAll = ref(false)
 const focusedRoot = ref('')
 const hasChildren = computed(() => outline.value.some(heading => heading.children.length > 0))
 let frame = 0
+let topPositions: number[] = []
+let scrollInset = 0
+let scrollEnd = 0
+let sizes: ResizeObserver | undefined
+let outlineMotion: Animation | undefined
 
 function updateLocation() {
   frame = 0
-  const root = document.documentElement
-  const inset = Number.parseFloat(getComputedStyle(root).scrollPaddingTop) || 0
-  if (window.scrollY > 0 && root.scrollHeight - window.scrollY - window.innerHeight <= 1) {
+  const y = window.scrollY
+  if (y > 0 && scrollEnd - y <= 1) {
     selected.value = headings.value.at(-1)
     return
   }
-  selected.value = headings.value.findLast(heading => heading.element.getBoundingClientRect().top <= inset + 12)
-    ?? headings.value[0]
+  let low = 0
+  let high = topPositions.length
+  while (low < high) {
+    const middle = (low + high) >>> 1
+    if (topPositions[middle] <= y + scrollInset) low = middle + 1
+    else high = middle
+  }
+  selected.value = headings.value[Math.max(0, low - 1)]
+}
+function measureHeadings() {
+  const root = document.documentElement
+  const y = window.scrollY
+  scrollInset = (Number.parseFloat(getComputedStyle(root).scrollPaddingTop) || 0) + 12
+  scrollEnd = root.scrollHeight - window.innerHeight
+  topPositions = headings.value.map(heading => heading.element.getBoundingClientRect().top + y)
+  queueUpdate()
 }
 function queueUpdate() {
   if (!frame) frame = requestAnimationFrame(updateLocation)
+}
+async function toggleOutline(event: MouseEvent, list?: HTMLElement) {
+  showAll.value = !showAll.value
+  outlineMotion?.cancel()
+  if (!isPointerClick(event) || !list?.animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  await nextTick()
+  outlineMotion = list.animate([{ opacity: .55, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], {
+    duration: 210,
+    easing: 'cubic-bezier(.23, 1, .32, 1)',
+  })
 }
 function readHeadings() {
   const elements = document.querySelectorAll<HTMLElement>(`:is(${props.contentSelector}) :is(h2,h3,h4)[id]`)
@@ -77,7 +105,6 @@ function readHeadings() {
     return heading
   })
   outline.value = roots
-  updateLocation()
 }
 
 function revealCurrent(list?: HTMLElement) {
@@ -133,12 +160,19 @@ function jump(event: MouseEvent, id: string) {
 onMounted(async () => {
   await nextTick()
   readHeadings()
+  measureHeadings()
+  sizes = new ResizeObserver(measureHeadings)
+  sizes.observe(document.body)
+  const content = document.querySelector(props.contentSelector)
+  if (content) sizes.observe(content)
   window.addEventListener('scroll', queueUpdate, { passive: true })
-  window.addEventListener('resize', queueUpdate, { passive: true })
+  window.addEventListener('resize', measureHeadings, { passive: true })
 })
 onUnmounted(() => {
+  outlineMotion?.cancel()
+  sizes?.disconnect()
   window.removeEventListener('scroll', queueUpdate)
-  window.removeEventListener('resize', queueUpdate)
+  window.removeEventListener('resize', measureHeadings)
   cancelAnimationFrame(frame)
 })
 </script>
@@ -150,7 +184,7 @@ onUnmounted(() => {
         <header class="kaede-toc-heading">
           <h2 id="kaede-toc-label">本页目录</h2>
           <button v-if="hasChildren" class="kaede-toc-expand" type="button" :aria-expanded="showAll"
-            aria-controls="kaede-toc-desktop-list" @click="showAll = !showAll">{{ showAll ? '收起其他' : '展开全部' }}</button>
+            aria-controls="kaede-toc-desktop-list" @click="toggleOutline($event, desktopList)">{{ showAll ? '收起其他' : '展开全部' }}</button>
         </header>
         <div id="kaede-toc-desktop-list" ref="desktopList" class="kaede-toc-scroll"
           @focusin="rememberFocusedRoot" @focusout="releaseFocusedRoot">
@@ -168,7 +202,7 @@ onUnmounted(() => {
         <header class="kaede-toc-heading">
           <h2 id="kaede-toc-dialog-label">本页目录</h2>
           <button v-if="hasChildren" class="kaede-toc-expand" type="button" :aria-expanded="showAll"
-            aria-controls="kaede-toc-dialog-list" @click="showAll = !showAll">{{ showAll ? '收起其他' : '展开全部' }}</button>
+            aria-controls="kaede-toc-dialog-list" @click="toggleOutline($event, dialogList)">{{ showAll ? '收起其他' : '展开全部' }}</button>
           <button class="kaede-toc-close" type="button" aria-label="关闭目录" autofocus @click="closeFromClick"><span class="i-ri-close-line" aria-hidden="true" /></button>
         </header>
         <nav id="kaede-toc-dialog-list" ref="dialogList" class="kaede-toc-scroll" aria-labelledby="kaede-toc-dialog-label"

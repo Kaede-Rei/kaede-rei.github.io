@@ -17,13 +17,13 @@ const years = computed(() => [...new Set(dated.value.map(post => formatPostDate(
       <p data-masthead-copy class="kaede-page-summary">记录设计取舍、调试过程和可以复用的工程方法</p>
     </header>
     <KaedeArticleNav />
-    <p class="kaede-archive-count">共 {{ posts.length }} 篇文章</p>
+    <p v-viewport-entrance.fade class="kaede-archive-count">共 {{ posts.length }} 篇文章</p>
     <section v-for="year in years" :key="year" class="kaede-archive-year">
       <h2 v-viewport-entrance:archive-articles="'lead'">{{ year || '日期未标注' }}</h2>
       <RouterLink v-for="post in dated.filter(item => formatPostDate(item.date).slice(0, 4) === year && item.path)"
-        :key="post.path" v-viewport-entrance:archive-articles.fade :to="post.path!" class="kaede-archive-item">
-        <time v-if="year" :datetime="formatPostDate(post.date)">{{ formatPostDate(post.date).slice(5) }}</time>
-        <span>{{ post.title }}</span><span class="kaede-link-arrow" aria-hidden="true">→</span>
+        :key="post.path" v-viewport-entrance:archive-articles="'editorial'" :to="post.path!" data-scene-card="row" class="kaede-archive-item">
+        <time v-if="year" data-scene-part="meta" :datetime="formatPostDate(post.date)">{{ formatPostDate(post.date).slice(5) }}</time>
+        <span data-scene-part="title">{{ post.title }}</span><span data-scene-part="body" class="kaede-link-arrow" aria-hidden="true">→</span>
       </RouterLink>
     </section>
     <p v-if="!posts.length" class="kaede-empty">暂无文章 <RouterLink to="/learning-path">查看技术积累</RouterLink></p>

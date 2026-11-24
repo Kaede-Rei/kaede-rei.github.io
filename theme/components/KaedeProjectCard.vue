@@ -8,16 +8,16 @@ defineProps<{
 </script>
 
 <template>
-  <article class="kaede-project-card" :class="`kaede-project-card--${priority}`">
+  <article class="kaede-project-card" data-scene-card="panel" :class="`kaede-project-card--${priority}`">
     <div class="kaede-project-card-copy">
-      <h3>{{ project.title }}</h3>
+      <h3 data-scene-part="title">{{ project.title }}</h3>
       <p v-if="project.subtitle" class="kaede-project-subtitle">{{ project.subtitle }}</p>
-      <p>{{ project.summary }}</p>
+      <p data-scene-part="body">{{ project.summary }}</p>
       <p class="kaede-project-status">{{ project.stageLabel }}</p>
       <ul v-if="project.modules?.length" class="kaede-project-modules" aria-label="SDK 公共层">
         <li v-for="module in project.modules" :key="module"><code>{{ module }}</code></li>
       </ul>
-      <div class="kaede-project-actions">
+      <div data-scene-part="meta" class="kaede-project-actions">
         <a class="kaede-button kaede-button--primary" :href="project.url">{{ project.action || '查看项目' }}</a>
         <a v-if="project.more" class="kaede-button" :href="project.more.url">{{ project.more.label }}</a>
       </div>
@@ -30,7 +30,7 @@ defineProps<{
         {{ project.detail }}
       </p>
     </div>
-    <figure v-if="project.image" class="kaede-project-figure">
+    <figure v-if="project.image" data-scene-part="media" class="kaede-project-figure">
       <img
         :src="project.image.src"
         :alt="project.image.alt"

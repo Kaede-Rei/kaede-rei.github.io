@@ -1,93 +1,86 @@
-import { useSpring } from '@vueuse/motion'
-import { reactive, watch } from 'vue'
+import { sampleSpring } from './spring-frames'
 
-const pressable = [
-  '.kaede-button', '.kaede-track-entry', '.kaede-avatar-link', '.kaede-contact-links a', '.kaede-atil-link',
-  '.kaede-nav-tools button',
-  '.kaede-toc-toggle', '.kaede-toc-panel button', '.kaede-feed-modes button',
-  '.kaede-search-dialog button', '.kaede-code-actions button',
-  '.kaede-nav-links a', '.kaede-mobile-nav a', '.kaede-pagination a',
-  '.kaede-article-nav a', '.kaede-taxonomy a', '.kaede-post-nav a', '.learning-chapter-neighbors a',
-  '.technical-documents-toggle', '.technical-documents-dialog button', '.kaede-friend-links a',
-].join(', ')
+const controls = 'a[href], button, summary, select, input:not([type=hidden]), textarea, [role=button], [role=link], [role=tab], [role=option], [role=checkbox], [role=radio], [role=switch], [role=menuitem], [role=menuitemcheckbox], [role=menuitemradio], [role=slider], [role=spinbutton], [role=combobox]'
+const rest = { scale: 1, opacity: 1, x: 0, y: 0 }
+const duration = 330
+const frames = sampleSpring({ duration, stiffness: 550, damping: 30 })
+
+type Channel = keyof typeof rest
 
 export function installPointerSprings() {
   const events = new AbortController()
   const { signal } = events
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
-  const motions = new Map<HTMLElement, ReturnType<typeof elementMotion>>()
-  let pressed: { element: HTMLElement, pointerId: number } | undefined
+  const motions = new Map<HTMLElement, Animation>()
+  let pressed: { element: HTMLElement, channel: Channel, pointerId: number } | undefined
 
-  function elementMotion(element: HTMLElement, rest: number, draw: (value: number) => void, clear: () => void) {
-    const state = reactive({ x: rest })
-    const spring = useSpring(state, { stiffness: 640, damping: 42, mass: 1, restDelta: .001, restSpeed: .1 })
-    const unwatch = watch(() => state.x, draw, { flush: 'sync' })
-    let revision = 0
+  function move(element: HTMLElement, channel: Channel, target: number, style = getComputedStyle(element)) {
+    if (typeof element.animate !== 'function') return
+    const translation = channel === 'x' || channel === 'y'
+    const start = translation
+      ? (parseFloat((style.translate || '').split(' ')[channel === 'x' ? 0 : 1]) || 0)
+      : (parseFloat(style[channel]) || rest[channel])
 
-    function dispose() {
-      revision++
-      spring.stop()
-      unwatch()
-      clear()
-      motions.delete(element)
+    motions.get(element)?.cancel()
+    const property = translation ? 'translate' : channel
+    const animation = element.animate(frames.map((progress) => {
+      const value = start + (target - start) * progress
+      return { [property]: channel === 'x' ? `${value}px 0` : channel === 'y' ? `0 ${value}px` : value }
+    }), { duration, fill: 'both' })
+    motions.set(element, animation)
+
+    if (target === rest[channel]) {
+      animation.onfinish = () => {
+        if (motions.get(element) !== animation) return
+        animation.cancel()
+        motions.delete(element)
+      }
     }
+  }
 
-    return {
-      dispose,
-      move(value: number) {
-        const turn = ++revision
-        void Promise.resolve(spring.set({ x: value })).then(() => {
-          if (turn === revision && value === rest) dispose()
-        })
-      },
-    }
+  function releasePressed() {
+    if (!pressed) return
+    const { element, channel } = pressed
+    pressed = undefined
+    move(element, channel, rest[channel])
   }
 
   function press(event: PointerEvent) {
     if (reduced.matches || !event.isPrimary || event.button !== 0 || !(event.target instanceof Element)) return
-    const element = event.target.closest<HTMLElement>(pressable)
-    if (!element || element.matches(':disabled')) return
-    if (pressed) motions.get(pressed.element)?.move(1)
-    pressed = { element, pointerId: event.pointerId }
-
-    if (!motions.has(element)) {
-      motions.set(element, elementMotion(element, 1,
-        value => { element.style.scale = String(value) },
-        () => { element.style.removeProperty('scale') },
-      ))
-    }
+    const label = event.target.closest<HTMLLabelElement>('label')
+    const control = event.target.closest<HTMLElement>(controls) ?? label?.control
+    if (!control || control.matches(':disabled, [aria-disabled=true]') || control.closest('[inert], [aria-disabled=true]')) return
+    const element = label?.control === control && label.classList.contains('kaede-theme-control') ? label : control
+    releasePressed()
+    const style = getComputedStyle(element)
+    const channel = style.display === 'inline' && !element.matches('input,select,textarea') ? 'opacity' : 'scale'
+    const field = control.matches('input:not([type=button], [type=submit], [type=reset]), select, textarea')
     const emphasized = element.matches('.kaede-button, .kaede-track-entry, .kaede-contact-links a, .kaede-feed-modes button')
-    motions.get(element)?.move(emphasized ? .94 : .97)
+    pressed = { element, channel, pointerId: event.pointerId }
+    move(element, channel, channel === 'opacity' ? .57 : field ? .975 : emphasized ? .91 : .95, style)
   }
 
   function release(event: PointerEvent) {
-    if (pressed?.pointerId !== event.pointerId) return
-    motions.get(pressed.element)?.move(1)
-    pressed = undefined
+    if (pressed?.pointerId === event.pointerId) releasePressed()
   }
 
   function hover(event: PointerEvent) {
     if (reduced.matches || !finePointer.matches || event.pointerType !== 'mouse' || !(event.target instanceof Element)) return
-    const link = event.target.closest('a')
-    if (!link || (event.relatedTarget instanceof Node && link.contains(event.relatedTarget))) return
+    const link = event.target.closest('a[href]')
+    if (!link || link.closest('[inert], [aria-disabled=true]')
+      || (event.relatedTarget instanceof Node && link.contains(event.relatedTarget))) return
     const arrow = link.querySelector<HTMLElement>('.kaede-link-arrow')
     if (!arrow) return
-
     const entering = event.type === 'pointerover'
-    if (entering && !motions.has(arrow)) {
-      const vertical = link.matches('.kaede-hero .kaede-button--primary')
-      motions.set(arrow, elementMotion(arrow, 0,
-        value => { arrow.style.translate = vertical ? `0 ${value}px` : `${value}px` },
-        () => { arrow.style.removeProperty('translate') },
-      ))
-    }
-    motions.get(arrow)?.move(entering ? 7 : 0)
+    if (entering ? document.documentElement.classList.contains('lenis-smooth') : !motions.has(arrow)) return
+    move(arrow, link.matches('.kaede-hero .kaede-button--primary') ? 'y' : 'x', entering ? 9 : 0)
   }
 
   function reset() {
     pressed = undefined
-    for (const motion of motions.values()) motion.dispose()
+    for (const animation of motions.values()) animation.cancel()
+    motions.clear()
   }
 
   document.addEventListener('pointerdown', press, { signal })

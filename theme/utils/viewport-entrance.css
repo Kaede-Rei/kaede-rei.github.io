@@ -1,7 +1,7 @@
 @media screen and (prefers-reduced-motion: no-preference) {
   [data-viewport-entrance]:not(:focus-within) {
     --viewport-entrance-distance: 26px;
-    --viewport-entrance-clip: 24%;
+    --viewport-entrance-clip: 0%;
     --viewport-entrance-opacity: .24;
     --viewport-entrance-duration: 560ms;
     --viewport-entrance-keyframes: kaede-viewport-entrance;
@@ -15,17 +15,16 @@
   }
 
   [data-viewport-entrance='feature']:not(:focus-within) {
-    --viewport-entrance-distance: 34px;
-    --viewport-entrance-clip: 32%;
-    --viewport-entrance-opacity: .18;
-    --viewport-entrance-duration: 640ms;
+    --viewport-entrance-distance: 54px;
+    --viewport-entrance-opacity: .08;
+    --viewport-entrance-duration: 740ms;
+    --viewport-entrance-keyframes: kaede-viewport-feature;
   }
 
   [data-viewport-entrance='pair']:not(:focus-within) {
-    --viewport-entrance-distance: 28px;
-    --viewport-entrance-clip: 28%;
-    --viewport-entrance-opacity: .22;
-    --viewport-entrance-duration: 540ms;
+    --viewport-entrance-distance: 38px;
+    --viewport-entrance-opacity: .16;
+    --viewport-entrance-duration: 590ms;
   }
 
   [data-viewport-entrance='fade']:not(:focus-within) {
@@ -34,12 +33,37 @@
     --viewport-entrance-keyframes: kaede-viewport-fade;
   }
 
+  :is([data-viewport-entrance='editorial'], [data-viewport-entrance='section']):not(:focus-within) {
+    --viewport-entrance-x: calc(-.82 * var(--gutter));
+    --viewport-entrance-distance: 0px;
+    --viewport-entrance-opacity: .16;
+    --viewport-entrance-duration: 570ms;
+    --viewport-entrance-keyframes: kaede-viewport-editorial;
+  }
+
+  [data-viewport-entrance='editorial']:not(:focus-within) {
+    --viewport-entrance-distance: 16px;
+    --viewport-entrance-opacity: .12;
+    --viewport-entrance-duration: 630ms;
+  }
+
+  .kaede-post-card[data-viewport-entrance='editorial']:not(:focus-within) {
+    --viewport-entrance-distance: 0px;
+  }
+
   [data-viewport-entrance][data-viewport-entrance-pending]:not(:focus-within) {
     opacity: var(--viewport-entrance-opacity);
   }
 
   [data-viewport-entrance][data-viewport-entrance-pending]:not([data-viewport-entrance='fade'], :focus-within) {
-    translate: 0 var(--viewport-entrance-distance);
+    translate: var(--viewport-entrance-x, 0px) var(--viewport-entrance-distance);
+  }
+
+  [data-viewport-entrance='lead']:not(:focus-within) {
+    --viewport-entrance-keyframes: kaede-viewport-reveal;
+  }
+
+  [data-viewport-entrance='lead'][data-viewport-entrance-pending]:not(:focus-within) {
     clip-path: inset(0 0 var(--viewport-entrance-clip) 0);
   }
 
@@ -50,6 +74,23 @@
 }
 
 @keyframes kaede-viewport-entrance {
+  from { opacity: var(--viewport-entrance-opacity); translate: 0 var(--viewport-entrance-distance); }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-viewport-feature {
+  from { opacity: var(--viewport-entrance-opacity); translate: 0 var(--viewport-entrance-distance); }
+  76% { opacity: 1; translate: 0 -3px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-viewport-editorial {
+  from { opacity: var(--viewport-entrance-opacity); translate: var(--viewport-entrance-x) var(--viewport-entrance-distance); }
+  75% { opacity: 1; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-viewport-reveal {
   from {
     opacity: var(--viewport-entrance-opacity);
     translate: 0 var(--viewport-entrance-distance);
@@ -66,4 +107,204 @@
 @keyframes kaede-viewport-fade {
   from { opacity: var(--viewport-entrance-opacity); }
   to { opacity: 1; }
+}
+
+@media screen and (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  @supports (view-timeline-name: --kaede-scene) and (animation-range: cover 0px cover 120px) {
+    [data-scroll-scene] {
+      --scene-fade: 0;
+      --scene-x: 0px;
+      --scene-y: 42px;
+      --scene-edge-opacity: .32;
+      --scene-in: clamp(130px, 37svh, 362px);
+      --scene-out: clamp(104px, 28svh, 272px);
+      --scene-entry-range: cover 0px cover min(44svh, var(--scene-in), var(--scene-reachable, 100svh));
+      --scene-exit-range: cover calc(100% - min(37svh, var(--scene-out))) cover 100%;
+    }
+
+    /* Keep the scroll positions when reading stops, but restore full contrast. */
+    html[data-kaede-scrolling] [data-scroll-scene-active],
+    [data-scene-intro] { --scene-fade: 1; }
+
+    [data-scroll-scene][data-scene-card] {
+      --scene-y: 72px;
+      --scene-edge-opacity: .21;
+      --scene-in: clamp(155px, 43svh, 420px);
+      --scene-out: clamp(138px, 33svh, 332px);
+    }
+
+    [data-scroll-scene][data-scene-card='row'] { --scene-y: 29px; }
+
+    :is([data-scroll-scene='feature'], [data-scroll-scene='masthead']) {
+      --scene-y: 62px;
+      --scene-edge-opacity: .18;
+      --scene-in: clamp(134px, 40svh, 394px);
+    }
+
+    :is([data-scroll-scene='pair'], [data-scroll-scene='lead']) { --scene-y: 48px; }
+    [data-scroll-scene='pair']:nth-child(even) { --scene-in: clamp(146px, 42svh, 406px); }
+
+    :is([data-scroll-scene='section'], [data-scroll-scene='editorial']) {
+      --scene-x: calc(-.82 * var(--gutter));
+      --scene-y: 12px;
+    }
+
+    /* Preserve document coordinates for the scroll spy and for feed layout springs. */
+    :is([data-scroll-scene='section'], .kaede-post-card[data-scroll-scene]) { --scene-y: 0px; }
+    [data-scroll-scene='fade'] { --scene-y: 0px; --scene-edge-opacity: .52; }
+    [data-scroll-scene='reading'] { --scene-y: 12px; --scene-edge-opacity: .7; }
+    [data-scroll-scene='article-copy'] { --scene-y: 28px; --scene-edge-opacity: .48; }
+
+    html[data-kaede-home] [data-scroll-scene] {
+      --scene-in: clamp(130px, 28svh, 278px);
+      --scene-out: clamp(112px, 25svh, 242px);
+    }
+
+    html[data-kaede-home] [data-scroll-scene][data-scene-card] {
+      --scene-in: clamp(154px, 31svh, 296px);
+      --scene-out: clamp(130px, 25svh, 242px);
+    }
+
+    [data-scroll-scene-active]:not(:focus-within, :target, :has(:target)) {
+      view-timeline-name: --kaede-scene;
+      view-timeline-inset: 0px;
+      animation-name: kaede-scroll-entry, kaede-scroll-exit;
+      animation-duration: auto;
+      animation-timing-function: cubic-bezier(.34, .06, .62, 1), cubic-bezier(.22, .34, .54, 1);
+      animation-timeline: --kaede-scene;
+      animation-range: var(--scene-entry-range), var(--scene-exit-range);
+      animation-fill-mode: none;
+    }
+
+    #projects:target > .kaede-section-heading { animation: none; }
+
+    [data-scroll-scene-active][data-scene-card]:not([data-scene-parts-active], [data-scene-intro]) { animation-name: none; }
+
+    [data-scroll-scene-active][data-scene-parts-active='1']:not([data-scene-intro], :focus-within, :target, :has(:target)) {
+      animation-name: kaede-scroll-exit;
+      animation-timing-function: cubic-bezier(.22, .34, .54, 1);
+      animation-range: var(--scene-exit-range);
+    }
+
+    [data-scroll-scene-active][data-scene-parts-active='2']:not([data-scene-intro], :focus-within, :target, :has(:target)) {
+      animation-name: kaede-scroll-entry;
+      animation-range: var(--scene-entry-range);
+    }
+
+    [data-scene-card] [data-scene-part] {
+      --part-y: 42px;
+      --part-x: 0px;
+      --part-in: clamp(169px, 45svh, 438px);
+      --part-delay: 95ms;
+      --part-curve: cubic-bezier(.48, .02, .7, 1);
+      --part-entry-range: cover 0px cover min(46svh, var(--part-in), var(--scene-reachable, 100svh));
+      --part-exit-range: var(--scene-exit-range);
+    }
+
+    [data-scene-card] [data-scene-part='title'] {
+      --part-x: -12px;
+      --part-y: 23px;
+      --part-in: clamp(144px, 37svh, 360px);
+      --part-delay: 35ms;
+      --part-curve: cubic-bezier(.22, .34, .55, 1);
+    }
+
+    [data-scene-card] [data-scene-part='media'] {
+      --part-y: 42px;
+      --part-in: clamp(155px, 41svh, 404px);
+      --part-delay: 65ms;
+    }
+
+    [data-scene-card] [data-scene-part='meta'] {
+      --part-y: 32px;
+      --part-in: clamp(180px, 46svh, 448px);
+      --part-delay: 145ms;
+      --part-curve: cubic-bezier(.64, .04, .76, 1);
+    }
+
+    [data-scene-card='row'] [data-scene-part] { --part-y: 22px; }
+
+    html[data-kaede-home] [data-scene-card] [data-scene-part] { --part-in: clamp(158px, 33svh, 310px); }
+    html[data-kaede-home] [data-scene-card] [data-scene-part='title'] { --part-in: clamp(146px, 28svh, 265px); }
+
+    [data-scroll-scene-active][data-scene-parts-active]:not([data-scene-intro], :focus-within, :target, :has(:target)) [data-scene-part] {
+      animation: kaede-card-part-in auto var(--part-curve), kaede-card-part-out auto linear;
+      animation-timeline: --kaede-scene;
+      animation-range: var(--part-entry-range), var(--part-exit-range);
+    }
+
+    [data-scroll-scene-active][data-scene-parts-active='1']:not([data-scene-intro], :focus-within, :target, :has(:target)) [data-scene-part] {
+      animation-name: kaede-card-part-out;
+      animation-timing-function: linear;
+      animation-range: var(--part-exit-range);
+    }
+
+    [data-scroll-scene-active][data-scene-parts-active='2']:not([data-scene-intro], :focus-within, :target, :has(:target)) [data-scene-part] {
+      animation-name: kaede-card-part-in;
+      animation-range: var(--part-entry-range);
+    }
+
+    /* The homepage already has Lenis and the scroll-driven hero, so keep its image on the card's layer. */
+    html[data-kaede-home] [data-scroll-scene-active][data-scene-parts-active]:not([data-scene-intro]) :is([data-scene-part='media'], [data-scene-part='meta']) {
+      animation: none;
+    }
+
+    [data-scene-intro]:not(:focus-within, :target, :has(:target)) {
+      animation-name: kaede-card-opening;
+      animation-duration: 720ms;
+      animation-delay: var(--card-delay, 0ms);
+      animation-timing-function: var(--ease-out);
+      animation-timeline: auto;
+      animation-range: normal;
+      animation-fill-mode: backwards;
+    }
+
+    [data-scene-intro]:not(:focus-within, :target, :has(:target)) [data-scene-part] {
+      animation: kaede-card-part-in 550ms var(--ease-out) calc(var(--card-delay, 0ms) + var(--part-delay)) backwards;
+    }
+
+    @media (max-width: 720px) {
+      [data-scroll-scene='editorial'][data-scene-card] { --scene-x: -9px; }
+      [data-scene-card] [data-scene-part='title'] { --part-x: -7px; }
+    }
+  }
+}
+
+@keyframes kaede-scroll-entry {
+  from {
+    opacity: calc(1 - var(--scene-fade) * (1 - var(--scene-edge-opacity)));
+    translate: var(--scene-x) var(--scene-y);
+  }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-scroll-exit {
+  from { opacity: 1; translate: 0 0; }
+  to {
+    opacity: calc(1 - var(--scene-fade) * (1 - var(--scene-edge-opacity)));
+    translate: calc(-.7 * var(--scene-x)) calc(-.7 * var(--scene-y));
+  }
+}
+
+@keyframes kaede-card-opening {
+  from { opacity: .48; translate: 0 28px; }
+  76% { opacity: 1; translate: 0 -2px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-card-part-in {
+  0%, 14% {
+    opacity: calc(1 - .96 * var(--scene-fade));
+    translate: var(--part-x) var(--part-y);
+  }
+  80% { opacity: 1; }
+  100% { opacity: 1; translate: 0 0; }
+}
+
+@keyframes kaede-card-part-out {
+  from { opacity: 1; translate: 0 0; }
+  to {
+    opacity: calc(1 - .68 * var(--scene-fade));
+    translate: calc(-.6 * var(--part-x)) calc(-.72 * var(--part-y));
+  }
 }

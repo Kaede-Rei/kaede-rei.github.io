@@ -24,8 +24,18 @@ export function installHomeScroll(router: Router, modalOpen: Readonly<Ref<boolea
   const { signal } = listeners
   const eligible = () => !signal.aborted && media.matches && router.currentRoute.value.path === '/' && !modalOpen.value
   let loading = false
+  let frame = 0
+
+  function advance(time: number) {
+    frame = 0
+    if (lenis?.isScrolling !== 'smooth') return
+    lenis.raf(time)
+    if (lenis.isScrolling === 'smooth') frame = requestAnimationFrame(advance)
+  }
 
   function destroy() {
+    cancelAnimationFrame(frame)
+    frame = 0
     if (!lenis) return
     // Clear the scrolling state before Lenis's pending native-scroll timer can touch the root.
     lenis.stop()
@@ -49,9 +59,16 @@ export function installHomeScroll(router: Router, modalOpen: Readonly<Ref<boolea
       lerp: .12,
       smoothWheel: true,
       syncTouch: false,
-      autoRaf: true,
       anchors: false,
       allowNestedScroll: true,
+      virtualScroll({ deltaY, event }) {
+        if (!frame && event.type === 'wheel' && deltaY && !event.ctrlKey) {
+          // Prime Lenis's clock before it handles the wheel delta after an idle spell.
+          lenis?.raf(performance.now())
+          frame = requestAnimationFrame(advance)
+        }
+        return true
+      },
     })
   }
 

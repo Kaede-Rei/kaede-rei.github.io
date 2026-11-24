@@ -1,68 +1,62 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
-import { useReducedMotion, useSpring } from '@vueuse/motion'
-import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { profile } from '../../data/site'
 
 const entryMarker = 'data-kaede-hero-enter'
 const hero = ref<HTMLElement>()
-const reducedMotion = useReducedMotion()
-const waveMotion = reactive({ y: 0 })
-const waveSpring = useSpring(waveMotion, { stiffness: 550, damping: 42, mass: 1, restDelta: .01, restSpeed: .2 })
+const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+let entrance = 0
 
-if (!visited) {
-  // Arm the entrance before first paint, only for a direct entry to the homepage.
+if (import.meta.env.SSR) {
+  // Arm the full entrance before first paint. Client-side returns replay the copy only.
   useHead({
     script: [{
       key: 'kaede-hero-entry',
       tagPriority: 'critical',
-      innerHTML: `(() => {
-        const entry = performance.getEntriesByType('navigation')[0]
-        if (!entry || entry.type !== 'navigate' || new URL(entry.name).pathname !== location.pathname) return
-        try {
-          if (sessionStorage.getItem('kaede-hero-entered')) return
-          sessionStorage.setItem('kaede-hero-entered', '1')
-        } catch {}
-        if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
-          document.documentElement.setAttribute('${entryMarker}', '')
-      })()`,
+      innerHTML: 'if (location.pathname === "/" && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.setAttribute("data-kaede-hero-enter", "direct")',
     }],
   })
 }
 
 function finishEntry() {
+  entrance++
   document.documentElement.removeAttribute(entryMarker)
 }
 
-onMounted(() => {
-  if (visited)
-    return
-
-  visited = true
-  const entering = hero.value?.getAnimations({ subtree: true }).some(animation =>
-    animation.pending || animation.playState === 'running',
-  )
-  if (!reducedMotion.value && entering) {
-    waveMotion.y = 3
-    void waveSpring.set({ y: 0 })
-  }
-  else {
+function playEntry() {
+  if (!hero.value || reducedMotion.value || location.hash) {
     finishEntry()
+    return
   }
+  const root = document.documentElement
+  if (!root.hasAttribute(entryMarker)) root.setAttribute(entryMarker, 'return')
+  const round = ++entrance
+  const animations = hero.value.getAnimations({ subtree: true }).filter(animation =>
+    'animationName' in animation && /^kaede-hero-(?:title-arrive|copy-arrive|picture-unmask|picture-settle|wave-settle)/.test(String(animation.animationName)),
+  )
+  void Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
+    if (round === entrance) finishEntry()
+  })
+}
+
+function replayRestoredPage(event: PageTransitionEvent) {
+  if (event.persisted) playEntry()
+}
+
+onMounted(() => {
+  playEntry()
+  window.addEventListener('pageshow', replayRestoredPage)
 })
 
 watch(reducedMotion, (reduced) => {
-  if (reduced) {
-    waveSpring.stop()
-    waveMotion.y = 0
-    finishEntry()
-  }
+  if (reduced) finishEntry()
 })
-onUnmounted(finishEntry)
-</script>
-
-<script lang="ts">
-let visited = false
+onUnmounted(() => {
+  window.removeEventListener('pageshow', replayRestoredPage)
+  finishEntry()
+})
 </script>
 
 <template>
@@ -83,16 +77,14 @@ let visited = false
         </div>
       </div>
       <div class="kaede-hero-art">
-        <picture @animationend.self="finishEntry">
+        <picture>
           <img src="/images/optimized/hero-1920.webp"
             srcset="/images/optimized/hero-960.webp 960w, /images/optimized/hero-1920.webp 1920w"
             sizes="(max-width: 720px) calc(100vw - 36px), (max-width: 1180px) 49vw, 565px"
             alt="爱音与素世插画" width="1920" height="1358" fetchpriority="high" decoding="async">
         </picture>
         <svg class="kaede-waves" viewBox="0 0 600 52" preserveAspectRatio="none" aria-hidden="true">
-          <path class="kaede-wave-back"
-            d="M0 17C134 61 273 2 403 21s147 28 197-8v39H0Z"
-            :style="waveMotion.y ? { transform: `translateY(${waveMotion.y}px)` } : undefined" />
+          <path class="kaede-wave-back" d="M0 17C134 61 273 2 403 21s147 28 197-8v39H0Z" />
           <path class="kaede-wave-front" d="M0 33C160 5 245 68 402 34s166 10 198-8v26H0Z" />
         </svg>
       </div>
@@ -175,12 +167,20 @@ let visited = false
     animation: kaede-hero-copy-arrive 630ms var(--ease-out) 180ms both;
   }
 
-  html[data-kaede-hero-enter] .kaede-hero-art picture {
+  html[data-kaede-hero-enter='direct'] .kaede-hero-art picture {
     animation: kaede-hero-picture-unmask 780ms var(--ease-out) 96ms both;
   }
 
-  html[data-kaede-hero-enter] .kaede-hero-art img {
+  html[data-kaede-hero-enter='direct'] .kaede-hero-art img {
     animation: kaede-hero-picture-settle 780ms var(--ease-out) 96ms both;
+  }
+
+  html[data-kaede-hero-enter='direct'] .kaede-wave-back {
+    animation: kaede-hero-wave-settle 660ms var(--ease-out) 96ms both;
+  }
+
+  html[data-kaede-hero-enter] .kaede-hero-title:focus-visible :is(.kaede-hero-title-motion, .kaede-hero-title-line > span) {
+    animation: none;
   }
 }
 
@@ -203,5 +203,10 @@ let visited = false
 @keyframes kaede-hero-picture-settle {
   from { transform: translateY(-12px) scale(1.1); }
   to { transform: translateY(0) scale(1); }
+}
+
+@keyframes kaede-hero-wave-settle {
+  from { transform: translateY(4px); }
+  to { transform: translateY(0); }
 }
 </style>

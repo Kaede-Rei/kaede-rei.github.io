@@ -17,8 +17,8 @@
 
   [data-route-masthead='article'] {
     --masthead-title: kaede-masthead-wipe;
-    --masthead-time: 560ms;
-    --masthead-copy-delay: 125ms;
+    --masthead-time: 690ms;
+    --masthead-copy-delay: 155ms;
   }
 
   [data-route-masthead='document'],

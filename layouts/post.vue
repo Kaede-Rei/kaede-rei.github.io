@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { formatPostDate, imageUrl, listValue, postCoverRole, postSummary } from '../theme/utils/content'
 import { learningContext, learningTitle } from '../theme/utils/learning'
 import { vRouteMasthead } from '../theme/utils/route-masthead'
-import { vViewportEntrance } from '../theme/utils/viewport-entrance'
+import { vArticleEntrance, vViewportEntrance } from '../theme/utils/viewport-entrance'
 
 const route = useRoute()
 const fm = useFrontmatter()
@@ -22,7 +22,7 @@ const cover = computed(() => {
 
 <template>
   <div class="kaede-reader" :class="{ 'has-no-toc': fm.status === 'planned' }">
-    <article class="kaede-post kaede-page content">
+    <article v-article-entrance="route.path" class="kaede-post kaede-page content">
       <header :key="route.path" v-route-masthead class="kaede-page-header" data-route-masthead="article">
         <nav class="kaede-breadcrumb" aria-label="面包屑">
           <template v-if="chapter">
@@ -46,9 +46,9 @@ const cover = computed(() => {
         </div>
         <LearningChapterHeader v-if="chapter" />
       </header>
-      <figure v-if="cover" :key="route.path" v-viewport-entrance="'feature'" class="kaede-reading-cover">
-        <img :src="cover" :alt="fm.coverAlt || ''" decoding="async">
-        <figcaption v-if="fm.coverCaption">{{ fm.coverCaption }}</figcaption>
+      <figure v-if="cover" :key="route.path" v-viewport-entrance="'feature'" data-scene-card="panel" class="kaede-reading-cover">
+        <img :src="cover" data-scene-part="media" :alt="fm.coverAlt || ''" decoding="async">
+        <figcaption v-if="fm.coverCaption" data-scene-part="meta">{{ fm.coverCaption }}</figcaption>
       </figure>
       <RouterView v-slot="{ Component }">
         <component :is="Component" :key="route.path" />

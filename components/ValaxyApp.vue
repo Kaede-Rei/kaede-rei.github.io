@@ -11,9 +11,10 @@ import { imageUrl, postSummary } from '../theme/utils/content'
 import { learningTitle } from '../theme/utils/learning'
 import { postLayoutBootstrap } from '../theme/utils/post-layout'
 import { handleSamePageAnchor, isPointerClick, stopAnchorScroll } from '../theme/utils/anchor-scroll'
-import { vViewportEntrance } from '../theme/utils/viewport-entrance'
+import { installScrollSceneFade, vViewportEntrance } from '../theme/utils/viewport-entrance'
 import { installHomeScroll } from '../theme/utils/home-scroll'
 import { installPointerSprings } from '../theme/utils/pointer-springs'
+import { sampleSpring } from '../theme/utils/spring-frames'
 
 useValaxyApp()
 const app = useAppStore()
@@ -26,14 +27,19 @@ const navbar = ref<HTMLElement>()
 const navbarPanel = ref<HTMLElement>()
 const navbarHidden = ref(false)
 const navbarRest = { y: 0, scale: 1, opacity: 1 }
-const { motionProperties: navbarMotion } = useMotionProperties(navbarPanel, navbarRest)
-const navbarSpring = useSpring(navbarMotion, { stiffness: 440, damping: 28, mass: 1 })
+const navbarDuration = 470
+const navbarFrames = sampleSpring({ duration: navbarDuration, stiffness: 440, damping: 28 })
+let navbarAnimation: Animation | undefined
 const navLinks = ref<HTMLElement>()
 const navIndicatorReady = ref(false)
 const indicatorMotion = reactive({ x: 0, scaleX: 1 })
+const navIndicator = ref<HTMLElement>()
 const indicatorSpring = useSpring(indicatorMotion, { stiffness: 440, damping: 28, mass: 1 })
 let scrollEdge = 0
 let navbarResetFrame = 0
+let navbarHeight = 0
+let scrollLimit = 0
+let scrollSizes: ResizeObserver | undefined
 const menuOpen = ref(false)
 const menuVisible = ref(false)
 const menuUsesMotion = ref(false)
@@ -47,6 +53,7 @@ const menuSpring = useSpring(menuMotion, { stiffness: 550, damping: 42, mass: 1 
 let menuTransition = 0
 let pointerSprings: ReturnType<typeof installPointerSprings> | undefined
 let disposeHomeScroll: ReturnType<typeof installHomeScroll> | undefined
+let disposeScrollSceneFade: ReturnType<typeof installScrollSceneFade> | undefined
 const searchOpen = ref(false)
 const searchPointerOpen = ref(false)
 const searchRef = ref<{ dismiss: () => void }>()
@@ -83,6 +90,7 @@ const canonical = computed(() => new URL(cleanPath(route.path), site.value.url).
 useHead(() => ({
   title: pageTitle.value,
   titleTemplate: '%s',
+  htmlAttrs: { 'data-kaede-home': isHome.value ? 'true' : undefined },
   meta: [{ name: 'theme-color', content: app.themeColor }],
   link: [{ rel: 'canonical', href: canonical.value }],
   script: [{ key: 'post-layout', innerHTML: postLayoutBootstrap }],
@@ -101,20 +109,39 @@ useSeoMeta({
 })
 
 function navbarScrollPosition() {
-  const root = document.scrollingElement
-  const maximum = root ? Math.max(0, root.scrollHeight - root.clientHeight) : window.scrollY
-  return Math.max(0, Math.min(window.scrollY, maximum))
+  return Math.max(0, Math.min(window.scrollY, scrollLimit))
+}
+function measureNavbar() {
+  navbarHeight = navbar.value?.offsetHeight ?? 0
+  scrollLimit = Math.max(0, (document.scrollingElement?.scrollHeight ?? window.innerHeight) - window.innerHeight)
 }
 function setNavbarHidden(hidden: boolean, instant = false) {
-  if (hidden === navbarHidden.value && (!instant || navbarMotion.y === 0 && navbarMotion.scale === 1 && navbarMotion.opacity === 1)) return
-  navbarHidden.value = hidden
-  const target = hidden ? { y: -(navbar.value?.offsetHeight ?? 0) - 24, scale: .94, opacity: .15 } : navbarRest
-  if (instant || reduceMotion.value) {
-    navbarSpring.stop()
-    Object.assign(navbarMotion, target)
+  const panel = navbarPanel.value
+  if (!panel || (hidden === navbarHidden.value && (!instant || !navbarAnimation))) return
+  const target = hidden ? { y: -navbarHeight - 24, scale: .94, opacity: .15 } : navbarRest
+  const animate = !instant && !reduceMotion.value && typeof panel.animate === 'function'
+  let frames: Keyframe[] = []
+  if (animate) {
+    // A reversal starts from the transform currently visible on screen.
+    const style = getComputedStyle(panel)
+    const matrix = new DOMMatrixReadOnly(style.transform === 'none' ? undefined : style.transform)
+    const opacity = Number(style.opacity)
+    frames = navbarFrames.map((progress) => ({
+      transform: `translateY(${matrix.m42 + (target.y - matrix.m42) * progress}px) scale(${matrix.m11 + (target.scale - matrix.m11) * progress})`,
+      opacity: Math.min(1, Math.max(0, opacity + (target.opacity - opacity) * progress)),
+    }))
   }
-  else {
-    void navbarSpring.set(target)
+  navbarAnimation?.cancel()
+  navbarAnimation = undefined
+  navbarHidden.value = hidden
+  panel.style.transform = hidden ? `translateY(${target.y}px) scale(${target.scale})` : ''
+  panel.style.opacity = hidden ? String(target.opacity) : ''
+  if (!animate) return
+
+  const playback = panel.animate(frames, { duration: navbarDuration, fill: 'backwards' })
+  navbarAnimation = playback
+  playback.onfinish = () => {
+    if (navbarAnimation === playback) navbarAnimation = undefined
   }
 }
 function revealNavbar() {
@@ -127,6 +154,7 @@ function resetNavbarPosition() {
   cancelAnimationFrame(navbarResetFrame)
   // Read the position after Vue Router restores the destination page's scroll.
   navbarResetFrame = requestAnimationFrame(() => {
+    measureNavbar()
     scrollEdge = navbarScrollPosition()
     navbarResetFrame = 0
   })
@@ -142,7 +170,7 @@ function updateNavbar() {
     setNavbarHidden(false, true)
     return
   }
-  if (y <= header.offsetHeight + 12) {
+  if (y <= navbarHeight + 12) {
     scrollEdge = y
     setNavbarHidden(false)
     return
@@ -154,6 +182,10 @@ function updateNavbar() {
   setNavbarHidden(!navbarHidden.value)
   scrollEdge = y
 }
+
+watch(() => [navIndicator.value, indicatorMotion.x, indicatorMotion.scaleX] as const, ([element, x, scale]) => {
+  if (element) element.style.transform = `translateX(${x}px) scaleX(${scale})`
+}, { flush: 'post' })
 
 function syncNavIndicator(animate = false) {
   const current = navLinks.value?.querySelector<HTMLElement>('[aria-current]')
@@ -174,6 +206,7 @@ function syncNavIndicator(animate = false) {
   navIndicatorReady.value = true
 }
 function refreshNavIndicator() {
+  measureNavbar()
   syncNavIndicator()
 }
 
@@ -224,11 +257,8 @@ provide('kaedeOpenSearch', openSearch)
 
 function shortcut(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229 || event.repeat) return
-  if (event.key === 'Tab' && (navbarHidden.value || (navbarMotion.y ?? 0) !== 0)) {
+  if (event.key === 'Tab' && (navbarHidden.value || navbarAnimation)) {
     revealNavbar()
-    // Tab's native focus scroll needs the bar in view before Vue's next render.
-    navbarPanel.value?.style.removeProperty('transform')
-    navbarPanel.value?.style.removeProperty('opacity')
   }
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault()
@@ -289,11 +319,15 @@ function activateAnchor(event: MouseEvent) {
 onMounted(() => {
   resetNavbarPosition()
   refreshNavIndicator()
+  scrollSizes = new ResizeObserver(measureNavbar)
+  scrollSizes.observe(document.body)
+  if (navbar.value) scrollSizes.observe(navbar.value)
   window.addEventListener('scroll', updateNavbar, { passive: true })
   window.addEventListener('resize', refreshNavIndicator)
   document.fonts?.addEventListener('loadingdone', refreshNavIndicator)
   pointerSprings = installPointerSprings()
   disposeHomeScroll = installHomeScroll(router, searchOpen)
+  disposeScrollSceneFade = installScrollSceneFade()
   themeReady.value = true
   app.showLoading = false
   window.addEventListener('keydown', shortcut)
@@ -302,6 +336,8 @@ onMounted(() => {
   document.addEventListener('keydown', rememberKeyboardLink, { capture: true })
 })
 onUnmounted(() => {
+  scrollSizes?.disconnect()
+  navbarAnimation?.cancel()
   cancelAnimationFrame(navbarResetFrame)
   indicatorSpring.stop()
   window.removeEventListener('scroll', updateNavbar)
@@ -310,6 +346,7 @@ onUnmounted(() => {
   window.removeEventListener('keydown', shortcut)
   stopAnchorScroll()
   disposeHomeScroll?.()
+  disposeScrollSceneFade?.()
   pointerSprings?.dispose()
   document.removeEventListener('click', activateAnchor, { capture: true })
   document.removeEventListener('click', rememberKeyboardLink, { capture: true })
@@ -332,8 +369,7 @@ onUnmounted(() => {
             :aria-current="cleanPath(route.path) === item.to ? 'page' : isInSection(item.sections) ? 'location' : undefined">
             {{ item.text }}
           </RouterLink>
-          <span class="kaede-nav-indicator" aria-hidden="true"
-            :style="{ transform: `translateX(${indicatorMotion.x}px) scaleX(${indicatorMotion.scaleX})` }" />
+          <span ref="navIndicator" class="kaede-nav-indicator" aria-hidden="true" />
         </nav>
         <div class="kaede-nav-tools">
           <button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" @click="openSearch">
@@ -438,8 +474,8 @@ onUnmounted(() => {
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   .kaede-navbar-inner {
     background: color-mix(in srgb, var(--surface) 86%, transparent);
-    -webkit-backdrop-filter: blur(14px) saturate(125%);
-    backdrop-filter: blur(14px) saturate(125%);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
   }
 }
 
@@ -452,12 +488,22 @@ onUnmounted(() => {
 }
 
 @media (max-width: 800px) {
+  .kaede-navbar-inner {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
   .kaede-mobile-nav {
     top: calc(100% + 8px);
     inset-inline: -1px;
     padding-inline: 8px;
     border: 1px solid var(--line);
     border-radius: 14px;
+  }
+}
+@media (max-width: 800px) and (prefers-reduced-transparency: no-preference) {
+  .kaede-navbar-inner {
+    background: linear-gradient(140deg, color-mix(in srgb, var(--surface) 94%, transparent),
+      color-mix(in srgb, var(--surface) 90%, var(--accent-soft)));
   }
 }
 

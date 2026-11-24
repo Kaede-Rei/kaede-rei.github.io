@@ -21,12 +21,12 @@ import { vViewportEntrance } from '../../theme/utils/viewport-entrance'
 
 ## 组织项目与资料 {#农业机器人与感知项目导航}
 
-<div v-viewport-entrance>
-<p id="感知与机器人应用">完整项目见 <a :href="association.projectNavigation">AgroTech-SCAU 的 GitHub 项目导航</a></p>
+<div>
+<p v-viewport-entrance="'editorial'" id="感知与机器人应用">完整项目见 <a :href="association.projectNavigation">AgroTech-SCAU 的 GitHub 项目导航</a></p>
 
-<p id="公共技术资产"><span id="工程资料与学习" aria-hidden="true"></span>组织维护的<a href="https://github.com/AgroTech-SCAU/Robotic-Arm-Motion-Control-Standard">机械臂运控规范</a>为 Draft v0.4，正在迁移试用</p>
+<p v-viewport-entrance="'editorial'" id="公共技术资产"><span id="工程资料与学习" aria-hidden="true"></span>组织维护的<a href="https://github.com/AgroTech-SCAU/Robotic-Arm-Motion-Control-Standard">机械臂运控规范</a>为 Draft v0.4，正在迁移试用</p>
 
-<p id="比赛与历史积累"><a :href="projects.atlas.url">{{ projects.atlas.title }}</a> 是仍开放的历史软件基线，<a :href="projects.mk1.url">{{ projects.mk1.title }}</a> 和 <a :href="projects.hephaestus.url">{{ projects.hephaestus.title }}</a> 已归档</p>
+<p v-viewport-entrance="'editorial'" id="比赛与历史积累"><a :href="projects.atlas.url">{{ projects.atlas.title }}</a> 是仍开放的历史软件基线，<a :href="projects.mk1.url">{{ projects.mk1.title }}</a> 和 <a :href="projects.hephaestus.url">{{ projects.hephaestus.title }}</a> 已归档</p>
 
-<p id="参与讨论"><span id="从学习路线开始" aria-hidden="true"></span>技术问题可在对应公开仓库讨论，我的联系方式见 <RouterLink to="/about">关于页</RouterLink></p>
+<p v-viewport-entrance="'editorial'" id="参与讨论"><span id="从学习路线开始" aria-hidden="true"></span>技术问题可在对应公开仓库讨论，我的联系方式见 <RouterLink to="/about">关于页</RouterLink></p>
 </div>

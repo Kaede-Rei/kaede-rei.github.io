@@ -12,9 +12,9 @@ import { association, featuredProjects, profile, projects } from '../../data/sit
 import { vViewportEntrance } from '../../theme/utils/viewport-entrance'
 </script>
 
-<p class="about-intro" data-masthead-copy>
-  <img :src="profile.avatar" alt="" width="96" height="96">
-  <span>我是 {{ profile.name }}，{{ profile.school }}本科生、{{ profile.role }}，也是 {{ association.organization }} 的{{ profile.associationRole }}</span>
+<p v-viewport-entrance="'pair'" data-scene-card="row" class="about-intro">
+  <img :src="profile.avatar" data-scene-part="media" alt="" width="96" height="96">
+  <span data-scene-part="body">我是 {{ profile.name }}，{{ profile.school }}本科生、{{ profile.role }}，也是 {{ association.organization }} 的{{ profile.associationRole }}</span>
 </p>
 
 ## 开发方向
@@ -35,9 +35,9 @@ import { vViewportEntrance } from '../../theme/utils/viewport-entrance'
 
 我参与 AgroTech-SCAU 的项目组织与开发，持续整理公共模块、工程文档与学习材料
 
-<RouterLink v-viewport-entrance="'pair'" class="about-association" :to="association.path">
-  <ATILBrand variant="compact" decorative />
-  <span>查看我在 ATIL 的工作</span>
+<RouterLink v-viewport-entrance="'pair'" data-scene-card="row" class="about-association" :to="association.path">
+  <ATILBrand variant="compact" decorative data-scene-part="media" />
+  <span data-scene-part="title">查看我在 ATIL 的工作</span>
 </RouterLink>
 
 ## 阅读与交流
