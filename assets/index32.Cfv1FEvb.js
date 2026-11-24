@@ -1,0 +1,1 @@
+import{Dt as e,It as t}from"./theme.DQltA_c8.js";import{p as n}from"./index3.DmOg_G_b.js";import{t as r}from"./schema-org.Brov9ENl.C3jfklJU.js";var i=e({defaults:{"@type":`Review`},inheritMeta:[`inLanguage`],resolve(e,i){return e.reviewRating=t(e.reviewRating,i,r),e.author=t(e.author,i,n),e}});export{i as reviewResolver};

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html  lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分类 · Kaede Rei</title>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="按分类浏览站内文章与技术笔记">
+<meta property="og:description" content="按分类浏览站内文章与技术笔记">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="分类 · Kaede Rei">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-rei.github.io/categories">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/categories">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="分类 · Kaede Rei">
+<meta name="twitter:description" content="按分类浏览站内文章与技术笔记">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a href="/" class="kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a href="/" class="" data-v-736c070f>首页</a><a aria-current="location" href="/archives" class="is-current" data-v-736c070f>文章</a><a href="/learning-path" class="" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a href="/" class="" style="--menu-step:0;" data-v-736c070f>首页</a><a aria-current="location" href="/archives" class="is-current" style="--menu-step:1;" data-v-736c070f>文章</a><a href="/learning-path" class="" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-categories-layout kaede-main" data-v-736c070f><section class="kaede-page kaede-index content" data-route-masthead="taxonomy" data-v-736c070f><header class="kaede-page-header"><h1 class="kaede-page-title" tabindex="-1"><span class="kaede-masthead-window"><span class="kaede-masthead-title"><!--[-->文章分类<!--]--></span></span></h1></header><nav class="kaede-article-nav" aria-label="文章浏览方式"><!--[--><a href="/archives" class="">归档</a><a aria-current="page" href="/categories" class="router-link-active router-link-exact-active">分类</a><a href="/tags" class="">标签</a><!--]--></nav><nav data-masthead-copy class="kaede-taxonomy" aria-label="文章分类"><a aria-current="true" href="/categories" class="router-link-active router-link-exact-active">全部 <small>8</small></a><!--[--><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记 <small>8</small></a><!--]--></nav><h2 class="kaede-taxonomy-heading">全部文章</h2><!--[--><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%8F%AF%E9%80%92%E5%BD%92%E7%9A%84%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%9E%8B" class="">从执行器、整机系统到多机协同，尝试用一套可递归的闭环控制模型统一描述</a></h3><p data-scene-part="body">从目标、反馈和模型之间的关系入手，用机械臂 B 样条轨迹向底盘的迁移检验各层职责，再沿双臂、单臂与关节电机展开递归闭环</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-11-24">2026-11-24</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/MCU%20C%20%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A7%E5%93%81%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%92%E5%88%86" class="">MCU C 架构设计：产品、组件与平台的职责划分</a></h3><p data-scene-part="body">从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-11-23">2026-11-23</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E6%A8%A1%E6%8B%9F%20OOP%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%BE%B9%E7%95%8C" class="">C 语言模拟 OOP：对象、接口与生命周期的边界</a></h3><p data-scene-part="body">从设备多实例、统一接口与生命周期出发，讨论 C 中模拟 OOP 的几种组织方式，并说明哪些抽象有助于维护、哪些会增加不必要的复杂度</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-27">2026-04-27</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E6%9C%BA%E6%A2%B0%E8%87%82%E5%8A%A8%E5%8A%9B%E5%AD%A6" class="">Pinocchio 动力学前馈：从重力补偿到链路验证</a></h3><p data-scene-part="body">从机械臂静态保持偏软的问题出发，梳理反馈控制与前馈扭矩的职责，解释重力项、非线性项和 reduced model，并记录补偿链路的验证思路</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-23">2026-04-23</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%B1%82%E7%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA" class="">层级状态机：组织控制流程与共享异常处理</a></h3><p data-scene-part="body">把控制流程拆成状态、事件与周期动作，用父状态收拢共享规则，再结合 C 的结构体与函数指针，说明 HFSM 的组织方法及职责边界</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-10">2026-04-10</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E6%97%A7%E6%A0%87%E5%87%86%20c++%20%E4%B8%8B%E7%9A%84%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88TL%20%E5%BA%93%EF%BC%89" class="">旧标准 C++ 中的 optional、expected 与链式处理</a></h3><p data-scene-part="body">用 TL 库表达可缺失的值与结构化错误，梳理 optional、expected 和 variant 的分工，并通过链式组合整理多步数据处理与失败传播</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-08">2026-04-08</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/micromamba%20%E6%9E%84%E5%BB%BA%E7%A7%BB%E5%8A%A8%E7%8E%AF%E5%A2%83" class="">基于 micromamba 整理便携式开发环境</a></h3><p data-scene-part="body">围绕机器人项目的系统版本与多设备协作需求，记录移动硬盘上的环境、缓存和激活脚本组织方式，以及 ROS 与学习环境的配置经验</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-08">2026-04-08</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><article class="kaede-post-card is-text has-cover" data-scene-card="row"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/X-Macro%20+%20%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" class="">X-Macro 与单例：集中命令定义，明确访问边界</a></h3><p data-scene-part="body">用一张主表维护命令、映射与分发信息，再讨论单例适用的生命周期与访问边界，减少接口扩展时的重复维护和状态分散</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-07">2026-04-07</time><a aria-current="page" href="/categories?category=%E7%AC%94%E8%AE%B0" class="router-link-active router-link-exact-active">笔记</a></div></div><!----></article><!--]--><!----></section></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a href="/" class="kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true},"routerStore":{}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","dateModified":"2026-11-24T11:09:34.346Z","datePublished":"2026-11-24T11:09:34.346Z","inLanguage":"zh-CN","name":"分类","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"按分类浏览站内文章与技术笔记","name":"分类 · Kaede Rei","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>

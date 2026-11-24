@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" data-kaede-home="true">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaede Rei の 小窝 · 机器人开发与技术笔记</title>
+<script data-hid="kaede-hero-entry">if (location.pathname === "/" && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.setAttribute("data-kaede-hero-enter", "direct")</script>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="Kaede Rei 的个人主页，收录机械臂控制、机器人嵌入式系统与系统集成相关的公开项目、技术笔记和技术积累">
+<meta property="og:description" content="Kaede Rei 的个人主页，收录机械臂控制、机器人嵌入式系统与系统集成相关的公开项目、技术笔记和技术积累">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-rei.github.io/">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta name="twitter:description" content="Kaede Rei 的个人主页，收录机械臂控制、机器人嵌入式系统与系统集成相关的公开项目、技术笔记和技术积累">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a aria-current="page" href="/" class="router-link-active router-link-exact-active kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a aria-current="page" href="/" class="router-link-active router-link-exact-active is-current" data-v-736c070f>首页</a><a href="/archives" class="" data-v-736c070f>文章</a><a href="/learning-path" class="" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a aria-current="page" href="/" class="router-link-active router-link-exact-active is-current" style="--menu-step:0;" data-v-736c070f>首页</a><a href="/archives" class="" style="--menu-step:1;" data-v-736c070f>文章</a><a href="/learning-path" class="" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-home-layout kaede-main" data-v-736c070f><!--[--><header class="kaede-hero" data-v-dd490e63><div class="kaede-hero-grid" data-v-dd490e63><div class="kaede-hero-copy" data-v-dd490e63><p class="kaede-hero-identity" data-v-dd490e63>Kaede Rei · 机器人开发者</p><h1 class="kaede-hero-title" tabindex="-1" data-v-dd490e63><span class="kaede-hero-title-motion" data-v-dd490e63><span class="kaede-hero-title-line" data-v-dd490e63><span data-v-dd490e63>让机器人从模型</span></span><br class="kaede-hero-break" data-v-dd490e63><span class="kaede-hero-title-line" data-v-dd490e63><span data-v-dd490e63>走向真实运行</span></span></span></h1><p class="kaede-hero-intro" data-v-dd490e63>我是华南农业大学本科生、AgroTech-SCAU 主要负责人之一，从事机械臂控制、嵌入式软件与系统集成，整理可复用的代码、工具和工程经验</p><div class="kaede-actions" data-v-dd490e63><a aria-current="page" href="/#projects" class="router-link-active router-link-exact-active kaede-button kaede-button--primary" data-v-dd490e63>查看开发项目 <span aria-hidden="true" class="kaede-link-arrow" data-v-dd490e63>↓</span></a><a href="/archives" class="kaede-button" data-v-dd490e63>阅读技术笔记 <span aria-hidden="true" class="kaede-link-arrow" data-v-dd490e63>→</span></a></div></div><div class="kaede-hero-art" data-v-dd490e63><picture data-v-dd490e63><img src="/images/optimized/hero-1920.webp" srcset="/images/optimized/hero-960.webp 960w, /images/optimized/hero-1920.webp 1920w" sizes="(max-width: 720px) calc(100vw - 36px), (max-width: 1180px) 49vw, 565px" alt="爱音与素世插画" width="1920" height="1358" fetchpriority="high" decoding="async" data-v-dd490e63></picture><svg class="kaede-waves" viewBox="0 0 600 52" preserveAspectRatio="none" aria-hidden="true" data-v-dd490e63><path class="kaede-wave-back" d="M0 17C134 61 273 2 403 21s147 28 197-8v39H0Z" data-v-dd490e63></path><path class="kaede-wave-front" d="M0 33C160 5 245 68 402 34s166 10 198-8v26H0Z" data-v-dd490e63></path></svg></div></div></header><!--[--><div class="kaede-home-entries"><section class="kaede-path-entry" aria-labelledby="learning-title"><div class="kaede-section-heading"><h2 id="learning-title"><a href="/learning-path" class="">技术积累</a></h2><p>我的嵌入式电控与机械臂开发笔记，按主题整理基础知识、工具和工程实践</p></div><div class="kaede-path-entry-links"><!--[--><a href="/learning-path/electrical-control" class="kaede-track-entry" data-scene-card="panel"><span class="i-ri-cpu-line kaede-track-icon" data-scene-part="media" aria-hidden="true"></span><strong data-scene-part="title">嵌入式电控</strong><span data-scene-part="body" class="kaede-track-description">从 C 语言与单片机入门，逐步学习 STM32、控制算法、RTOS 与工程组织，也可按基础和项目需求选学通信、电路和图形界面等方向</span><span data-scene-part="meta" class="kaede-entry-action">查看电控笔记 <span class="kaede-link-arrow" aria-hidden="true">→</span></span></a><a href="/learning-path/robot-arm-development" class="kaede-track-entry" data-scene-card="panel"><span class="i-ri-node-tree kaede-track-icon" data-scene-part="media" aria-hidden="true"></span><strong data-scene-part="title">机械臂系统开发</strong><span data-scene-part="body" class="kaede-track-description">从机械臂本体设计、软件开发与外设接入，走到仿真验证和实机部署</span><span data-scene-part="meta" class="kaede-entry-action">查看机械臂文档 <span class="kaede-link-arrow" aria-hidden="true">→</span></span></a><!--]--></div></section><section class="kaede-contact" data-scene-card="panel" aria-labelledby="contact-title"><h2 id="contact-title" data-scene-part="title"><a href="/about" class="kaede-avatar-link" aria-label="关于 Kaede Rei"><img src="/images/kaede-rei-avatar.jpg" alt width="72" height="72" loading="lazy" decoding="async"><span>Kaede Rei</span></a></h2><nav data-scene-part="body" class="kaede-contact-links" aria-label="联系方式"><a href="https://github.com/Kaede-Rei" aria-label="GitHub" title="GitHub"><span class="i-ri-github-line" aria-hidden="true"></span></a><a href="mailto:kaerei86@gmail.com" aria-label="邮箱" title="邮箱"><span class="i-ri-mail-line" aria-hidden="true"></span></a><a href="/atom.xml" aria-label="RSS" title="RSS"><span class="i-ri-rss-line" aria-hidden="true"></span></a></nav><a href="/agrotech" class="kaede-atil-link" data-scene-part="media"><img src="/images/brand/atil-banner-480.webp" alt width="480" height="270" loading="lazy" decoding="async"><span class="kaede-atil-link-label">我在 ATIL 的工作 <span class="kaede-link-arrow" aria-hidden="true">→</span></span></a></section></div><section id="projects" class="kaede-home-section" aria-labelledby="projects-title"><div class="kaede-section-heading"><h2 id="projects-title" tabindex="-1">机器人开发项目</h2></div><div class="kaede-project-grid"><!--[--><article class="kaede-project-card kaede-project-card--lead" data-scene-card="panel" data-v-2d4653d3><div class="kaede-project-card-copy" data-v-2d4653d3><h3 data-scene-part="title" data-v-2d4653d3>SerialArm-Core</h3><p class="kaede-project-subtitle" data-v-2d4653d3>串联机械臂控制内核与 SerialArm Studio 工作台</p><p data-scene-part="body" data-v-2d4653d3>覆盖模型与硬件配置、控制、示教和标定，提供 C++ 和 Python 接口，可选接入 ROS 2 与 MoveIt 2</p><p class="kaede-project-status" data-v-2d4653d3>已有 Linux 发行版 · 持续开发</p><!----><div data-scene-part="meta" class="kaede-project-actions" data-v-2d4653d3><a class="kaede-button kaede-button--primary" href="https://github.com/Kaede-Rei/SerialArm-Core" data-v-2d4653d3>查看项目</a><a class="kaede-button" href="https://github.com/Kaede-Rei/SerialArm-Core/releases" data-v-2d4653d3>查看发行版</a></div><p class="kaede-project-detail" data-v-2d4653d3><!--[--><a href="https://github.com/Kaede-Rei/SerialArm-Core/releases/tag/v0.6.2" data-v-2d4653d3>v0.6.2</a> · <time datetime="2026-11-08" data-v-2d4653d3>2026-11-08</time><br data-v-2d4653d3><!--]--> 内置 Damiao 后端与 DM-Arm 示例，接入其他硬件需按接口适配与验证</p></div><figure data-scene-part="media" class="kaede-project-figure" data-v-2d4653d3><img src="/images/projects/serialarm-studio-dynamics.webp" alt="SerialArm Studio 动力学配置工作台，左侧为三维机械臂模型，右侧为配置与标定面板" width="1440" height="794" loading="lazy" decoding="async" data-v-2d4653d3><figcaption data-v-2d4653d3>SerialArm Studio 的动力学配置界面</figcaption></figure></article><article class="kaede-project-card kaede-project-card--standard" data-scene-card="panel" data-v-2d4653d3><div class="kaede-project-card-copy" data-v-2d4653d3><h3 data-scene-part="title" data-v-2d4653d3>AT Robot Studio</h3><p class="kaede-project-subtitle" data-v-2d4653d3>独立 ROS 2 系统集成工作台</p><p data-scene-part="body" data-v-2d4653d3>在独立的机器人工程中接入子系统、配置可复用任务，用层级状态机与行为树编排工作流，在运行台查看状态、反馈与诊断</p><p class="kaede-project-status" data-v-2d4653d3>已发布源码版本 · 持续开发</p><!----><div data-scene-part="meta" class="kaede-project-actions" data-v-2d4653d3><a class="kaede-button kaede-button--primary" href="https://github.com/AgroTech-SCAU/AT-System-Integration" data-v-2d4653d3>查看工作台与源码</a><a class="kaede-button" href="https://github.com/AgroTech-SCAU/AT-System-Integration/blob/main/docs/interactive-guide.md" data-v-2d4653d3>阅读使用指南</a></div><p class="kaede-project-detail" data-v-2d4653d3><!--[--><a href="https://github.com/AgroTech-SCAU/AT-System-Integration/releases/tag/v0.1.0" data-v-2d4653d3>v0.1.0</a> · <time datetime="2026-11-10" data-v-2d4653d3>2026-11-10</time><br data-v-2d4653d3><!--]--> 从源码安装，机器人接口、启动配置与业务流程由外部机器人工程提供</p></div><figure data-scene-part="media" class="kaede-project-figure" data-v-2d4653d3><img src="/images/projects/atil-robot-studio-orchestration.webp" alt="AT Robot Studio 工作流编排界面，画布中展示层级状态机与状态之间的连线" width="1200" height="660" loading="lazy" decoding="async" data-v-2d4653d3><figcaption data-v-2d4653d3>AT Robot Studio 的工作流编排界面</figcaption></figure></article><article class="kaede-project-card kaede-project-card--compact" data-scene-card="panel" data-v-2d4653d3><div class="kaede-project-card-copy" data-v-2d4653d3><h3 data-scene-part="title" data-v-2d4653d3>Embedded Control SDK</h3><p class="kaede-project-subtitle" data-v-2d4653d3>可跨项目复用的 MCU 基础设施与设备模块</p><p data-scene-part="body" data-v-2d4653d3>SDK 提供通用通信、设备与控制模块，各项目负责业务流程、装配关系和平台配置</p><p class="kaede-project-status" data-v-2d4653d3>持续维护 · 按模块标注成熟度</p><ul class="kaede-project-modules" aria-label="SDK 公共层" data-v-2d4653d3><!--[--><li data-v-2d4653d3><code data-v-2d4653d3>infra</code></li><li data-v-2d4653d3><code data-v-2d4653d3>domain</code></li><li data-v-2d4653d3><code data-v-2d4653d3>device</code></li><!--]--></ul><div data-scene-part="meta" class="kaede-project-actions" data-v-2d4653d3><a class="kaede-button kaede-button--primary" href="https://github.com/AgroTech-SCAU/Embedded-Electronic-Control-Standard" data-v-2d4653d3>查看 SDK</a><a class="kaede-button" href="https://github.com/AgroTech-SCAU/Embedded-Electronic-Control-Standard/blob/main/docs/module-status.md" data-v-2d4653d3>查看模块状态</a></div><p class="kaede-project-detail" data-v-2d4653d3><!----> Stable 对应模块文档中已确认的使用路径</p></div><!----></article><!--]--></div></section><!--]--><section class="kaede-home-section kaede-feed" aria-labelledby="recent-title"><div class="kaede-feed-toolbar"><div class="kaede-section-heading"><h2 id="recent-title">最近文章</h2><p>设计取舍、调试记录和可复用的工程方法</p></div><div class="kaede-feed-modes" role="group" aria-label="文章排列方式"><span class="kaede-feed-mode-indicator" aria-hidden="true"></span><!--[--><button type="button" class="" aria-label="图文列表" title="图文列表" aria-pressed="true"><span class="i-ri-layout-left-line" aria-hidden="true"></span></button><button type="button" class="" aria-label="文字列表" title="文字列表" aria-pressed="false"><span class="i-ri-list-check" aria-hidden="true"></span></button><button type="button" class="kaede-desktop-mode" aria-label="交错图文" title="交错图文" aria-pressed="false"><span class="i-ri-layout-row-line" aria-hidden="true"></span></button><!--]--></div></div><!--[--><article class="kaede-post-card has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%8F%AF%E9%80%92%E5%BD%92%E7%9A%84%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%9E%8B" class="">从执行器、整机系统到多机协同，尝试用一套可递归的闭环控制模型统一描述</a></h3><p data-scene-part="body">从目标、反馈和模型之间的关系入手，用机械臂 B 样条轨迹向底盘的迁移检验各层职责，再沿双臂、单臂与关节电机展开递归闭环</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-11-24">2026-11-24</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/notes/recursive-control/soyo.png" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><article class="kaede-post-card is-reversed has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/MCU%20C%20%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A7%E5%93%81%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%92%E5%88%86" class="">MCU C 架构设计：产品、组件与平台的职责划分</a></h3><p data-scene-part="body">从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-11-23">2026-11-23</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/optimized/cover-ansy3-v2.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><article class="kaede-post-card has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E6%A8%A1%E6%8B%9F%20OOP%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%BE%B9%E7%95%8C" class="">C 语言模拟 OOP：对象、接口与生命周期的边界</a></h3><p data-scene-part="body">从设备多实例、统一接口与生命周期出发，讨论 C 中模拟 OOP 的几种组织方式，并说明哪些抽象有助于维护、哪些会增加不必要的复杂度</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-27">2026-04-27</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/optimized/cover-ansy2-png.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><article class="kaede-post-card is-reversed has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E6%9C%BA%E6%A2%B0%E8%87%82%E5%8A%A8%E5%8A%9B%E5%AD%A6" class="">Pinocchio 动力学前馈：从重力补偿到链路验证</a></h3><p data-scene-part="body">从机械臂静态保持偏软的问题出发，梳理反馈控制与前馈扭矩的职责，解释重力项、非线性项和 reduced model，并记录补偿链路的验证思路</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-23">2026-04-23</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/optimized/cover-ansy2-jpg.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><article class="kaede-post-card has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E5%B1%82%E7%BA%A7%E7%8A%B6%E6%80%81%E6%9C%BA" class="">层级状态机：组织控制流程与共享异常处理</a></h3><p data-scene-part="body">把控制流程拆成状态、事件与周期动作，用父状态收拢共享规则，再结合 C 的结构体与函数指针，说明 HFSM 的组织方法及职责边界</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-10">2026-04-10</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/optimized/cover-ansy1-jpg.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><article class="kaede-post-card is-reversed has-cover" data-scene-card="panel"><div class="kaede-post-preview"><h3 data-scene-part="title"><a href="/posts/notes/%E6%97%A7%E6%A0%87%E5%87%86%20c++%20%E4%B8%8B%E7%9A%84%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88TL%20%E5%BA%93%EF%BC%89" class="">旧标准 C++ 中的 optional、expected 与链式处理</a></h3><p data-scene-part="body">用 TL 库表达可缺失的值与结构化错误，梳理 optional、expected 和 variant 的分工，并通过链式组合整理多步数据处理与失败传播</p><div data-scene-part="meta" class="kaede-post-meta"><time datetime="2026-04-08">2026-04-08</time><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a></div></div><div data-scene-part="media" class="kaede-post-cover"><img src="/images/optimized/cover-ansy-jpg.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></div></article><!--]--><!----><a href="/archives" class="kaede-button kaede-all-articles">查看全部文章 <span class="kaede-link-arrow" aria-hidden="true">→</span></a></section><!--]--></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a aria-current="page" href="/" class="router-link-active router-link-exact-active kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true},"routerStore":{}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"Kaede Rei 的个人主页，收录机械臂控制、机器人嵌入式系统与系统集成相关的公开项目、技术笔记和技术积累","name":"Kaede Rei の 小窝 · 机器人开发与技术笔记","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>

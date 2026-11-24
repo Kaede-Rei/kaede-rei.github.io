@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html  lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<link rel="modulepreload" crossorigin href="/assets/MCU C 架构设计：产品、组件与平台的职责划分.Cu_YKa2z.js">
+<link rel="modulepreload" crossorigin href="/assets/ValaxyMain.BNQSi_9h.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCU C 架构设计：产品、组件与平台的职责划分 · Kaede Rei</title>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计">
+<meta property="og:description" content="从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="MCU C 架构设计：产品、组件与平台的职责划分 · Kaede Rei">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/cover-ansy3-v2.webp">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kaede-rei.github.io/posts/notes/MCU%20C%20%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A7%E5%93%81%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%92%E5%88%86">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/posts/notes/MCU%20C%20%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A7%E5%93%81%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E5%B9%B3%E5%8F%B0%E7%9A%84%E8%81%8C%E8%B4%A3%E5%88%92%E5%88%86">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MCU C 架构设计：产品、组件与平台的职责划分 · Kaede Rei">
+<meta name="twitter:description" content="从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/cover-ansy3-v2.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a href="/" class="kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a href="/" class="" data-v-736c070f>首页</a><a aria-current="location" href="/archives" class="is-current" data-v-736c070f>文章</a><a href="/learning-path" class="" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a href="/" class="" style="--menu-step:0;" data-v-736c070f>首页</a><a aria-current="location" href="/archives" class="is-current" style="--menu-step:1;" data-v-736c070f>文章</a><a href="/learning-path" class="" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-post-layout kaede-main" data-v-736c070f><div class="kaede-reader" data-v-736c070f><article class="kaede-post kaede-page content"><header class="kaede-page-header" data-route-masthead="article"><nav class="kaede-breadcrumb" aria-label="面包屑"><!--[--><a href="/archives" class="">文章</a><!--[--><span aria-hidden="true">/</span><a href="/categories?category=%E7%AC%94%E8%AE%B0" class="">笔记</a><!--]--><!--]--></nav><h1 class="kaede-page-title" tabindex="-1"><span class="kaede-masthead-window"><span class="kaede-masthead-title"><!--[-->MCU C 架构设计：产品、组件与平台的职责划分<!--]--></span></span></h1><p data-masthead-copy class="kaede-page-summary">从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计</p><div data-masthead-copy="detail" class="kaede-post-meta"><time datetime="2026-11-23">发布于 2026-11-23</time><!----><!----></div><!----></header><!----><div class="kaede-markdown-frame"><!--[--><article class="markdown-body"><!--[--><div class="prose"><!--[--><p>在前几篇关于 MCU 项目架构的文章基础上，结合后续的设计与实践，本文进一步梳理和优化目录职责、模块依赖与任务流</p><p>这次调整重点明确三个问题：产品如何组织任务，组件如何提供能力，以及平台如何适配硬件</p><p>本文以 <code>bus_motor</code> 总线电机 SDK 为设备案例，结合一个机械臂关节控制场景，说明产品层如何使用设备能力，以及各部分如何协作</p><h2 id="一、为什么需要重新划分职责" tabindex="-1">一、为什么需要重新划分职责 <a class="header-anchor" href="#一、为什么需要重新划分职责" aria-label="Permalink to &quot;一、为什么需要重新划分职责&quot;">​</a></h2><p>一个 MCU 项目刚开始时，代码通常比较直接：初始化外设，在循环中读取输入，再控制电机或其他执行机构</p><p>随着功能增加，代码会逐渐承担不同职责：</p><ul><li>产品任务需要决定机械臂运动到哪里</li><li>设备接口需要发送电机位置命令、读取电机反馈</li><li>厂家驱动需要处理协议和 CAN 帧</li><li>平台代码需要调用具体 MCU 的 CAN 驱动</li><li>任务编排需要决定各项任务何时执行、数据如何传递</li></ul><p>这些职责需要各自清晰的归属，让修改产品动作、更换电机和适配平台时，都能找到对应的代码边界</p><h2 id="二、整体目录-产品、组件与平台" tabindex="-1">二、整体目录：产品、组件与平台 <a class="header-anchor" href="#二、整体目录-产品、组件与平台" aria-label="Permalink to &quot;二、整体目录：产品、组件与平台&quot;">​</a></h2><p>先看整体结构：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-54" tabindex="0"><code v-pre><span class="line"><span>src/</span></span>
+<span class="line"><span>├── product/</span></span>
+<span class="line"><span>│   ├── app/</span></span>
+<span class="line"><span>│   ├── assemble/</span></span>
+<span class="line"><span>│   ├── service/</span></span>
+<span class="line"><span>│   └── domain/</span></span>
+<span class="line"><span>├── components/</span></span>
+<span class="line"><span>│   ├── device/</span></span>
+<span class="line"><span>│   ├── domain/</span></span>
+<span class="line"><span>│   └── infra/</span></span>
+<span class="line"><span>└── platform/</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>各部分职责如下：</p><table><thead><tr><th>目录</th><th>职责</th></tr></thead><tbody><tr><td><code>product/app</code></td><td>编排产品任务，决定调用时机、跨服务数据流和跨任务操作顺序</td></tr><tr><td><code>product/assemble</code></td><td>选择具体实现，确定实例与共享关系，提供资源、绑定依赖并组织初始化</td></tr><tr><td><code>product/service</code></td><td>实现产品中的具体任务，维护任务状态并执行外部操作</td></tr><tr><td><code>product/domain</code></td><td>表达当前产品独有的概念、规则、判定和状态转换</td></tr><tr><td><code>components/device</code></td><td>提供可复用的设备族接口、具体驱动和协议实现</td></tr><tr><td><code>components/domain</code></td><td>提供可独立于产品、设备和平台运行的通用算法</td></tr><tr><td><code>components/infra</code></td><td>提供具有明确职责的基础能力，例如时间运算和日志接口</td></tr><tr><td><code>platform</code></td><td>适配目标 MCU、SDK、板卡和运行环境，实现组件所需的契约</td></tr></tbody></table><p>对于机械臂关节控制，可以这样理解：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="true"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><button type="button" data-code-toggle aria-controls="kaede-code-139" aria-expanded="false"><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-code-chevron><path d="m6 9 6 6 6-6"></path></svg><span class="kaede-code-button-label">展开代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-139" tabindex="0"><code v-pre><span class="line"><span>product/app</span></span>
+<span class="line"><span>    安排输入采集、目标生成与关节控制的执行顺序</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>product/assemble</span></span>
+<span class="line"><span>    选择 J1 关节使用的具体电机并完成绑定</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>product/service</span></span>
+<span class="line"><span>    执行关节控制任务，调用电机接口</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>product/domain</span></span>
+<span class="line"><span>    表达当前机械臂产品的运行模式与动作规则</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>components/device</span></span>
+<span class="line"><span>    提供 bus_motor 统一接口与具体电机驱动</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>platform</span></span>
+<span class="line"><span>    提供 CAN 发送、时间等底层适配</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>这里展示的是调整后的职责划分，现有 <code>bus_motor</code> SDK 可以作为其中设备部分的案例</p><p>目录按项目实际需要创建：规模较小时，<code>assemble</code> 可以使用与 <code>app</code>、<code>service</code> 同级的单个 <code>assemble.c</code>；简单的产品规则也可以先放在所属服务旁边，等职责值得独立时再拆分</p><h2 id="三、装配负责组成-模块负责初始化" tabindex="-1">三、装配负责组成，模块负责初始化 <a class="header-anchor" href="#三、装配负责组成-模块负责初始化" aria-label="Permalink to &quot;三、装配负责组成，模块负责初始化&quot;">​</a></h2><p>产品启动时，需要决定使用哪些模块、创建多少实例，以及各部分之间如何连接</p><p>这些产品层面的选择由 <code>assemble</code> 负责</p><p>例如，机械臂 J1 关节使用一台达妙电机时，装配部分需要确定：</p><ul><li>J1 对应的逻辑电机 ID</li><li>实际使用的电机型号、CAN ID 和固件版本</li><li>电机驱动需要的底层端口</li><li>按实际数量提供的电机实例存储</li><li>各模块的初始化与绑定顺序</li></ul><p>在 <code>bus_motor</code> 中，业务侧可以定义逻辑电机 ID：</p><div class="language-c"><button title="Copy code" class="copy"></button><span class="lang">c</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">c</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-188" tabindex="0"><code v-pre><span class="line"><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">typedef</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;"> enum</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> {</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    MOTOR_ARM_J1 </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#023B95;--shiki-dark:#91CBFF;"> 0</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    MOTOR_ARM_J2,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">} RobotMotorId;</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p><code>MOTOR_ARM_J1</code> 表示产品中的 J1 关节，具体硬件信息由装配时的配置表达，例如：</p><div class="language-c"><button title="Copy code" class="copy"></button><span class="lang">c</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">c</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-192" tabindex="0"><code v-pre><span class="line"><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">static</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;"> const</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> DmMotorConfig s_j1_config </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> {</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    .can_id </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;"> 0x</span><span style="--shiki-light:#023B95;--shiki-dark:#91CBFF;">01</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">u</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    .master_id </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;"> 0x</span><span style="--shiki-light:#023B95;--shiki-dark:#91CBFF;">11</span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">u</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    .model </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> DM_MOTOR_MODEL_DM4340,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    .firmware </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> {</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">        .major </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> DM_MOTOR_FIRMWARE_V4,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    },</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">    .default_mode </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">=</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> DM_MOTOR_MODE_POS_VEL,</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">};</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>随后，装配代码提供实例存储，调用 <code>bus_motor.init()</code>、<code>dm_motor_init()</code> 和 <code>dm_motor_bind()</code>，建立逻辑 ID 与具体电机实例之间的关系</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-196" tabindex="0"><code v-pre><span class="line"><span>MOTOR_ARM_J1</span></span>
+<span class="line"><span>      ↓</span></span>
+<span class="line"><span>assemble 绑定</span></span>
+<span class="line"><span>      ↓</span></span>
+<span class="line"><span>达妙电机实例</span></span>
+<span class="line"><span>      ↓</span></span>
+<span class="line"><span>型号、固件版本、CAN ID 等具体配置</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p><code>assemble</code> 决定使用哪个实现并提供资源；实例内部状态如何建立，由设备模块自己的初始化与绑定入口负责</p><p>如果多个模块共享同一个资源，初始化时机由掌握整体使用关系的一方决定；模块内部固定使用的依赖，可以由模块直接使用</p><p><strong>装配决定系统如何组成，模块决定自己如何初始化</strong></p><h2 id="四、服务负责执行-app-负责编排" tabindex="-1">四、服务负责执行，<code>app</code> 负责编排 <a class="header-anchor" href="#四、服务负责执行-app-负责编排" aria-label="Permalink to &quot;四、服务负责执行，`app` 负责编排&quot;">​</a></h2><p>在一个机械臂产品中，可以有输入采集服务、目标生成服务和关节控制服务</p><p>下面是一种可能的任务流：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-215" tabindex="0"><code v-pre><span class="line"><span>输入采集服务发布输入结果</span></span>
+<span class="line"><span>            ↓</span></span>
+<span class="line"><span>app 取得输入并传递给目标生成服务</span></span>
+<span class="line"><span>            ↓</span></span>
+<span class="line"><span>目标生成服务结合产品规则生成目标</span></span>
+<span class="line"><span>            ↓</span></span>
+<span class="line"><span>app 将目标传递给关节控制服务</span></span>
+<span class="line"><span>            ↓</span></span>
+<span class="line"><span>关节控制服务通过 bus_motor 发送命令</span></span>
+<span class="line"><span>            ↓</span></span>
+<span class="line"><span>根据操作结果和电机反馈更新任务状态</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>实际项目可以根据产品功能调整服务名称和拆分方式</p><p>跨服务数据流由 <code>app</code> 显式组织：生产方发布结果，<code>app</code> 将消费者所需的数据作为输入传入，让数据来源和传递时机都能直接看到</p><h3 id="服务由外部驱动" tabindex="-1">服务由外部驱动 <a class="header-anchor" href="#服务由外部驱动" aria-label="Permalink to &quot;服务由外部驱动&quot;">​</a></h3><p>服务说明自己的运行要求，例如调用时机、是否阻塞、允许在哪种执行上下文中运行；<code>app</code> 根据当前产品决定怎样满足这些要求</p><p>裸机项目可以在主循环中按时间和事件调用服务；RTOS 项目可以将任务流放进任务或其他合适的调度结构</p><p>两种情况下，服务的职责可以保持一致，变化的是产品如何安排它们</p><p>服务按自身职责设计入口：有的服务需要初始化和周期处理，有的只需要在收到输入时执行一次操作</p><h3 id="跨服务数据需要明确有效范围" tabindex="-1">跨服务数据需要明确有效范围 <a class="header-anchor" href="#跨服务数据需要明确有效范围" aria-label="Permalink to &quot;跨服务数据需要明确有效范围&quot;">​</a></h3><p>对于目标位置这样的小值，可以直接按值传递</p><p>如果一次发布的数据较大，可以使用只读视图，避免不必要的复制；此时需要说明视图对应哪一次发布，以及消费者在什么时间范围内可以使用它</p><p>数据的更新时机和跨任务访问方式，也需要结合实际调度方式明确下来</p><h3 id="服务状态按实例需求组织" tabindex="-1">服务状态按实例需求组织 <a class="header-anchor" href="#服务状态按实例需求组织" aria-label="Permalink to &quot;服务状态按实例需求组织&quot;">​</a></h3><p>单实例服务可以在自己的 <code>.c</code> 文件中使用私有 <code>static</code> 保存状态</p><p>需要多个实例，或者需要隔离不同运行上下文时，再使用显式实例；服务状态由需要持有它的一方管理</p><h2 id="五、通用算法与产品规则分开表达" tabindex="-1">五、通用算法与产品规则分开表达 <a class="header-anchor" href="#五、通用算法与产品规则分开表达" aria-label="Permalink to &quot;五、通用算法与产品规则分开表达&quot;">​</a></h2><p>机械臂控制中可能同时出现两类逻辑：一类是对输入进行滤波或轨迹计算，另一类是根据当前产品模式决定关节应该执行什么动作</p><p>它们都涉及计算，但职责不同</p><h3 id="通用算法-明确输入、输出与下一状态" tabindex="-1">通用算法：明确输入、输出与下一状态 <a class="header-anchor" href="#通用算法-明确输入、输出与下一状态" aria-label="Permalink to &quot;通用算法：明确输入、输出与下一状态&quot;">​</a></h3><p>如果一个滤波或轨迹计算算法不依赖当前产品、具体设备和平台，可以放在 <code>components/domain</code></p><p>这类算法采用明确的输入输出边界：</p><ul><li>输入数据、配置和旧状态只读</li><li>需要时间信息时，由调用方显式传入</li><li>结果可以按值返回，也可以写入调用方指定的输出</li><li>需要跨轮运行时，由调用方提供旧状态，算法输出下一状态</li><li>输出空间与输入、旧状态使用不同的内存</li><li>算法内部不执行外部 I/O，也不修改其他外部状态</li></ul><p>例如，轨迹计算可以接收当前目标、配置和旧状态，输出本轮结果与下一状态；调用方决定何时采用下一状态</p><p>这种边界让算法能够脱离电机和具体产品单独运行，也让每一轮计算的输入与结果更容易被检查</p><h3 id="产品规则-描述当前产品如何判断" tabindex="-1">产品规则：描述当前产品如何判断 <a class="header-anchor" href="#产品规则-描述当前产品如何判断" aria-label="Permalink to &quot;产品规则：描述当前产品如何判断&quot;">​</a></h3><p>“当前模式下，机械臂应当进入哪个动作阶段”“收到某种输入后应该生成什么动作意图”，属于产品自身的规则，可以放在 <code>product/domain</code></p><p>产品领域可以读取固定的产品规则，也可以更新显式传入的领域实例，状态修改范围限于该实例自身；当前时间、运行配置、其他模块的结果等外部可变事实，由调用方提供</p><p>产品领域可以使用通用算法，也可以输出简单的动作意图，例如“将 J1 移动到目标位置”</p><p><strong>动作意图表示产品规则要求做什么，实际动作是否完成由执行结果确定</strong></p><p>关节控制服务通过 <code>bus_motor</code> 发送目标位置后，可以结合电机反馈和产品定义的完成条件判断是否到位</p><h2 id="六、用-bus-motor-看设备接口与平台适配" tabindex="-1">六、用 <code>bus_motor</code> 看设备接口与平台适配 <a class="header-anchor" href="#六、用-bus-motor-看设备接口与平台适配" aria-label="Permalink to &quot;六、用 `bus_motor` 看设备接口与平台适配&quot;">​</a></h2><p><code>bus_motor</code> 的主要结构如下：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="true"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><button type="button" data-code-toggle aria-controls="kaede-code-338" aria-expanded="false"><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-code-chevron><path d="m6 9 6 6 6-6"></path></svg><span class="kaede-code-button-label">展开代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-338" tabindex="0"><code v-pre><span class="line"><span>bus_motor/</span></span>
+<span class="line"><span>├── bus_motor.h</span></span>
+<span class="line"><span>├── bus_motor.c</span></span>
+<span class="line"><span>├── dm_motor.h</span></span>
+<span class="line"><span>├── dm_motor.c</span></span>
+<span class="line"><span>├── dji_motor.h</span></span>
+<span class="line"><span>├── dji_motor.c</span></span>
+<span class="line"><span>└── dm_motor/</span></span>
+<span class="line"><span>    ├── dm_motor_core.h</span></span>
+<span class="line"><span>    ├── dm_motor_core.c</span></span>
+<span class="line"><span>    ├── dm_motor_protocol.h</span></span>
+<span class="line"><span>    ├── dm_motor_protocol_v3.c</span></span>
+<span class="line"><span>    └── dm_motor_protocol_v4.c</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>其中，<code>bus_motor.h/.c</code> 提供总线电机的公共接口和统一分发；<code>dm_motor</code> 提供达妙电机的配置、绑定和厂家适配；达妙不同版本的协议细节放在对应的协议实现中</p><p>它与本文的设备职责可以对应为：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-345" tabindex="0"><code v-pre><span class="line"><span>产品服务</span></span>
+<span class="line"><span>   ↓</span></span>
+<span class="line"><span>BusMotorInterface</span></span>
+<span class="line"><span>   ↓</span></span>
+<span class="line"><span>BusMotorDriver 与具体电机实例</span></span>
+<span class="line"><span>   ↓</span></span>
+<span class="line"><span>厂家驱动和协议实现</span></span>
+<span class="line"><span>   ↓</span></span>
+<span class="line"><span>BusMotorPortOps</span></span>
+<span class="line"><span>   ↓</span></span>
+<span class="line"><span>平台提供 CAN、时间等能力</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><h3 id="设备族向上提供公共接口" tabindex="-1">设备族向上提供公共接口 <a class="header-anchor" href="#设备族向上提供公共接口" aria-label="Permalink to &quot;设备族向上提供公共接口&quot;">​</a></h3><p><code>bus_motor</code> 对上提供电机控制语义，例如位置、速度、扭矩和阻抗控制</p><p>业务层可以通过逻辑电机 ID 发送位置目标：</p><div class="language-c"><button title="Copy code" class="copy"></button><span class="lang">c</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">c</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-355" tabindex="0"><code v-pre><span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">bus_motor.</span><span style="--shiki-light:#622CBC;--shiki-dark:#DBB7FF;">pos</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">(MOTOR_ARM_J1, target_position);</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>也可以读取位置反馈：</p><div class="language-c"><button title="Copy code" class="copy"></button><span class="lang">c</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">c</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-359" tabindex="0"><code v-pre><span class="line"><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">float</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> position;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">if</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">(bus_motor.feedback.</span><span style="--shiki-light:#622CBC;--shiki-dark:#DBB7FF;">position</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">(MOTOR_ARM_J1, </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">&amp;</span><span style="--shiki-light:#702C00;--shiki-dark:#FFB757;">position</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">) </span><span style="--shiki-light:#A0111F;--shiki-dark:#FF9492;">==</span><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;"> MOTOR_STATUS_OK) {</span></span>
+<span class="line"><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;">    // 使用位置反馈</span></span>
+<span class="line"><span style="--shiki-light:#0E1116;--shiki-dark:#F0F3F6;">}</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>在这个接口中，位置单位为 <code>rad</code></p><p>业务层通过 <code>MOTOR_ARM_J1</code> 表达“操作哪个产品关节”，具体的 CAN ID、厂家协议帧和固件版本由设备相关代码处理</p><p>统一入口表达的是<strong>上层依赖的公共控制语义</strong>，各厂家是否支持某项能力，由具体实现和实例能力决定</p><h3 id="profile-表达公共控制语义" tabindex="-1">Profile 表达公共控制语义 <a class="header-anchor" href="#profile-表达公共控制语义" aria-label="Permalink to &quot;Profile 表达公共控制语义&quot;">​</a></h3><p><code>bus_motor</code> 使用 Profile 表示当前采用的厂家无关控制语义，例如位置、速度或阻抗控制</p><p>以达妙电机为例，公共 Profile 需要映射到厂家实际支持的硬件模式；同一个厂家模式也可能承载不同的公共控制语义</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-378" tabindex="0"><code v-pre><span class="line"><span>公共 Profile</span></span>
+<span class="line"><span>    产品希望采用什么控制语义</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>厂家模式</span></span>
+<span class="line"><span>    具体设备如何实现该控制语义</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>初始化阶段，可以使用 <code>bus_motor.profile.require()</code> 检查当前业务所需能力，并通过 <code>bus_motor.profile.activate()</code> 激活所需 Profile</p><p>达妙配置中的 <code>default_mode</code> 表示绑定时认定的初始硬件模式，公共 Profile 需要通过相应流程激活；实际接入时还需要保证 CAN 接收回调能够工作</p><h3 id="设备定义向下需要的端口" tabindex="-1">设备定义向下需要的端口 <a class="header-anchor" href="#设备定义向下需要的端口" aria-label="Permalink to &quot;设备定义向下需要的端口&quot;">​</a></h3><p>达妙驱动通过 <code>BusMotorPortOps</code> 使用底层能力，例如发送 CAN 帧和获取时间</p><p>平台提供这些操作的具体实现，装配时再绑定给电机驱动：</p><div class="language-text"><button title="Copy code" class="copy"></button><span class="lang">text</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">text</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-394" tabindex="0"><code v-pre><span class="line"><span>达妙电机驱动</span></span>
+<span class="line"><span>      ↓</span></span>
+<span class="line"><span>BusMotorPortOps</span></span>
+<span class="line"><span>      ↓</span></span>
+<span class="line"><span>当前平台的 CAN 和时间实现</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>设备侧表达自己需要什么，平台负责适配这些需求；设备代码及其端口契约可以脱离具体平台头文件独立编译</p><p>当前达妙接入流程中的模式切换需要等待应答，SDK 对接收回调和相关端口有相应要求，这些运行契约需要在集成时一并满足</p><h3 id="实例与后端按需求选择" tabindex="-1">实例与后端按需求选择 <a class="header-anchor" href="#实例与后端按需求选择" aria-label="Permalink to &quot;实例与后端按需求选择&quot;">​</a></h3><p><code>bus_motor</code> 通过逻辑 ID、注册关系和厂家驱动表连接不同实例，这些机制服务于它统一管理多个电机的需求</p><p>其他设备可以按实际情况选择显式实例、句柄或逻辑 ID，注册表、能力查询和组操作也分别按需求引入</p><p>后端可以在构建时选定，也可以在初始化时绑定；默认在实例生命周期内保持固定，产品明确要求在线切换后端时，再定义在途操作、回调归属和状态交接规则</p><p><strong>切换后端</strong>与 <code>bus_motor</code> 运行时切换 Profile 是两件事：前者改变实例使用的具体实现，后者改变电机当前采用的控制语义</p><h2 id="七、操作结果与任务连续性" tabindex="-1">七、操作结果与任务连续性 <a class="header-anchor" href="#七、操作结果与任务连续性" aria-label="Permalink to &quot;七、操作结果与任务连续性&quot;">​</a></h2><p>模块需要如实表达本次操作的实际结果</p><p>简单操作可以使用普通返回值；当调用者需要区分多种结果时，再定义模块自己的状态类型</p><p><code>bus_motor</code> 使用 <code>BusMotorStatus</code> 表达操作结果，调用者可以据此区分操作成功、能力不支持等情况，再由产品任务规则决定后续行为</p><p>例如，发送位置命令之后，关节控制服务需要区分：</p><ul><li>命令调用返回了什么结果</li><li>当前是否取得了所需的电机反馈</li><li>产品定义的到位条件是否已经满足</li></ul><p>这三个结果分别描述命令执行、反馈获取和产品动作完成情况</p><p>当单项操作没有完成时，应如实反馈结果，并继续推进仍具备执行条件的工作；某一步确实无法进行，就说明具体阻塞点，其他任务是否继续，由实际条件和已确认规则决定</p><p>对于潜在安全隐患，说明具体触发条件和可能影响，由产品负责人决定是否引入安全机制以及如何实现；任务流按照已确认的产品规则运行</p><p>已有产品规则足以决定的事项，直接按规则处理；尚未确认的设计取舍如果会实质改变依赖、行为或协作方式，再说明差异并交由产品负责人决定</p><h2 id="八、把公共契约写在接口旁边" tabindex="-1">八、把公共契约写在接口旁边 <a class="header-anchor" href="#八、把公共契约写在接口旁边" aria-label="Permalink to &quot;八、把公共契约写在接口旁边&quot;">​</a></h2><p>一个接口即使只有几个参数，也需要说明使用条件：位置使用什么单位，返回值代表什么，输出数据由谁持有，函数是否阻塞，可以在哪种上下文调用</p><p>这些信息属于公共契约，应当写在 <code>.h</code> 中对应声明的旁边，并使用 Doxygen 组织：</p><ul><li>普通函数的约定写在函数声明旁</li><li><code>Interface</code> 和 <code>PortOps</code> 的回调约定写在对应成员旁</li><li>单位、返回值、完成条件、所有权、寿命和调用上下文等内容，根据实际接口按需说明</li><li><code>.c</code> 中的注释主要用于解释实现原因</li></ul><p>例如，<code>bus_motor</code> 的位置接口说明位置单位为 <code>rad</code>；对于需要等待应答的操作，还需要让调用者知道它的阻塞行为和运行条件</p><p>接口名称说明“可以做什么”，接口契约进一步说明“调用者应当怎样使用，以及可以依据结果作出什么判断”</p><h2 id="九、x-macro-和文件模板" tabindex="-1">九、X-Macro 和文件模板 <a class="header-anchor" href="#九、x-macro-和文件模板" aria-label="Permalink to &quot;九、X-Macro 和文件模板&quot;">​</a></h2><h3 id="x-macro-与接口设计独立决定" tabindex="-1">X-Macro 与接口设计独立决定 <a class="header-anchor" href="#x-macro-与接口设计独立决定" aria-label="Permalink to &quot;X-Macro 与接口设计独立决定&quot;">​</a></h3><p>X-Macro 适合一组稳定条目需要派生多种表示的场景，例如同一份状态条目需要生成枚举和名称映射</p><p>如果一张普通 <code>static const</code> 表已经能够做到只维护一次，就使用普通表；各个条目的具体行为留在普通函数中</p><p>是否使用 X-Macro，取决于同一组数据需要如何维护和派生，与是否设计 <code>Interface</code> 是两个独立问题</p><h3 id="文件模板用于保持结构一致" tabindex="-1">文件模板用于保持结构一致 <a class="header-anchor" href="#文件模板用于保持结构一致" aria-label="Permalink to &quot;文件模板用于保持结构一致&quot;">​</a></h3><p>C 文件可以使用固定的基础分区，让变量、私有函数声明、对外函数实现和私有函数实现有稳定的位置：</p><div class="language-c"><button title="Copy code" class="copy"></button><span class="lang">c</span><div class="kaede-code-panel"><div class="kaede-code-actions" data-collapsed="false"><span class="kaede-code-language">c</span><button type="button" data-code-copy><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-icon><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><svg class="kaede-code-button-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" data-copy-check hidden><path d="m5 12 4 4L19 6"></path></svg><span class="kaede-code-button-label">复制代码</span></button><span class="kaede-code-status" role="status"><span></span></span></div><div class="kaede-code-viewport"><pre class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast vp-code" id="kaede-code-518" tabindex="0"><code v-pre><span class="line"><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;">// ! ========================= 变 量 声 明 ========================= !</span><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;"> //</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;">// ! ========================= 私 有 函 数 声 明 ========================= !</span><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;"> //</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;">// ! ========================= 接 口 函 数 实 现 ========================= !</span><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;"> //</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;">// ! ========================= 私 有 函 数 实 现 ========================= !</span><span style="--shiki-light:#66707B;--shiki-dark:#BDC4CC;"> //</span></span></code></pre></div></div><button class="code-block-unfold-btn"></button></div><p>当该文件定义了对外导出的接口对象时，在私有函数声明之后、接口函数实现之前增加「接口变量定义」区</p><p>模板保持文件结构一致，模块之间的职责、依赖和契约则结合实际功能设计</p><h2 id="十、让职责与选择留在合适的位置" tabindex="-1">十、让职责与选择留在合适的位置 <a class="header-anchor" href="#十、让职责与选择留在合适的位置" aria-label="Permalink to &quot;十、让职责与选择留在合适的位置&quot;">​</a></h2><p>回到机械臂关节控制的例子，整个系统可以分成几件明确的事：</p><ul><li><code>assemble</code> 选择 J1 使用的具体电机，提供资源并完成绑定</li><li><code>app</code> 安排产品任务的调用时机和数据流</li><li><code>service</code> 执行关节控制任务，调用设备接口并处理结果</li><li><code>product/domain</code> 表达产品模式和动作规则</li><li><code>components/domain</code> 提供可以独立运行的通用算法</li><li><code>bus_motor</code> 定义公共控制语义，并连接具体厂家实现</li><li><code>platform</code> 提供当前 MCU 和板卡所需的底层适配</li></ul><p>这种划分让产品在调整任务流程、修改产品规则或更换设备时，可以沿着明确的职责边界判断哪些部分需要变化</p><p>目录、接口和模板共同表达这些边界，核心始终是：<strong>每个模块负责什么、依赖从哪里来，以及数据和执行结果如何在任务之间流动</strong></p><!--]--><!--[--><!--]--></div><!--]--><!----><!----></article><!--]--><!--[--><!--]--><!--[--><!--]--></div><nav class="kaede-post-nav" aria-label="前后文章" data-v-e7c08ca8><a href="/posts/notes/%E5%8F%AF%E9%80%92%E5%BD%92%E7%9A%84%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E6%A8%A1%E5%9E%8B" class="" data-v-e7c08ca8><span data-v-e7c08ca8>← 上一篇</span><strong data-v-e7c08ca8>从执行器、整机系统到多机协同，尝试用一套可递归的闭环控制模型统一描述</strong></a><a href="/posts/notes/%E5%85%B3%E4%BA%8E%20C%20%E8%AF%AD%E8%A8%80%E6%A8%A1%E6%8B%9F%20OOP%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%BE%B9%E7%95%8C" class="kaede-next" data-v-e7c08ca8><span data-v-e7c08ca8>下一篇 →</span><strong data-v-e7c08ca8>C 语言模拟 OOP：对象、接口与生命周期的边界</strong></a></nav></article><!----></div></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a href="/" class="kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true},"site":{},"routerStore":{}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","dateModified":"2026-11-23","datePublished":"2026-11-23","inLanguage":"zh-CN","name":"MCU C 架构设计：产品、组件与平台的职责划分","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"从产品、组件与平台的职责出发，结合 bus_motor SDK 讨论模块装配、任务编排、领域规则和设备接口设计","name":"MCU C 架构设计：产品、组件与平台的职责划分 · Kaede Rei","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>

@@ -1,0 +1,1 @@
+import{Dt as e,It as t,Ot as n,Rt as r,wt as i}from"./theme.DQltA_c8.js";import{o as a}from"./index3.DmOg_G_b.js";var o=e({defaults:{"@type":`Course`},resolve(e,n){return e.provider=t(e.provider,n,a,{root:!0}),e},resolveRootNode(e,{find:t}){let a=t(i);return a&&r(e,`provider`,n(a)),e}});export{o as courseResolver};

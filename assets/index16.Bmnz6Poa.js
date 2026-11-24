@@ -1,0 +1,1 @@
+import{Dt as e,It as t,Lt as n}from"./theme.DQltA_c8.js";var r=e({cast(e){return typeof e==`string`&&(e={name:e}),e},defaults:{"@type":`ListItem`},resolve(e,r){return typeof e.item==`string`?e.item=n(r.meta.host,e.item):typeof e.item==`object`&&(e.item=t(e.item,r)),e}});export{r as listItemResolver};

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html  lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<link rel="modulepreload" crossorigin href="/assets/learning-path.Co2p6W3w.js">
+<link rel="modulepreload" crossorigin href="/assets/ValaxyMain.BNQSi_9h.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>技术积累 · Kaede Rei</title>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档">
+<meta property="og:description" content="Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="技术积累 · Kaede Rei">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-rei.github.io/learning-path">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/learning-path">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="技术积累 · Kaede Rei">
+<meta name="twitter:description" content="Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a href="/" class="kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a href="/" class="" data-v-736c070f>首页</a><a href="/archives" class="" data-v-736c070f>文章</a><a aria-current="page" href="/learning-path" class="router-link-active router-link-exact-active is-current" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a href="/" class="" style="--menu-step:0;" data-v-736c070f>首页</a><a href="/archives" class="" style="--menu-step:1;" data-v-736c070f>文章</a><a aria-current="page" href="/learning-path" class="router-link-active router-link-exact-active is-current" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-learning-layout kaede-main" data-v-736c070f><section class="kaede-page learning-page" data-v-736c070f data-v-48c35028><header class="kaede-page-header" data-route-masthead="guide" data-v-48c35028><nav class="kaede-breadcrumb" aria-label="面包屑" data-v-48c35028><a href="/" class="" data-v-48c35028>首页</a><!----><!----></nav><h1 class="kaede-page-title" tabindex="-1" data-v-48c35028><span class="kaede-masthead-window"><span class="kaede-masthead-title"><!--[-->技术积累<!--]--></span></span></h1><p data-masthead-copy class="learning-description" data-v-48c35028>Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档</p><!----></header><nav class="learning-track-links" aria-label="技术积累方向" data-v-48c35028><!--[--><a href="/learning-path/electrical-control" class="" data-scene-card="panel" data-v-48c35028><strong data-scene-part="title" data-v-48c35028>嵌入式电控 <span aria-hidden="true" data-v-48c35028>→</span></strong><span data-scene-part="body" data-v-48c35028>从 C 语言与单片机入门，逐步学习 STM32、控制算法、RTOS 与工程组织，也可按基础和项目需求选学通信、电路和图形界面等方向</span></a><a href="/learning-path/robot-arm-development" class="" data-scene-card="panel" data-v-48c35028><strong data-scene-part="title" data-v-48c35028>机械臂系统开发 <span aria-hidden="true" data-v-48c35028>→</span></strong><span data-scene-part="body" data-v-48c35028>从机械臂本体设计、软件开发与外设接入，走到仿真验证和实机部署</span></a><!--]--></nav><div class="kaede-markdown-frame" data-v-48c35028><!--[--><article class="markdown-body"><!--[--><div class="prose"><!--[--><h2 id="内容状态" tabindex="-1">内容状态 <a class="header-anchor" href="#内容状态" aria-label="Permalink to &quot;内容状态&quot;">​</a></h2><ul><li><strong>可阅读</strong> · 已有正文</li><li><strong>更新中</strong> · 已有正文，部分内容待补充或修订</li><li><strong>规划中</strong> · 正文暂未公开</li></ul><!--]--><!--[--><!--]--></div><!--]--><!----><!----></article><!--]--><!--[--><!--]--><!--[--><!--]--></div><!----></section></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a href="/" class="kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","dateModified":"2026-11-24T11:09:34.348Z","datePublished":"2026-11-24T11:09:34.348Z","inLanguage":"zh-CN","name":"技术积累","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"Kaede Rei 的嵌入式电控笔记与机械臂系统开发文档","name":"技术积累 · Kaede Rei","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>

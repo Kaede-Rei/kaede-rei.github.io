@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html  lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<link rel="modulepreload" crossorigin href="/assets/3-4.CSZAJhOl.js">
+<link rel="modulepreload" crossorigin href="/assets/ValaxyMain.BNQSi_9h.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.4. 示教与采集设备 · Kaede Rei</title>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="设计示教装置的操作输入与反馈，组织采样、校准和设备测试">
+<meta property="og:description" content="设计示教装置的操作输入与反馈，组织采样、校准和设备测试">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="3.4. 示教与采集设备 · Kaede Rei">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-rei.github.io/learning-path/robot-arm-development/phase-3/3-4">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/learning-path/robot-arm-development/phase-3/3-4">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="3.4. 示教与采集设备 · Kaede Rei">
+<meta name="twitter:description" content="设计示教装置的操作输入与反馈，组织采样、校准和设备测试">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a href="/" class="kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a href="/" class="" data-v-736c070f>首页</a><a href="/archives" class="" data-v-736c070f>文章</a><a aria-current="location" href="/learning-path" class="is-current" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a href="/" class="" style="--menu-step:0;" data-v-736c070f>首页</a><a href="/archives" class="" style="--menu-step:1;" data-v-736c070f>文章</a><a aria-current="location" href="/learning-path" class="is-current" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-technical-doc-layout kaede-main" data-v-736c070f><div class="kaede-reader technical-doc-reader" data-v-736c070f data-v-8c9672c2><aside class="technical-doc-sidebar" aria-label="文档列表" data-v-8c9672c2><a href="/learning-path/robot-arm-development" class="technical-doc-tree-title" data-v-8c9672c2>机械臂系统开发</a><div class="technical-doc-tree-scroll" data-v-8c9672c2><nav class="technical-tree" aria-label="机械臂文档" data-v-8c9672c2 data-v-9181182c><ul data-v-9181182c><!--[--><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开一、机械臂本体设计" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-1" data-v-9181182c data-v-9181182c>一、机械臂本体设计</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.1. 需求分析与机械臂构型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.2. 机械结构与执行系统设计</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.3. 几何基准与运动学模型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-4" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.4. 质量属性与动力学模型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.5. 制造装配与本体验证</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开二、机械臂软件开发" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-2" data-v-9181182c data-v-9181182c>二、机械臂软件开发</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.1. 开发基础与系统架构</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.2. 执行器接口与设备通信</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.3. 实时运行与故障管理</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-4" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.4. 运动学与几何标定</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.5. 动力学与参数辨识</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-6" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.6. 状态估计与环境感知</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-7" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.7. 关节控制与动力学补偿</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-8" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.8. 任务空间与接触控制</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-9" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.9. 轨迹生成与执行管理</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-10" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.10. 路径规划与轨迹优化</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-11" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.11. 操作技能与任务规划</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-12" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.12. 遥操作与示教数据</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-13" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.13. 机器人学习与策略开发</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-14" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.14. 仿真建模与算法验证</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-15" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.15. 实机部署与运行维护</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="true" aria-label="收起三、机械臂外设开发" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-3" data-v-9181182c data-v-9181182c>三、机械臂外设开发</a></div><ul class="technical-tree-children" style="" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.1. 外设架构与接口</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.2. 视觉设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.3. 末端工具</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-4" aria-current="page" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.4. 示教与采集设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.5. 其他外接设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-6" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.6. 外设联调与验证</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开附录" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-4" data-v-9181182c data-v-9181182c>附录</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.1. 章节实现矩阵</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.2. 三种架构的实施路线</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.3. 仿真平台实践映射</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/references" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>参考资料</span></a></li><!--]--></ul></li><!--]--></ul></nav></div></aside><article class="kaede-post kaede-page content technical-document" data-v-8c9672c2><header class="kaede-page-header" data-route-masthead="document" data-v-8c9672c2><nav class="kaede-breadcrumb" aria-label="面包屑" data-v-8c9672c2><a href="/learning-path" class="" data-v-8c9672c2>技术积累</a><!--[--><span aria-hidden="true" data-v-8c9672c2>/</span><a href="/learning-path/robot-arm-development" class="" data-v-8c9672c2>机械臂系统开发</a><!--]--><!--[--><span aria-hidden="true" data-v-8c9672c2>/</span><a href="/learning-path/robot-arm-development/phase-3" class="" data-v-8c9672c2>三、机械臂外设开发</a><!--]--></nav><h1 class="kaede-page-title" tabindex="-1" data-v-8c9672c2><span class="kaede-masthead-window"><span class="kaede-masthead-title"><!--[-->3.4. 示教与采集设备<!--]--></span></span></h1><p data-masthead-copy class="kaede-page-summary" data-v-8c9672c2>设计示教装置的操作输入与反馈，组织采样、校准和设备测试</p></header><div class="kaede-markdown-frame" data-v-8c9672c2><!--[--><article class="markdown-body"><!--[--><div class="prose"><!--[--><p>示教设备负责提供含义明确、状态可信的人工输入与本地反馈；输入装置的采样状态、操作事件和机械臂控制权需要分别处理，跨设备映射与数据使用由第二部分的对应模块完成</p><h2 id="_3-4-1-操作装置与反馈" tabindex="-1">3.4.1. 操作装置与反馈 <a class="header-anchor" href="#_3-4-1-操作装置与反馈" aria-label="Permalink to &quot;3.4.1. 操作装置与反馈&quot;">​</a></h2><p>比较主从臂、手柄、空间定位装置和拖动输入，结合自由度、行程、分辨率、操作空间和使用疲劳选择装置；设计安装、防护与线缆，使正常握持、移动和松手不会引入不必要的机械阻碍或信号变化</p><p>使能、离合、确认、暂停和接管输入应明确作用、持续条件及接受反馈；不同输入不能仅因使用相同按钮接口，就采用相同事件逻辑</p><table><thead><tr><th>输入用途</th><th>需要说明的含义</th></tr></thead><tbody><tr><td>挡位或模式选择</td><td>按当前档位表达状态，还是由变化触发切换</td></tr><tr><td>连续轴或旋钮</td><td>当前值对应位置、速度或参数，以及尺度与有效范围</td></tr><tr><td>确认或一次性动作</td><td>哪个有效边沿触发，重复数据是否会重复执行</td></tr><tr><td>使能、离合、暂停与接管</td><td>按住、松开和状态切换分别提出什么请求，由谁确认生效</td></tr></tbody></table><p>普通软件操作请求与实际连接的硬件功能应区分；按钮命名为“使能”或“暂停”，不自动赋予其独立安全功能，也不能仅凭请求已发送就认为机构已经停止；控制权、停止与恢复沿用第二部分第 3 节的约定，离合与重新对齐见第二部分第 12 节</p><p>明确指示、振动和力反馈的本地实现及含义，区分请求状态、系统接受状态与实际执行状态；力反馈装置还应检查输出限制、松手及失联时的释放条件，避免设备仍持续输出已不适用的作用</p><h2 id="_3-4-2-采样、校准与设备测试" tabindex="-1">3.4.2. 采样、校准与设备测试 <a class="header-anchor" href="#_3-4-2-采样、校准与设备测试" aria-label="Permalink to &quot;3.4.2. 采样、校准与设备测试&quot;">​</a></h2><p>校准输入装置的零位、尺度、方向、轴间耦合与坐标，保留原始量和换算关系；输入滤波需同时评价噪声与延迟，不能把滤波后的稳定数值自动理解为新的有效操作</p><p>组织采样、序号、时间戳和有效状态，区分当前输入状态与新发生的操作边沿；有些接口在连接时主动报告初始化状态，这不一定代表用户刚刚移动了轴或按下按钮，应按所选接口处理初始化和实际事件<a href="https://docs.kernel.org/input/joydev/joystick-api.html" target="_blank" rel="noreferrer">[input-events]</a></p><p>例如，确认按钮在断线前一直按住，重连第一帧仍为按下状态；若把默认的“未按下”与该帧比较，便可能错误生成一次新确认；重连应先重建当前输入及边沿判断基准，再按控制权规则决定是否接受操作，不能让旧命令或连接恢复本身自动触发继续运动</p><p>持续量、挡位和事件应分别按定义恢复，不要求所有轴、旋钮或开关统一归零、重新拨动；用按住按钮重连、轴位于非中心位置、重复报文、信号中断、松手及本地故障检查实际行为，并用参考动作与同步事件测量采样频率、延迟和事件顺序；跨设备映射与数据集组织见第二部分第 12 节</p><!--]--><!--[--><!--]--></div><!--]--><!----><!----></article><!--]--><!--[--><!--]--><!--[--><!--]--></div><!----><nav class="kaede-post-nav" aria-label="前后文档" data-v-8c9672c2><a href="/learning-path/robot-arm-development/phase-3/3-3" class="" data-scene-card="row" data-v-8c9672c2><span data-scene-part="meta" data-v-8c9672c2>← 上一篇</span><strong data-scene-part="title" data-v-8c9672c2>3.3. 末端工具</strong></a><a href="/learning-path/robot-arm-development/phase-3/3-5" class="kaede-next" data-scene-card="row" data-v-8c9672c2><span data-scene-part="meta" data-v-8c9672c2>下一篇 →</span><strong data-scene-part="title" data-v-8c9672c2>3.5. 其他外接设备</strong></a></nav></article><!----><button type="button" class="technical-documents-toggle" aria-haspopup="dialog" aria-controls="technical-documents-dialog" data-v-8c9672c2><span class="i-ri-file-list-3-line" aria-hidden="true" data-v-8c9672c2></span>文档 </button><dialog id="technical-documents-dialog" class="technical-documents-dialog kaede-modal-panel" aria-labelledby="technical-documents-title" data-v-8c9672c2><div class="technical-documents-panel" data-v-8c9672c2><header data-v-8c9672c2><h2 id="technical-documents-title" data-v-8c9672c2>文档</h2><button type="button" aria-label="关闭文档列表" autofocus data-v-8c9672c2><span class="i-ri-close-line" aria-hidden="true" data-v-8c9672c2></span></button></header><div class="technical-doc-tree-scroll" data-v-8c9672c2><a href="/learning-path/robot-arm-development" class="technical-doc-tree-title" data-v-8c9672c2 data-v-8c9672c2>机械臂系统开发</a><nav class="technical-tree" aria-label="机械臂文档" data-v-8c9672c2 data-v-9181182c><ul data-v-9181182c><!--[--><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开一、机械臂本体设计" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-1" data-v-9181182c data-v-9181182c>一、机械臂本体设计</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.1. 需求分析与机械臂构型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.2. 机械结构与执行系统设计</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.3. 几何基准与运动学模型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-4" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.4. 质量属性与动力学模型</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-1/1-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>1.5. 制造装配与本体验证</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开二、机械臂软件开发" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-2" data-v-9181182c data-v-9181182c>二、机械臂软件开发</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.1. 开发基础与系统架构</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.2. 执行器接口与设备通信</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.3. 实时运行与故障管理</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-4" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.4. 运动学与几何标定</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.5. 动力学与参数辨识</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-6" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.6. 状态估计与环境感知</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-7" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.7. 关节控制与动力学补偿</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-8" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.8. 任务空间与接触控制</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-9" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.9. 轨迹生成与执行管理</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-10" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.10. 路径规划与轨迹优化</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-11" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.11. 操作技能与任务规划</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-12" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.12. 遥操作与示教数据</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-13" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.13. 机器人学习与策略开发</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-14" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.14. 仿真建模与算法验证</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-2/2-15" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>2.15. 实机部署与运行维护</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="true" aria-label="收起三、机械臂外设开发" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-3" data-v-9181182c data-v-9181182c>三、机械臂外设开发</a></div><ul class="technical-tree-children" style="" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.1. 外设架构与接口</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.2. 视觉设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.3. 末端工具</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-4" aria-current="page" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.4. 示教与采集设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-5" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.5. 其他外接设备</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-3/3-6" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>3.6. 外设联调与验证</span></a></li><!--]--></ul></li><li data-v-9181182c><div class="technical-tree-section" data-v-9181182c><button type="button" aria-expanded="false" aria-label="展开附录" data-v-9181182c><span class="i-ri-arrow-right-s-line" aria-hidden="true" data-v-9181182c></span></button><a href="/learning-path/robot-arm-development/phase-4" data-v-9181182c data-v-9181182c>附录</a></div><ul class="technical-tree-children" inert style="display:none;" data-v-9181182c><!--[--><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-1" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.1. 章节实现矩阵</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-2" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.2. 三种架构的实施路线</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/4-3" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>4.3. 仿真平台实践映射</span></a></li><li data-v-9181182c><a href="/learning-path/robot-arm-development/phase-4/references" data-v-9181182c data-v-9181182c><span class="i-ri-file-text-line" aria-hidden="true" data-v-9181182c></span><span data-v-9181182c>参考资料</span></a></li><!--]--></ul></li><!--]--></ul></nav></div></div></dialog></div></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a href="/" class="kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","dateModified":"2026-11-24T11:09:34.349Z","datePublished":"2026-11-24T11:09:34.349Z","inLanguage":"zh-CN","name":"3.4. 示教与采集设备","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"设计示教装置的操作输入与反馈，组织采样、校准和设备测试","name":"3.4. 示教与采集设备 · Kaede Rei","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>

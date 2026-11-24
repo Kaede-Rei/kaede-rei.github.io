@@ -1,0 +1,1 @@
+import{Dt as e}from"./theme.DQltA_c8.js";var t=e({defaults:{"@type":`AggregateRating`}});export{t as aggregateRatingResolver};

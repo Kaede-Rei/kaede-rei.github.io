@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html  lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/images/brand/atil-mark.png">
+    <script>
+    ;(function () {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      if (setting === 'dark' || (prefersDark && setting !== 'light'))
+        document.documentElement.classList.toggle('dark', true)
+    })()
+    </script>
+  <style type="text/css">
+    :root { color-scheme: light dark; --va-c-bg: #fff; }
+    html.dark { --va-c-bg: #000; }
+    html { background-color: var(--va-c-bg); }
+  </style><style id="valaxy-fouc">body{opacity:0!important}</style><style>body{transition:opacity .15s ease}</style><noscript><style>body{opacity:1!important}</style></noscript><script>(function foucGuardScript(maxDuration) {
+  var done = 0;
+  function reveal() {
+    if (done) return;
+    done = 1;
+    var s = document.getElementById("valaxy-fouc");
+    if (s) s.remove();
+  }
+  function check() {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (!links[i].sheet) return;
+    }
+    reveal();
+  }
+  new MutationObserver(check).observe(document.head, {
+    childList: true,
+    attributes: true,
+    attributeFilter: ["media", "rel"]
+  });
+  addEventListener("load", reveal);
+  if (maxDuration)
+    setTimeout(reveal, maxDuration);
+})(5000)</script>
+    <script>
+    const locale = localStorage.getItem('valaxy-locale') || 'zh-CN';
+    document.documentElement.setAttribute('lang', locale);
+    </script>
+    
+  <script type="module" crossorigin src="/assets/index.DHqXIn8L.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime.CYVBeYYp.js">
+  <link rel="modulepreload" crossorigin href="/assets/framework.BxU7WtNw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-i18n.COkzp55q.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/@vueuse/motion.CyH62ANl.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/dayjs.D-Oligom.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/pinia.kLFMDsOw.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/vue-router.DSsatk_i.js">
+  <link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+  <link rel="modulepreload" crossorigin href="/assets/chunks/nprogress.D5yedX_s.js">
+  <link rel="stylesheet" crossorigin href="/assets/style.ln6MpXQe.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="modulepreload" crossorigin href="/assets/theme.DQltA_c8.js">
+<link rel="modulepreload" crossorigin href="/assets/electrical-control.C2qvBXiN.js">
+<link rel="modulepreload" crossorigin href="/assets/ValaxyMain.BNQSi_9h.js">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>嵌入式电控 · Kaede Rei</title>
+<script data-hid="post-layout">(function applyPostLayouts(layouts) {
+	document.documentElement.dataset.desktopPostLayout = layouts.desktop;
+	document.documentElement.dataset.mobilePostLayout = layouts.mobile;
+})((function readPostLayouts() {
+	const defaults = {
+		version: 2,
+		desktop: "image",
+		mobile: "image"
+	};
+	try {
+		const storage = window.localStorage;
+		const key = "kaede-post-layout-v2";
+		const isDesktop = (mode) => mode === "image" || mode === "text" || mode === "alternate";
+		const isMobile = (mode) => mode === "image" || mode === "text";
+		const saved = storage.getItem(key);
+		if (saved !== null) {
+			const value = JSON.parse(saved);
+			return {
+				version: 2,
+				desktop: value?.version === 2 && isDesktop(value.desktop) ? value.desktop : "image",
+				mobile: value?.version === 2 && isMobile(value.mobile) ? value.mobile : "image"
+			};
+		}
+		const legacy = storage.getItem("kaede-post-layout");
+		const migrated = {
+			version: 2,
+			desktop: isDesktop(legacy) ? legacy : "image",
+			mobile: isMobile(legacy) ? legacy : "image"
+		};
+		if (legacy !== null) storage.setItem(key, JSON.stringify(migrated));
+		return migrated;
+	} catch {
+		return defaults;
+	}
+})())</script>
+<meta name="description" content="从 C 语言、51 单片机与 STM32 入门，逐步学习控制、通信、RTOS 和嵌入式工程组织">
+<meta property="og:description" content="从 C 语言、51 单片机与 STM32 入门，逐步学习控制、通信、RTOS 和嵌入式工程组织">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:locale:alternate" content>
+<meta property="og:site_name" content="Kaede Rei の 小窝 · 机器人开发与技术笔记">
+<meta property="og:title" content="嵌入式电控 · Kaede Rei">
+<meta property="og:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-rei.github.io/learning-path/electrical-control">
+<link rel="icon" href="/images/brand/atil-mark.png" type="image/png">
+<meta name="generator" content="Valaxy 0.28.4">
+<meta name="theme-color" content="#F8F5F0">
+<link rel="canonical" href="https://kaede-rei.github.io/learning-path/electrical-control">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="嵌入式电控 · Kaede Rei">
+<meta name="twitter:description" content="从 C 语言、51 单片机与 STM32 入门，逐步学习控制、通信、RTOS 和嵌入式工程组织">
+<meta name="twitter:image" content="https://kaede-rei.github.io/images/optimized/hero-1920.webp">
+</head>
+<body>
+  <div id="app"><!--[--><a class="kaede-skip-link" href="#main-content" data-v-736c070f>跳转到正文</a><header class="kaede-navbar" data-v-736c070f><div class="kaede-navbar-inner" data-v-736c070f><a href="/" class="kaede-brand" data-v-736c070f><img src="/images/kaede-rei-avatar.jpg" alt width="36" height="36" data-v-736c070f><span data-v-736c070f>Kaede Rei</span></a><nav class="kaede-nav-links" aria-label="主导航" data-v-736c070f><!--[--><a href="/" class="" data-v-736c070f>首页</a><a href="/archives" class="" data-v-736c070f>文章</a><a aria-current="location" href="/learning-path" class="is-current" data-v-736c070f>技术积累</a><a href="/about" class="" data-v-736c070f>关于</a><!--]--><span class="kaede-nav-indicator" aria-hidden="true" data-v-736c070f></span></nav><div class="kaede-nav-tools" data-v-736c070f><button type="button" class="kaede-search-trigger" aria-label="搜索文章与学习内容" aria-keyshortcuts="Control+K Meta+K" title="搜索文章与学习内容（Ctrl / ⌘ + K）" data-v-736c070f><span class="i-ri-search-line" aria-hidden="true" data-v-736c070f></span><kbd data-v-736c070f>Ctrl K</kbd></button><label class="kaede-theme-control" data-v-736c070f><span class="i-ri-contrast-2-line" aria-hidden="true" data-v-736c070f></span><select aria-label="显示主题" title="显示主题" data-v-736c070f><option value="auto" data-v-736c070f selected>跟随系统</option><option value="light" data-v-736c070f>浅色</option><option value="dark" data-v-736c070f>深色</option></select></label><button type="button" class="kaede-menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="kaede-mobile-nav" data-v-736c070f><span class="kaede-menu-symbol kaede-menu-symbol--open i-ri-menu-line" aria-hidden="true" data-v-736c070f></span><span class="kaede-menu-symbol kaede-menu-symbol--close i-ri-close-line" aria-hidden="true" data-v-736c070f></span></button></div><nav id="kaede-mobile-nav" class="kaede-mobile-nav" inert aria-label="移动导航" data-v-736c070f><!--[--><a href="/" class="" style="--menu-step:0;" data-v-736c070f>首页</a><a href="/archives" class="" style="--menu-step:1;" data-v-736c070f>文章</a><a aria-current="location" href="/learning-path" class="is-current" style="--menu-step:2;" data-v-736c070f>技术积累</a><a href="/about" class="" style="--menu-step:3;" data-v-736c070f>关于</a><!--]--></nav></div></header><main id="main-content" tabindex="-1" class="has-learning-layout kaede-main" data-v-736c070f><section class="kaede-page learning-page" data-v-736c070f data-v-48c35028><header class="kaede-page-header" data-route-masthead="guide" data-v-48c35028><nav class="kaede-breadcrumb" aria-label="面包屑" data-v-48c35028><a href="/" class="" data-v-48c35028>首页</a><!--[--><span aria-hidden="true" data-v-48c35028>/</span><a href="/learning-path" class="" data-v-48c35028>技术积累</a><!--]--><!----></nav><h1 class="kaede-page-title" tabindex="-1" data-v-48c35028><span class="kaede-masthead-window"><span class="kaede-masthead-title"><!--[-->嵌入式电控<!--]--></span></span></h1><p data-masthead-copy class="learning-description" data-v-48c35028>从 C 语言与单片机入门，逐步学习 STM32、控制算法、RTOS 与工程组织，也可按基础和项目需求选学通信、电路和图形界面等方向</p><!----></header><!----><div class="kaede-markdown-frame" data-v-48c35028><!--[--><article class="markdown-body"><!--[--><div class="prose"><!--[--><!--]--><!--[--><!--]--></div><!--]--><!----><!----></article><!--]--><!--[--><!--]--><!--[--><!--]--></div><div class="learning-outline" data-v-48c35028 data-v-9f822402><nav class="learning-stage-links" aria-label="学习阶段" data-v-9f822402><!--[--><a aria-current="page" href="/learning-path/electrical-control#phase-1" class="router-link-active router-link-exact-active" data-v-9f822402>第一阶段 · 基础入门</a><a aria-current="page" href="/learning-path/electrical-control#phase-2" class="router-link-active router-link-exact-active" data-v-9f822402>第二阶段 · 能力扩展</a><a aria-current="page" href="/learning-path/electrical-control#phase-3" class="router-link-active router-link-exact-active" data-v-9f822402>第三阶段 · 综合提升</a><a aria-current="page" href="/learning-path/electrical-control#phase-4" class="router-link-active router-link-exact-active" data-v-9f822402>第四阶段 · 工程能力</a><!--]--></nav><!--[--><section class="learning-stage" data-v-9f822402><h2 id="phase-1" tabindex="-1" data-v-9f822402>第一阶段 · 基础入门</h2><!--[--><p data-v-9f822402>建立 C 语言、单片机与基础电路的开发经验，开始使用具体硬件完成小型实验</p><p class="learning-audience" data-v-9f822402>适合：刚接触 C 语言和单片机，想从小型硬件实验开始的读者</p><!--]--><p class="learning-count" data-v-9f822402>2 个章节可阅读</p><ul class="learning-chapters" data-v-9f822402><!--[--><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/1" class="learning-chapter-link" data-v-9f822402>1. C 语言与 51 单片机入门</a><p class="learning-update-note" data-v-9f822402>51 单片机一节现有入门建议，配套教程入口与小实验待补充</p></div><span class="learning-status is-updating" data-scene-part="meta" data-v-9f822402 data-v-29d14455>更新中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/2" class="learning-chapter-link" data-v-9f822402>2. STM32 与 PCB 设计入门</a><!----></div><span class="learning-status is-ready" data-scene-part="meta" data-v-9f822402 data-v-29d14455>可阅读</span></li><!--]--></ul><a aria-current="page" href="/learning-path/electrical-control#phase-2" class="router-link-active router-link-exact-active learning-action" data-v-9f822402> 查看下一阶段 → </a></section><section class="learning-stage" data-v-9f822402><h2 id="phase-2" tabindex="-1" data-v-9f822402>第二阶段 · 能力扩展</h2><!--[--><p data-v-9f822402>学习控制、通信、嵌入式视觉与 RTOS，并理解各模块在系统中的职责</p><p class="learning-audience" data-v-9f822402>适合：已能使用单片机完成基础实验，希望把控制、通信或视觉接入系统的读者</p><!--]--><p class="learning-count" data-v-9f822402>3 个章节可阅读</p><ul class="learning-chapters" data-v-9f822402><!--[--><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/3-1" class="learning-chapter-link" data-v-9f822402>3.1. 基础控制算法入门</a><p class="learning-update-note" data-v-9f822402>PID 前馈与卡尔曼滤波的矩阵汇总待补充</p></div><span class="learning-status is-updating" data-scene-part="meta" data-v-9f822402 data-v-29d14455>更新中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><span data-v-9f822402>3.2. 多机通信</span><!----></div><span class="learning-status is-planned" data-scene-part="meta" data-v-9f822402 data-v-29d14455>规划中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/3-3" class="learning-chapter-link" data-v-9f822402>3.3. 嵌入式视觉入门</a><!----></div><span class="learning-status is-ready" data-scene-part="meta" data-v-9f822402 data-v-29d14455>可阅读</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><span data-v-9f822402>3.4. 电路设计入门</span><!----></div><span class="learning-status is-planned" data-scene-part="meta" data-v-9f822402 data-v-29d14455>规划中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/3-5" class="learning-chapter-link" data-v-9f822402>3.5. RTOS 入门</a><p class="learning-update-note" data-v-9f822402>汇编与堆栈示例、同步机制细节和任务通知状态待补充</p></div><span class="learning-status is-updating" data-scene-part="meta" data-v-9f822402 data-v-29d14455>更新中</span></li><!--]--></ul><a aria-current="page" href="/learning-path/electrical-control#phase-3" class="router-link-active router-link-exact-active learning-action" data-v-9f822402> 查看下一阶段 → </a></section><section class="learning-stage" data-v-9f822402><h2 id="phase-3" tabindex="-1" data-v-9f822402>第三阶段 · 综合提升</h2><!--[--><p data-v-9f822402>根据项目需要继续学习控制理论、嵌入式图形界面、物联网与 AI 相关内容</p><p class="learning-audience" data-v-9f822402>适合：有嵌入式开发基础，正按项目需求选择扩展方向的读者</p><!--]--><p class="learning-count" data-v-9f822402>2 个章节可阅读</p><ul class="learning-chapters" data-v-9f822402><!--[--><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><span data-v-9f822402>4.1. 自动控制原理入门</span><!----></div><span class="learning-status is-planned" data-scene-part="meta" data-v-9f822402 data-v-29d14455>规划中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/4-2" class="learning-chapter-link" data-v-9f822402>4.2. 嵌入式图形化设计入门</a><p class="learning-update-note" data-v-9f822402>开启 DCache 时的图像与存储调试待补充</p></div><span class="learning-status is-updating" data-scene-part="meta" data-v-9f822402 data-v-29d14455>更新中</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/4-3" class="learning-chapter-link" data-v-9f822402>4.3. 物联网入门</a><!----></div><span class="learning-status is-ready" data-scene-part="meta" data-v-9f822402 data-v-29d14455>可阅读</span></li><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><span data-v-9f822402>4.4. 嵌入式 AI 入门</span><!----></div><span class="learning-status is-planned" data-scene-part="meta" data-v-9f822402 data-v-29d14455>规划中</span></li><!--]--></ul><a aria-current="page" href="/learning-path/electrical-control#phase-4" class="router-link-active router-link-exact-active learning-action" data-v-9f822402> 查看下一阶段 → </a></section><section class="learning-stage" data-v-9f822402><h2 id="phase-4" tabindex="-1" data-v-9f822402>第四阶段 · 工程能力</h2><!--[--><p data-v-9f822402>关注代码组织、架构思维与工具使用，把分散的功能整理为可以维护的工程</p><p class="learning-audience" data-v-9f822402>适合：已经写过外设或控制模块，希望改善项目结构与调试流程的读者</p><!--]--><p class="learning-count" data-v-9f822402>1 个章节可阅读</p><ul class="learning-chapters" data-v-9f822402><!--[--><li data-scene-card="row" data-v-9f822402><div data-scene-part="title" data-v-9f822402><a href="/learning-path/electrical-control/5" class="learning-chapter-link" data-v-9f822402>5. 编程、架构思维与实用工具</a><p class="learning-update-note" data-v-9f822402>部分调试方法与设计模式示例待补充</p></div><span class="learning-status is-updating" data-scene-part="meta" data-v-9f822402 data-v-29d14455>更新中</span></li><!--]--></ul><!----></section><!--]--><div class="learning-outline-actions" data-v-9f822402><!----><!----><a href="/learning-path" class="learning-action" data-v-9f822402>返回技术积累</a></div></div></section></main><footer class="kaede-footer" data-v-736c070f><div data-v-736c070f><a href="/" class="kaede-footer-name" data-v-736c070f>Kaede Rei の 小窝</a><p data-v-736c070f>记录代码、工具与机器人开发中的具体问题</p></div><div class="kaede-footer-links" data-v-736c070f><a href="/links" class="" data-v-736c070f>友情链接</a><a href="https://github.com/Kaede-Rei" data-v-736c070f>GitHub</a><a href="mailto:kaerei86@gmail.com" data-v-736c070f>邮箱</a><a href="/atom.xml" data-v-736c070f>RSS</a></div><small data-v-736c070f>© 2026 Kaede Rei · 由 Valaxy 驱动 · 布局参考 <a href="https://github.com/hairyf/valaxy-theme-hairy" data-v-736c070f>Hairy</a></small></footer><!----><!--[--><!--]--><!--]--></div><script>window.__INITIAL_STATE__='{"pinia":{"app":{"showLoading":true}}}'</script><script type="application/ld+json" data-hid="schema-org-graph">{"@context":"https://schema.org","@graph":[{"@id":"https://kaede-rei.github.io/#identity","@type":"Person","name":"Kaede Rei","url":"https://kaede-rei.github.io/","image":{"@id":"https://kaede-rei.github.io/#/schema/image/1"},"sameAs":["https://github.com/Kaede-Rei","https://space.bilibili.com/24410561","mailto:kaerei86@gmail.com","/atom.xml"]},{"@id":"https://kaede-rei.github.io/#website","@type":"WebSite","dateModified":"2026-11-24T11:09:34.348Z","datePublished":"2026-11-24T11:09:34.348Z","inLanguage":"zh-CN","name":"嵌入式电控","url":"https://kaede-rei.github.io/","publisher":{"@id":"https://kaede-rei.github.io/#identity"}},{"@id":"https://kaede-rei.github.io/#webpage","@type":"WebPage","description":"从 C 语言、51 单片机与 STM32 入门，逐步学习控制、通信、RTOS 和嵌入式工程组织","name":"嵌入式电控 · Kaede Rei","url":"https://kaede-rei.github.io/","about":{"@id":"https://kaede-rei.github.io/#identity"},"isPartOf":{"@id":"https://kaede-rei.github.io/#website"},"potentialAction":[{"@type":"ReadAction","target":["https://kaede-rei.github.io/"]}]},{"@id":"https://kaede-rei.github.io/#/schema/image/1","@type":"ImageObject","contentUrl":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg","inLanguage":"zh-CN","url":"https://kaede-rei.github.io/images/kaede-rei-avatar.jpg"}]}</script>
+  
+</body>
+</html>
